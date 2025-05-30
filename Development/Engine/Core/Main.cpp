@@ -1,11 +1,9 @@
 #include <SDL.h>
 
-#include <Core.h>
-
-namespace eightgine
+namespace Eightgine
 {
 
-int EightgineMain(int ArgumentCount, char** ArgumentValues)
+int fMain(int iArgumentCount, char** pArgumentValues)
 {
     // TODO: example code
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -65,4 +63,4 @@ int EightgineMain(int ArgumentCount, char** ArgumentValues)
     return 0;
 }
 
-} // namespace eightgine
+} // namespace Eightgine

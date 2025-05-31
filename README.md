@@ -49,14 +49,17 @@
 	.CReflection
 	.CSerialization
 	.CObjectTemplate
-	.CObjectModel
-	.CThread
-	.CThreadManager
+	.CObjectSchema
+	.CWorkerThread
+	.CThreadTask
+	.CThreadPoolManager
 
 .Renderer - Содержит классы для работы с графикой.
 	.RTexture
 	.RSprite
-	.RRenderer
+	.RSpriteComposite
+	.RRenderTarget
+	.RPostProcessManager	
 	.RRendererManager
 
 .Audio - Содержит классы для работы с аудио.
@@ -66,30 +69,67 @@
 	.AAudioManager
 
 .Input - Содержит классы для обработки перефирийных событий.
-	.IMouse
-	.IKeyboard
-	.IJoystick
+	.IMouseInpit
+	.IKeyboardInput
+	.IJoystickInput
 	.IInputManager
 
 .Physics - Содержит классы для программирования физики.
-	.PMovement
-	.PDynamic
+	.PMovementPhysics
+	.PDynamicPhysics
+	.PCOllisionResolver
 
 .Scripting - Содержит классы для программирования состояния, поведения, скриптов.
 	.SStateMachine
 	.SExecutionTree
-	.SScriptable
+	.SScriptableObject
+	.SScriptingContext
 
-.Particles - Содержит классы для программирования и разработки частиц.
+.Objects - Содержит классы для программирования и разработки игровых обьектов.
+	.CObjectComponent
+	.OStaticObject
+	.OKinematicObject
+	.ODynamicObject
 
 .Lighting - Содержит классы для программирования и разработки освещения.
+	.LStaticLight
+	.LDynamicLight
+	.LShadow
+	.LLightingEditor
 
 .Animations - Содержит классы для программирования и разработки анимаций.
+	.ABaseAnimation
+	.ASpriteAnimation
+	.ASkeletalAnimation
+	.AAnimationEditor
 
-.Net - Содержит классы для сетевого программирования.
+.Particles - Содержит классы для программирования и разработки частиц.
+	.PParticlesBase
+	.PParticlesEditor
+
+.Network - Содержит классы для сетевого программирования.
+	.NConnectionBase
 	.NServer
 	.NClient
-	.NPC
-	.NNetManager
+	.NRemoteProcedureCall
+	.NNetworkManager
 
 .GUI
+	.GBase
+	.GButton
+	.GSliderBlock
+	.GSliderBar
+	.GCheckButton
+	.GRadioButton
+	.GBox
+	.GLayout
+	.GTextBox
+	.GTextField
+	.GPanel
+
+.Editor
+	.EDebugDrawUtility
+	.EDetailsPanel
+	.EObjectHierarchy
+	.EAssetsBrowser
+	.ELocationEditor

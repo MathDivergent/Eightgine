@@ -101,6 +101,25 @@ function(eightgine_install_dependency)
     )
 endfunction()
 
+function(eightgine_install_libcxx_dependency)
+    set(ONE_VALUE_ARGS MODULE_OR_EXECUTABLE_NAME)
+    cmake_parse_arguments("ARG" "" "${ONE_VALUE_ARGS}" "" ${ARGN})
+
+    set(LIBCXX_BIN_FILE_NAMES "libc++" "libunwind" "libc++abi")
+    get_filename_component(COMPILER_BIN_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
+
+    foreach(LIBCXX_BIN_FILE_NAME ${LIBCXX_BIN_FILE_NAMES})
+        set(LIBCXX_BIN_FILE_PATH "${COMPILER_BIN_DIR}/${LIBCXX_BIN_FILE_NAME}")
+        if(EXISTS "${LIBCXX_BIN_FILE_PATH}.dll")
+            eightgine_install_dependency(MODULE_OR_EXECUTABLE_NAME "${ARG_MODULE_OR_EXECUTABLE_NAME}"
+                DEPENDENCY_NAME "${LIBCXX_BIN_FILE_NAME}"
+                DEPENDENCY_BIN_DIR "${COMPILER_BIN_DIR}"
+            )
+        endif()
+    endforeach()
+endfunction()
+
+
 function(eightgine_link_dependency)
     set(ONE_VALUE_ARGS MODULE_OR_EXECUTABLE_NAME DEPENDENCY_NAME DEPENDENCY_INCLUDE_DIR DEPENDENCY_LIB_DIR DEPENDENCY_BIN_DIR)
     cmake_parse_arguments("ARG" "" "${ONE_VALUE_ARGS}" "" ${ARGN})

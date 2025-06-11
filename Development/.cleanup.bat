@@ -2,7 +2,7 @@
 
 REM List of files and folders (space-separated)
 set "FILES=CMakeLists.txt.user"
-set "FOLDERS=Intermediate"
+set "FOLDERS=Intermediate .idea"
 
 REM Delete folders
 for %%F in (%FOLDERS%) do (

@@ -1,5 +1,5 @@
 # [[Root]]
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.12)
 project(EmptyProject)
 
 set(CMAKE_CXX_STANDARD 23)
@@ -56,15 +56,26 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${PROJECT_BINARIES_DIR}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${PROJECT_BINARIES_DIR}")
 
 
-# [[Defines]]
+# [[Definitions]]
+if(WIN32)
+    add_compile_definitions(EIGHTGINE_PLATFORM_WINDOWS)
+elseif(UNIX)
+    add_compile_definitions(EIGHTGINE_LINUX_PLATFORM)
+else()
+    message(FATAL_ERROR "Unsupported platform")
+endif()
+
 if(WITH_EDITOR)
     add_compile_definitions(WITH_EDITOR)
 endif()
 
-add_compile_definitions(PROJECT_RESOURCES_DIR="../${RESOURCES_DIR_NAME}" PROJECT_PLUGINS_DIR="../${PLUGINS_DIR_NAME}")
+add_compile_definitions(
+    PROJECT_RESOURCES_DIR="../${RESOURCES_DIR_NAME}"
+    PROJECT_PLUGINS_DIR="../${PLUGINS_DIR_NAME}"
+)
 
 
-# [[Subdirectoris]]
+# [[Subdirectories]]
 eightgine_create_junction(ORIGINAL "${EIGHTGINE_ENGINE_SOURCES_DIR}" LINKNAME "${PROJECT_ENGINE_SOURCES_DIR}")
 add_subdirectory("${PROJECT_ENGINE_SOURCES_DIR}" "${CMAKE_BINARY_DIR}/${ENGINE_DIR_NAME}")
 

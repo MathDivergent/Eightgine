@@ -50,7 +50,7 @@ function(eightgine_file)
 endfunction()
 
 function(eightgine_add_module)
-    set(ONE_VALUE_ARGS MODULE_NAME MODULE_SOURCES_DIR)
+    set(ONE_VALUE_ARGS MODULE_NAME MODULE_SOURCES_DIR MODULE_TYPE)
     set(MULTI_VALUE_ARGS MODULE_INCLUDE_DIR MODULE_PRIVATE_DEFINITIONS MODULE_INTERFACE_DEFINITIONS)
     cmake_parse_arguments("ARG" "" "${ONE_VALUE_ARGS}" "${MULTI_VALUE_ARGS}" ${ARGN})
 
@@ -58,7 +58,10 @@ function(eightgine_add_module)
         MODULE_OR_EXECUTABLE_SOURCES_DIR "${ARG_MODULE_SOURCES_DIR}"
     )
 
-    add_library("${ARG_MODULE_NAME}" SHARED ${MODULE_SOURCE_FILES})
+    if(NOT ARG_MODULE_TYPE)
+        set(ARG_MODULE_TYPE SHARED)
+    endif()
+    add_library("${ARG_MODULE_NAME}" ${ARG_MODULE_TYPE} ${MODULE_SOURCE_FILES})
 
     if(ARG_MODULE_INCLUDE_DIR)
         target_include_directories("${ARG_MODULE_NAME}" PUBLIC ${ARG_MODULE_INCLUDE_DIR})
@@ -117,7 +120,7 @@ function(eightgine_add_executable)
     set_target_properties(${ARG_EXECUTABLE_NAME} PROPERTIES
         DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}"
         RELWITHDEBINFO_POSTFIX "${CMAKE_RELWITHDEBINFO_POSTFIX}"
-        WIN32_EXECUTABLE TRUE # TODO: Temp
+        #WIN32_EXECUTABLE TRUE # TODO: Temp
     )
 endfunction()
 

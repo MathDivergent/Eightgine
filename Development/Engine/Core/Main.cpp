@@ -14,19 +14,15 @@
 //     switch (fdwReason)
 //     {
 //     case DLL_PROCESS_ATTACH:
-//         // DLL загружается в процесс
 //         break;
 //     case DLL_THREAD_ATTACH:
-//         // Новый поток создаётся в процессе
 //         break;
 //     case DLL_THREAD_DETACH:
-//         // Поток завершает работу
 //         break;
 //     case DLL_PROCESS_DETACH:
-//         // DLL выгружается из процесса
 //         break;
 //     }
-//     return TRUE; // Успешная инициализация
+//     return TRUE;
 // }
 #include <vector>
 #include <string>
@@ -49,7 +45,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     R"(
     {
       "plugins": [
-            "EmptyProject-Debug"
+            "EmptyProject"
           ]
     }
     )");
@@ -82,6 +78,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
 
     TRY_CATCH(EXECUTE_ALL());
     TESTING_STAT();
+
     // Registry::handler(nullptr);
 
     // // TODO: example code

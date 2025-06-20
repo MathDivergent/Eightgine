@@ -28,7 +28,12 @@
 #include <string>
 
 #include <cJSON/cJSON.h>
+
+#if _WIN32
 #include <windows.h>
+#else
+#include <dlfcn.h>
+#endif
 
 namespace Eightgine
 {
@@ -45,7 +50,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     R"(
     {
       "plugins": [
-            "EmptyProject"
+            "Game"
           ]
     }
     )");
@@ -63,6 +68,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     }
     cJSON_Delete(json);
 
+    #if _WIN32
     for (auto const& library : libraries)
     {
         HMODULE hGameModule = LoadLibrary((library + ".dll").c_str());
@@ -75,7 +81,31 @@ int fMain(int iArgumentCount, char** pArgumentValues)
             if (init) init();
         }
     }
+    #else
+    for (const auto& library : libraries)
+    {
+        std::string fullName =/* "lib" +*/ library + ".so";
+        void* handle = dlopen(fullName.c_str(), RTLD_NOW);
+        if (!handle)
+        {
+            std::cerr << "Failed to load " << fullName << ": " << dlerror() << std::endl;
+            continue;
+        }
 
+        using InitFunc = void (*)();
+        dlerror();
+        InitFunc init = (InitFunc)dlsym(handle, "RegisterModule");
+        const char* dlsym_error = dlerror();
+        if (dlsym_error)
+        {
+            std::cerr << "Cannot load symbol 'RegisterModule' from " << fullName << ": " << dlsym_error << std::endl;
+            dlclose(handle);
+            continue;
+        }
+
+        if (init) init();
+    }
+    #endif
     TRY_CATCH(EXECUTE_ALL());
     TESTING_STAT();
 

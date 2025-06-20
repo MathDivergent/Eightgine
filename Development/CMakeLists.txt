@@ -1,3 +1,5 @@
+# TODO: add multi SOURCES_, BIN_, LIB_ dirs
+
 # [[Root]]
 cmake_minimum_required(VERSION 3.12)
 project(EmptyProject)
@@ -32,11 +34,13 @@ if(WITH_EDITOR)
     set(BINARIES_DIR_NAME "${BINARIES_DIR_NAME}WithEditor")
 endif()
 
+# TODO: complete
 if(NOT DEFINED ENV{Eightgine})
     message(FATAL_ERROR "Environment variable 'Eightgine' is not set")
 endif()
 set(EIGHTGINE_DIR "$ENV{Eightgine}")
 string(REPLACE "\\" "/" EIGHTGINE_DIR ${EIGHTGINE_DIR})
+# ~
 
 set(EIGHTGINE_DEVELOPMENT_DIR "${EIGHTGINE_DIR}/${DEVELOPMENT_DIR_NAME}")
 set(EIGHTGINE_ENGINE_DIR "${EIGHTGINE_DEVELOPMENT_DIR}/${ENGINE_DIR_NAME}")
@@ -94,7 +98,7 @@ eightgine_add_executable(EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}"
     EXECUTABLE_SOURCE_FILES "${PROJECT_JAUNCHER_CPP}" "${PROJECT_RESOURCES_DIR}/icon.rc"
 )
 eightgine_get_target(PROJECT_LAUNCHER_NAME)
-target_link_libraries("${DIRTY_PROJECT_LAUNCHER_NAME}" PUBLIC -static-libstdc++ -static-libgcc)
+target_link_libraries("${DIRTY_PROJECT_LAUNCHER_NAME}" PUBLIC -static-libstdc++ -static-libgcc) # TODO: fix
 
 # [[Dependencies]]
 #eightgine_install_libcxx_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}")

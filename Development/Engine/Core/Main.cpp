@@ -1,7 +1,7 @@
 //#include <SDL2/SDL.h>
 //#include <GLFW/glfw3.h>
 #include <Automation/Core.hpp>
-
+#include <SDL2/SDL.h>
 
 // TEST(Test, Test)
 // {
@@ -82,10 +82,10 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     // Registry::handler(nullptr);
 
     // // TODO: example code
-    // if (SDL_Init(SDL_INIT_VIDEO) != 0)
-    // {
-    //     return 1;
-    // }
+    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    {
+        return 1;
+    }
 
     // auto pWindow = SDL_CreateWindow("EightgineEditor", 100, 100, 640, 480, SDL_WINDOW_SHOWN | SDL_WINDOW_SKIP_TASKBAR);
     // if (pWindow == nullptr)
@@ -134,7 +134,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
 
     // SDL_DestroyRenderer(pRenderer);
     // SDL_DestroyWindow(pWindow);
-    // SDL_Quit();
+    SDL_Quit();
     // ~
     return 0;
 }

@@ -1,3 +1,12 @@
+# [[Defaults]]
+if(WIN32 OR LINUX)
+    set(EIGHTGINE_DEFAULT_MODULE_TYPE SHARED)
+else()
+    set(EIGHTGINE_DEFAULT_MODULE_TYPE STATIC)
+endif()
+
+
+# [[Functions]]
 function(eightgine_create_junction)
     set(ONE_VALUE_ARGS ORIGINAL LINKNAME)
     cmake_parse_arguments("ARG" "" "${ONE_VALUE_ARGS}" "" ${ARGN})
@@ -15,7 +24,11 @@ function(eightgine_create_junction)
         return()
     endif()
 
-    if(NOT EXISTS "${LINKNAME_NATIVE}")
+    if(EXISTS "${LINKNAME_NATIVE}")
+        return()
+    endif()
+
+    if(WIN32)
         execute_process(
             COMMAND cmd /c mklink /J "${LINKNAME_NATIVE}" "${ORIGINAL_NATIVE}" # TODO: Check
             RESULT_VARIABLE RESULT
@@ -50,46 +63,67 @@ function(eightgine_file)
 endfunction()
 
 function(eightgine_add_module)
-    set(ONE_VALUE_ARGS MODULE_NAME MODULE_SOURCES_DIR MODULE_TYPE)
-    set(MULTI_VALUE_ARGS MODULE_INCLUDE_DIR MODULE_PRIVATE_DEFINITIONS MODULE_INTERFACE_DEFINITIONS)
+    set(ONE_VALUE_ARGS MODULE_NAME MODULE_SOURCES_DIR MODULE_LIB_DIR MODULE_BIN_DIR MODULE_TYPE)
+    set(MULTI_VALUE_ARGS MODULE_INCLUDE_DIR MODULE_DEFINITIONS)
     cmake_parse_arguments("ARG" "" "${ONE_VALUE_ARGS}" "${MULTI_VALUE_ARGS}" ${ARGN})
 
-    eightgine_file(MODULE_OR_EXECUTABLE_SOURCE_FILES MODULE_SOURCE_FILES
-        MODULE_OR_EXECUTABLE_SOURCES_DIR "${ARG_MODULE_SOURCES_DIR}"
-    )
-
     if(NOT ARG_MODULE_TYPE)
-        set(ARG_MODULE_TYPE SHARED)
+        set(ARG_MODULE_TYPE ${EIGHTGINE_DEFAULT_MODULE_TYPE})
     endif()
+
+    if("${ARG_MODULE_TYPE}" STREQUAL "INTERFACE")
+        set(MODULE_SPECIFIER INTERFACE)
+    else()
+        set(MODULE_SPECIFIER PUBLIC)
+    endif()
+
+    if(ARG_MODULE_SOURCES_DIR)
+        eightgine_file(MODULE_OR_EXECUTABLE_SOURCE_FILES MODULE_SOURCE_FILES
+            MODULE_OR_EXECUTABLE_SOURCES_DIR "${ARG_MODULE_SOURCES_DIR}"
+        )
+    endif()
+
     add_library("${ARG_MODULE_NAME}" ${ARG_MODULE_TYPE} ${MODULE_SOURCE_FILES})
 
     if(ARG_MODULE_INCLUDE_DIR)
-        target_include_directories("${ARG_MODULE_NAME}" PUBLIC ${ARG_MODULE_INCLUDE_DIR})
+        target_include_directories("${ARG_MODULE_NAME}" ${MODULE_SPECIFIER} ${ARG_MODULE_INCLUDE_DIR})
+    endif()
+
+    if(ARG_MODULE_LIB_DIR)
+        target_link_directories("${ARG_MODULE_NAME}" ${MODULE_SPECIFIER} "${ARG_MODULE_LIB_DIR}")
+    endif()
+
+    if(ARG_MODULE_BIN_DIR)
+        # TODO: impl
+    endif()
+
+    if("${ARG_MODULE_TYPE}" STREQUAL "INTERFACE")
+        # target_link_libraries("${ARG_MODULE_NAME}" INTERFACE "${ARG_MODULE_NAME}") # TODO: fix, replace ALL above to IMPORTED for INTERFACE
     endif()
 
     if(WIN32)
         set(SHARED_EXPORT "__declspec(dllexport)")
         set(SHARED_IMPORT "__declspec(dllimport)")
-    else()
+    elseif(LINUX)
         set(SHARED_EXPORT "__attribute__((visibility(\"default\")))")
         set(SHARED_IMPORT "")
     endif()
 
     string(TOUPPER "${ARG_MODULE_NAME}" MODULE_NAME_UPPER)
-    list(APPEND MODULE_PRIVATE_DEFINITIONS "${MODULE_NAME_UPPER}_API=${SHARED_EXPORT}")
-    list(APPEND MODULE_INTERFACE_DEFINITIONS "${MODULE_NAME_UPPER}_API=${SHARED_IMPORT}")
+    set(MODULE_NAME_API "${MODULE_NAME_UPPER}_API")
 
-    if(ARG_MODULE_PRIVATE_DEFINITIONS)
-        list(APPEND MODULE_PRIVATE_DEFINITIONS ${ARG_MODULE_PRIVATE_DEFINITIONS})
+    if("${ARG_MODULE_TYPE}" STREQUAL "INTERFACE")
+        set(MODULE_DEFAULT_DEFINITIONS INTERFACE "${MODULE_NAME_API}=${SHARED_IMPORT}")
+    elseif("${ARG_MODULE_TYPE}" STREQUAL "SHARED")
+        set(MODULE_DEFAULT_DEFINITIONS PRIVATE "${MODULE_NAME_API}=${SHARED_EXPORT}" INTERFACE "${MODULE_NAME_API}=${SHARED_IMPORT}")
+    else()
+        set(MODULE_DEFAULT_DEFINITIONS PUBLIC "${MODULE_NAME_API}")
     endif()
 
-    if(ARG_MODULE_INTERFACE_DEFINITIONS)
-        list(APPEND MODULE_INTERFACE_DEFINITIONS ${ARG_MODULE_INTERFACE_DEFINITIONS})
+    target_compile_definitions("${ARG_MODULE_NAME}" ${MODULE_DEFAULT_DEFINITIONS})
+    if(ARG_MODULE_DEFINITIONS)
+        target_compile_definitions("${ARG_MODULE_NAME}" ${ARG_MODULE_DEFINITIONS})
     endif()
-
-    target_compile_definitions("${ARG_MODULE_NAME}"
-        PRIVATE ${MODULE_PRIVATE_DEFINITIONS} INTERFACE ${MODULE_INTERFACE_DEFINITIONS}
-    )
 endfunction()
 
 function(eightgine_add_executable)
@@ -122,6 +156,14 @@ function(eightgine_add_executable)
         RELWITHDEBINFO_POSTFIX "${CMAKE_RELWITHDEBINFO_POSTFIX}"
         #WIN32_EXECUTABLE TRUE # TODO: Temp
     )
+endfunction()
+
+function(eightgine_add_thirdparty)
+    set(ONE_VALUE_ARGS THIRDPARTY_NAME THIRDPARTY_DIR)
+    cmake_parse_arguments("ARG" "" "${ONE_VALUE_ARGS}" "" ${ARGN})
+
+    get_filename_component(THIRDPARTY_DIR_NAME "${ARG_THIRDPARTY_DIR}" NAME)
+    add_subdirectory("${ARG_THIRDPARTY_DIR}/${ARG_THIRDPARTY_NAME}" "${CMAKE_BINARY_DIR}/${THIRDPARTY_DIR_NAME}/${ARG_THIRDPARTY_NAME}")
 endfunction()
 
 function(eightgine_install_dependency)
@@ -168,7 +210,7 @@ endfunction()
 
 function(eightgine_link_dependency)
     set(ONE_VALUE_ARGS MODULE_OR_EXECUTABLE_NAME DEPENDENCY_NAME DEPENDENCY_LIB_DIR DEPENDENCY_BIN_DIR)
-    set(MULTI_VALUE_ARGS DEPENDENCY_INCLUDE_DIR DEPENDENCY_PRIVATE_DEFINITIONS DEPENDENCY_INTERFACE_DEFINITIONS)
+    set(MULTI_VALUE_ARGS DEPENDENCY_INCLUDE_DIR DEPENDENCY_DEFINITIONS)
     cmake_parse_arguments("ARG" "" "${ONE_VALUE_ARGS}" "${MULTI_VALUE_ARGS}" ${ARGN})
 
     if(ARG_DEPENDENCY_INCLUDE_DIR)
@@ -187,12 +229,5 @@ function(eightgine_link_dependency)
     endif()
 
     target_link_libraries("${ARG_MODULE_OR_EXECUTABLE_NAME}" PUBLIC "${ARG_DEPENDENCY_NAME}")
-
-    if(ARG_DEPENDENCY_PRIVATE_DEFINITIONS)
-        target_compile_definitions("${ARG_MODULE_OR_EXECUTABLE_NAME}" PRIVATE ${ARG_DEPENDENCY_PRIVATE_DEFINITIONS})
-    endif()
-
-    if(ARG_DEPENDENCY_INTERFACE_DEFINITIONS)
-        target_compile_definitions("${ARG_MODULE_OR_EXECUTABLE_NAME}" INTERFACE ${ARG_DEPENDENCY_INTERFACE_DEFINITIONS})
-    endif()
+    target_compile_definitions("${ARG_MODULE_OR_EXECUTABLE_NAME}" PRIVATE ${ARG_DEPENDENCY_DEFINITIONS})
 endfunction()

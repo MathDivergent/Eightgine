@@ -76,9 +76,9 @@ add_compile_definitions(
 
 
 # [[Subdirectories]]
-eightgine_create_junction(ORIGINAL "${EIGHTGINE_ENGINE_DIR}" LINKNAME "${PROJECT_ENGINE_DIR}")
-add_subdirectory("${PROJECT_ENGINE_DIR}" "${CMAKE_BINARY_DIR}/${ENGINE_DIR_NAME}")
+eightgine_add_symlink(ORIGINAL "${EIGHTGINE_ENGINE_DIR}" LINKNAME "${PROJECT_ENGINE_DIR}")
 
+add_subdirectory("${PROJECT_ENGINE_DIR}" "${CMAKE_BINARY_DIR}/${ENGINE_DIR_NAME}")
 add_subdirectory("${PROJECT_GAME_SOURCES_DIR}")
 
 
@@ -89,10 +89,11 @@ file(WRITE "${PROJECT_JAUNCHER_CPP}" "#include <Main.h>")
 eightgine_add_executable(EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}"
     EXECUTABLE_SOURCE_FILES "${PROJECT_JAUNCHER_CPP}" "${PROJECT_RESOURCES_DIR}/icon.rc"
 )
-
+eightgine_get_target(PROJECT_LAUNCHER_NAME)
+target_link_libraries("${DIRTY_PROJECT_LAUNCHER_NAME}" PUBLIC -static-libstdc++ -static-libgcc)
 
 # [[Dependencies]]
-eightgine_install_libcxx_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}")
+#eightgine_install_libcxx_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}")
 
 eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}"
     DEPENDENCY_NAME "EightgineCore"

@@ -13,7 +13,7 @@ set(CMAKE_RELWITHDEBINFO_POSTFIX "-RelWithDebInfo")
 
 
 # [[Options]]
-option(WITH_EDITOR "Build with the Eightgine Editor" ON)
+option(EIGHTGINE_WITH_EDITOR "Build with the Eightgine Editor" ON)
 
 
 # [[Includes]]
@@ -30,17 +30,16 @@ set(THIRD_PARTY_DIR_NAME "ThirdParty")
 set(PROJECT_LAUNCHER_NAME "Launcher")
 
 set(BINARIES_DIR_NAME "Binaries")
-if(WITH_EDITOR)
+if(EIGHTGINE_WITH_EDITOR)
     set(BINARIES_DIR_NAME "${BINARIES_DIR_NAME}WithEditor")
 endif()
 
-# TODO: complete
-if(NOT DEFINED ENV{Eightgine})
+if(DEFINED ENV{Eightgine})
+    set(EIGHTGINE_DIR "$ENV{Eightgine}")
+    string(REPLACE "\\" "/" EIGHTGINE_DIR ${EIGHTGINE_DIR})
+else()
     message(FATAL_ERROR "Environment variable 'Eightgine' is not set")
 endif()
-set(EIGHTGINE_DIR "$ENV{Eightgine}")
-string(REPLACE "\\" "/" EIGHTGINE_DIR ${EIGHTGINE_DIR})
-# ~
 
 set(EIGHTGINE_DEVELOPMENT_DIR "${EIGHTGINE_DIR}/${DEVELOPMENT_DIR_NAME}")
 set(EIGHTGINE_ENGINE_DIR "${EIGHTGINE_DEVELOPMENT_DIR}/${ENGINE_DIR_NAME}")
@@ -65,21 +64,15 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE "${PROJECT_BINARIES_DIR}")
 
 
 # [[Definitions]]
-if(WIN32)
-    add_compile_definitions(EIGHTGINE_PLATFORM_WINDOWS)
-elseif(UNIX)
-    add_compile_definitions(EIGHTGINE_LINUX_PLATFORM)
+if(EIGHTGINE_WITH_EDITOR)
+    add_compile_definitions("EIGHTGINE_WITH_EDITOR=1")
 else()
-    message(FATAL_ERROR "Unsupported platform")
-endif()
-
-if(WITH_EDITOR)
-    add_compile_definitions(WITH_EDITOR)
+    add_compile_definitions("EIGHTGINE_WITH_EDITOR=0")
 endif()
 
 add_compile_definitions(
-    PROJECT_RESOURCES_DIR="../${RESOURCES_DIR_NAME}"
-    PROJECT_PLUGINS_DIR="../${PLUGINS_DIR_NAME}"
+    "EIGHTGINE_PROJECT_RESOURCES_DIR=\"../${RESOURCES_DIR_NAME}\""
+    "EIGHTGINE_PROJECT_PLUGINS_DIR=\"../${PLUGINS_DIR_NAME}\""
 )
 
 
@@ -97,7 +90,7 @@ file(WRITE "${PROJECT_JAUNCHER_CPP}" "#include <Main.h>")
 eightgine_add_executable(EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}"
     EXECUTABLE_SOURCE_FILES "${PROJECT_JAUNCHER_CPP}" "${PROJECT_RESOURCES_DIR}/icon.rc"
 )
-eightgine_get_target(PROJECT_LAUNCHER_NAME)
+
 
 # [[Dependencies]]
 eightgine_install_libcxx_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}")

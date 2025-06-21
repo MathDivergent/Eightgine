@@ -1,19 +1,27 @@
 # [[Defaults]]
-if(WIN32 OR LINUX)
-    set(EIGHTGINE_DEFAULT_MODULE_TYPE SHARED)
-else()
-    set(EIGHTGINE_DEFAULT_MODULE_TYPE STATIC)
-endif()
+set(EIGHTGINE_DEFAULT_MODULE_TYPE SHARED)
+set(EIGHTGINE_DIRTY_NAME_PREFIX "8")
 
 if(WIN32)
+    add_compile_definitions("EIGHTGINE_PLATFORM_WINDOWS=1")
     set(EIGHTGINE_BIN_TYPE "dll")
-elseif(APPLE)
-    set(EIGHTGINE_BIN_TYPE "dylib") # or .framework
 else()
-    set(EIGHTGINE_BIN_TYPE "so")
+    add_compile_definitions("EIGHTGINE_PLATFORM_WINDOWS=0")
 endif()
 
-set(EIGHTGINE_DIRTY_NAME_PREFIX "8")
+if(LINUX)
+    add_compile_definitions("EIGHTGINE_PLATFORM_LINUX=1")
+    set(EIGHTGINE_BIN_TYPE "so")
+else()
+    add_compile_definitions("EIGHTGINE_PLATFORM_LINUX=0")
+endif()
+
+if(APPLE)
+    add_compile_definitions("EIGHTGINE_PLATFORM_MACOS=1")
+    set(EIGHTGINE_BIN_TYPE "dylib")
+else()
+    add_compile_definitions("EIGHTGINE_PLATFORM_MACOS=0")
+endif()
 
 
 # [[Macros]]

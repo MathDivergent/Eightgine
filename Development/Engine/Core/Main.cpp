@@ -29,9 +29,11 @@
 
 #include <cJSON/cJSON.h>
 
-#if _WIN32
+#if EIGHTGINE_PLATFORM_WINDOWS
 #include <windows.h>
-#else
+#endif
+
+#if EIGHTGINE_PLATFORM_LINUX
 #include <dlfcn.h>
 #include <iostream>
 #endif
@@ -69,7 +71,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     }
     cJSON_Delete(json);
 
-    #if _WIN32
+    #if EIGHTGINE_PLATFORM_WINDOWS
     for (auto const& library : libraries)
     {
         HMODULE hGameModule = LoadLibrary((library + ".dll").c_str());
@@ -82,7 +84,8 @@ int fMain(int iArgumentCount, char** pArgumentValues)
             if (init) init();
         }
     }
-    #else
+    #endif
+    #if EIGHTGINE_PLATFORM_LINUX
     for (const auto& library : libraries)
     {
         std::string fullName =/* "lib" +*/ library + ".so";

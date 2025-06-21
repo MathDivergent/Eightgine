@@ -98,10 +98,9 @@ eightgine_add_executable(EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}"
     EXECUTABLE_SOURCE_FILES "${PROJECT_JAUNCHER_CPP}" "${PROJECT_RESOURCES_DIR}/icon.rc"
 )
 eightgine_get_target(PROJECT_LAUNCHER_NAME)
-target_link_libraries("${DIRTY_PROJECT_LAUNCHER_NAME}" PUBLIC -static-libstdc++ -static-libgcc) # TODO: fix
 
 # [[Dependencies]]
-#eightgine_install_libcxx_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}")
+eightgine_install_libcxx_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}")
 
 eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}"
     DEPENDENCY_NAME "EightgineCore"

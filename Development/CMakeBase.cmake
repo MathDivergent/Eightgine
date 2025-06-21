@@ -121,7 +121,7 @@ endfunction()
 
 function(eightgine_add_module)
     set(ONE_VALUE_ARGS MODULE_NAME MODULE_SOURCES_DIR MODULE_LIB_DIR MODULE_BIN_DIR MODULE_TYPE)
-    set(MULTI_VALUE_ARGS MODULE_INCLUDE_DIR MODULE_DEFINITIONS)
+    set(MULTI_VALUE_ARGS MODULE_INCLUDE_DIR MODULE_DEFINITIONS MODULE_PROPERTIES)
     cmake_parse_arguments("ARG" "" "${ONE_VALUE_ARGS}" "${MULTI_VALUE_ARGS}" ${ARGN})
 
     eightgine_set_target(ARG_MODULE_NAME)
@@ -193,6 +193,10 @@ function(eightgine_add_module)
     if(ARG_MODULE_DEFINITIONS)
         target_compile_definitions("${DIRTY_ARG_MODULE_NAME}" ${ARG_MODULE_DEFINITIONS})
     endif()
+
+    if(ARG_MODULE_PROPERTIES)
+        set_target_properties("${DIRTY_ARG_MODULE_NAME}" PROPERTIES ${ARG_MODULE_PROPERTIES})
+    endif()
 endfunction()
 
 function(eightgine_add_executable)
@@ -238,7 +242,11 @@ function(eightgine_add_thirdparty)
     cmake_parse_arguments("ARG" "" "${ONE_VALUE_ARGS}" "" ${ARGN})
 
     get_filename_component(THIRDPARTY_DIR_NAME "${ARG_THIRDPARTY_DIR}" NAME)
-    add_subdirectory("${ARG_THIRDPARTY_DIR}/${ARG_THIRDPARTY_NAME}" "${CMAKE_BINARY_DIR}/${THIRDPARTY_DIR_NAME}/${ARG_THIRDPARTY_NAME}")
+
+    add_subdirectory("${ARG_THIRDPARTY_DIR}/${ARG_THIRDPARTY_NAME}"
+        "${CMAKE_BINARY_DIR}/${THIRDPARTY_DIR_NAME}/${ARG_THIRDPARTY_NAME}"
+        EXCLUDE_FROM_ALL
+    )
 endfunction()
 
 function(eightgine_link_dependency)

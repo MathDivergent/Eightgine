@@ -1,8 +1,9 @@
 //#include <SDL2/SDL.h>
 //#include <GLFW/glfw3.h>
 #include <Automation/Core.hpp>
+#ifdef WITH_SDL2
 #include <SDL2/SDL.h>
-
+#endif
 // TEST(Test, Test)
 // {
 //     auto ex = EXPR(2)==2;
@@ -46,6 +47,18 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     // CJSON_IMPORT_SYMBOLS;
     // CJSON_EXPORT_SYMBOLS;
 
+#if EIGHTGINE_PLATFORM_WINDOWS
+    AllocConsole();
+
+    FILE* fp;
+    freopen_s(&fp, "CONOUT$", "w", stdout);
+    freopen_s(&fp, "CONOUT$", "w", stderr);
+    freopen_s(&fp, "CONIN$", "r", stdin);
+
+    std::ios::sync_with_stdio();
+    // FreeConsole(); // to close console
+#endif
+
     std::vector<std::string> libraries;
     libraries.reserve(8);
 
@@ -53,7 +66,10 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     R"(
     {
       "plugins": [
-            "Game"
+            "Game",
+            "EmptyProject",
+            "Game-Debug",
+            "EmptyProject-Debug"
           ]
     }
     )");
@@ -114,7 +130,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     TESTING_STAT();
 
     // Registry::handler(nullptr);
-
+    #ifdef WITH_SDL2
     // // TODO: example code
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -170,6 +186,13 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     SDL_DestroyWindow(pWindow);
     SDL_Quit();
     // ~
+    #endif
+    scanf("%*[^\n]");
+    getchar();
+
+#if EIGHTGINE_PLATFORM_WINDOWS
+    FreeConsole();
+#endif
     return 0;
 }
 

@@ -2,7 +2,7 @@
 
 #include <Automation/Core.hpp>
 
-extern "C" void RegisterModule()
+extern "C" EMPTYPROJECT_API void RegisterModule()
 {
     printf("%s\n", "Hello, DLL!");
 }

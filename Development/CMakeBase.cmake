@@ -23,26 +23,42 @@ else()
     add_compile_definitions("EIGHTGINE_PLATFORM_MACOS=0")
 endif()
 
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_definitions("EIGHTGINE_DEBUG=1")
+else()
+    add_compile_definitions("EIGHTGINE_DEBUG=0")
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    add_compile_definitions(""EIGHTGINE_RELWITHDEBINFO=1")
+else()
+    add_compile_definitions(""EIGHTGINE_RELWITHDEBINFO=0")
+endif()
+
 
 # [[Macros]]
-macro(eightgine_set_module_or_executable MODULE_OR_EXECUTABLE_NAME) # TODO: rewrite as function
+macro(eightgine_set_module_or_executable MODULE_OR_EXECUTABLE_NAME)
     set(DIRTY_${MODULE_OR_EXECUTABLE_NAME} "${EIGHTGINE_DIRTY_MODULE_OR_EXECUTABLE_NAME_PREFIX}${${MODULE_OR_EXECUTABLE_NAME}}")
 endmacro()
 
-macro(eightgine_get_module_or_executable MODULE_OR_EXECUTABLE_NAME) # TODO: rewrite as function
+macro(eightgine_get_module_or_executable MODULE_OR_EXECUTABLE_NAME)
     eightgine_set_module_or_executable(${MODULE_OR_EXECUTABLE_NAME})
+
     if(NOT TARGET "${DIRTY_${MODULE_OR_EXECUTABLE_NAME}}")
         set(DIRTY_${MODULE_OR_EXECUTABLE_NAME} "${${MODULE_OR_EXECUTABLE_NAME}}")
     endif()
 endmacro()
 
-macro(eightgine_get_module_or_executable_access MODULE_OR_EXECUTABLE_NAME) # TODO: rewrite as function
+macro(eightgine_get_module_or_executable_access MODULE_OR_EXECUTABLE_NAME)
     eightgine_get_module_or_executable(${MODULE_OR_EXECUTABLE_NAME})
+
     get_target_property(MODULE_OR_EXECUTABLE_TYPE "${DIRTY_${MODULE_OR_EXECUTABLE_NAME}}" TYPE)
-    if(MODULE_OR_EXECUTABLE_TYPE STREQUAL "LIBRARY_INTERFACE")
-        set(${MODULE_OR_EXECUTABLE_NAME}_ACCESS "INTERFACE")
+    if(MODULE_OR_EXECUTABLE_TYPE STREQUAL "INTERFACE_LIBRARY")
+        set(${MODULE_OR_EXECUTABLE_NAME}_EXTERNAL "INTERFACE")
+        set(${MODULE_OR_EXECUTABLE_NAME}_INTERNAL "INTERFACE")
     else()
-        set(${MODULE_OR_EXECUTABLE_NAME}_ACCESS "PUBLIC")
+        set(${MODULE_OR_EXECUTABLE_NAME}_EXTERNAL "PUBLIC")
+        set(${MODULE_OR_EXECUTABLE_NAME}_INTERNAL "PRIVATE")
     endif()
 endmacro()
 
@@ -128,15 +144,20 @@ endfunction()
 
 function(eightgine_file)
     set(ONE_VALUE_ARGS
-        MODULE_OR_EXECUTABLE_SOURCES_DIR
+        MODULE_OR_EXECUTABLE_SOURCES_DIR MODULE_OR_EXECUTABLE_SOURCES_TYPES
         MODULE_OR_EXECUTABLE_SOURCES_FILES
     )
     cmake_parse_arguments("ARG" "" "${ONE_VALUE_ARGS}" "" ${ARGN})
 
-    file(GLOB_RECURSE SOURCES_FILES
-        "${ARG_MODULE_OR_EXECUTABLE_SOURCES_DIR}/*.cpp" "${ARG_MODULE_OR_EXECUTABLE_SOURCES_DIR}/*.hpp"
-        "${ARG_MODULE_OR_EXECUTABLE_SOURCES_DIR}/*.c" "${ARG_MODULE_OR_EXECUTABLE_SOURCES_DIR}/*.h"
-    )
+    if(NOT ARG_MODULE_OR_EXECUTABLE_SOURCES_TYPES)
+        set(ARG_MODULE_OR_EXECUTABLE_SOURCES_TYPES "cpp" "hpp" "c" "h")
+    endif()
+
+    foreach(SOURCE_TYPE IN LISTS ARG_MODULE_OR_EXECUTABLE_SOURCES_TYPES)
+        list(APPEND SOURCES_EXPRESSIONS "${ARG_MODULE_OR_EXECUTABLE_SOURCES_DIR}/*.${SOURCE_TYPE}")
+    endforeach()
+
+    file(GLOB_RECURSE SOURCES_FILES ${SOURCES_EXPRESSIONS})
     set(${ARG_MODULE_OR_EXECUTABLE_SOURCES_FILES} ${SOURCES_FILES} PARENT_SCOPE)
 
     foreach(SOURCE_FILE IN LISTS SOURCES_FILES)
@@ -166,13 +187,13 @@ function(eightgine_configure_module_or_executable)
     eightgine_get_module_or_executable_access(ARG_MODULE_OR_EXECUTABLE_NAME)
 
     if(ARG_MODULE_OR_EXECUTABLE_INCLUDE_DIR)
-        target_include_directories("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_NAME_ACCESS} ${ARG_MODULE_OR_EXECUTABLE_INCLUDE_DIR})
+        target_include_directories("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_NAME_EXTERNAL} ${ARG_MODULE_OR_EXECUTABLE_INCLUDE_DIR})
     endif()
 
     if(ARG_MODULE_OR_EXECUTABLE_SOURCES_DIR)
         foreach(SOURCES_DIR IN LISTS ARG_MODULE_OR_EXECUTABLE_SOURCES_DIR)
             eightgine_file(MODULE_OR_EXECUTABLE_SOURCES_FILES SOURCES_FILES MODULE_OR_EXECUTABLE_SOURCES_DIR ${SOURCES_DIR})
-            target_sources("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_NAME_ACCESS} ${SOURCES_FILES})
+            target_sources("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_NAME_INTERNAL} ${SOURCES_FILES})
         endforeach()
     endif()
 
@@ -185,11 +206,11 @@ function(eightgine_configure_module_or_executable)
             endif()
         endforeach()
 
-        target_sources("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_NAME_ACCESS} ${SOURCES_FILES})
+        target_sources("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_NAME_INTERNAL} ${SOURCES_FILES})
     endif()
 
     if(ARG_MODULE_OR_EXECUTABLE_LIB_DIR)
-        target_link_directories("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_NAME_ACCESS} "${ARG_MODULE_OR_EXECUTABLE_LIB_DIR}")
+        target_link_directories("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_NAME_EXTERNAL} "${ARG_MODULE_OR_EXECUTABLE_LIB_DIR}")
     endif()
 
     if(ARG_MODULE_OR_EXECUTABLE_BIN_DIR)
@@ -223,7 +244,7 @@ function(eightgine_add_module)
         set(ARG_MODULE_TYPE ${EIGHTGINE_DEFAULT_MODULE_TYPE})
     endif()
 
-    eightgine_get_module_or_executable(ARG_MODULE_NAME)
+    eightgine_set_module_or_executable(ARG_MODULE_NAME)
 
     add_library("${DIRTY_ARG_MODULE_NAME}" ${ARG_MODULE_TYPE})
 
@@ -240,7 +261,6 @@ function(eightgine_add_module)
 
     if(ARG_MODULE_TYPE STREQUAL "INTERFACE")
         set(MODULE_DEFAULT_DEFINITIONS INTERFACE "${MODULE_NAME_API}=${MODULE_IMPORT}")
-        target_link_libraries("${DIRTY_ARG_MODULE_NAME}" INTERFACE "${ARG_MODULE_NAME}")
     elseif(ARG_MODULE_TYPE STREQUAL "SHARED")
         set(MODULE_DEFAULT_DEFINITIONS PRIVATE "${MODULE_NAME_API}=${MODULE_EXPORT}" INTERFACE "${MODULE_NAME_API}=${MODULE_IMPORT}")
     elseif(ARG_MODULE_TYPE STREQUAL "STATIC")
@@ -325,7 +345,11 @@ function(eightgine_link_dependency)
     eightgine_get_module_or_executable_access(ARG_MODULE_OR_EXECUTABLE_NAME)
     eightgine_get_module_or_executable(ARG_DEPENDENCY_NAME)
 
-    target_link_libraries("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_NAME_ACCESS} "${DIRTY_ARG_DEPENDENCY_NAME}")
+    if(DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME STREQUAL DIRTY_ARG_DEPENDENCY_NAME)
+        set(DIRTY_ARG_DEPENDENCY_NAME "${ARG_DEPENDENCY_NAME}")
+    endif()
+
+    target_link_libraries("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_NAME_EXTERNAL} "${DIRTY_ARG_DEPENDENCY_NAME}")
 
     if(NOT ARG_DEPENDENCY_BIN_DIR AND TARGET "${DIRTY_ARG_DEPENDENCY_NAME}")
         get_target_property(ARG_DEPENDENCY_BIN_DIR "${DIRTY_ARG_DEPENDENCY_NAME}" MODULE_OR_EXECUTABLE_BIN_DIR)

@@ -1,8 +1,9 @@
 //#include <SDL2/SDL.h>
 //#include <GLFW/glfw3.h>
 #include <Automation/Core.hpp>
+#define WITH_SDL2
 #ifdef WITH_SDL2
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #endif
 // TEST(Test, Test)
 // {
@@ -28,7 +29,10 @@
 #include <vector>
 #include <string>
 
-#include <cJSON/cJSON.h>
+#define WITH_CJSON
+#ifdef WITH_CJSON
+#include <cJSON.h>
+#endif
 
 #if EIGHTGINE_PLATFORM_WINDOWS
 #include <windows.h>
@@ -61,18 +65,29 @@ int fMain(int iArgumentCount, char** pArgumentValues)
 
     std::vector<std::string> libraries;
     libraries.reserve(8);
-
+#ifdef WITH_CJSON
+#if EIGHTGINE_DEBUG
+    auto json = cJSON_Parse(
+    R"(
+    {
+      "plugins": [
+            "Game-Debug",
+            "EmptyProject-Debug"
+          ]
+    }
+    )");
+#else
     auto json = cJSON_Parse(
     R"(
     {
       "plugins": [
             "Game",
             "EmptyProject",
-            "Game-Debug",
-            "EmptyProject-Debug"
           ]
     }
     )");
+#endif
+
     auto plugins = cJSON_GetObjectItem(json, "plugins");
     if (cJSON_IsArray(plugins))
     {
@@ -128,7 +143,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     #endif
     TRY_CATCH(EXECUTE_ALL());
     TESTING_STAT();
-
+#endif
     // Registry::handler(nullptr);
     #ifdef WITH_SDL2
     // // TODO: example code

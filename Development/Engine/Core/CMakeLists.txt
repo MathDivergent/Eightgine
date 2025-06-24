@@ -5,27 +5,19 @@ eightgine_add_module(MODULE_NAME "EightgineCore"
 )
 
 eightgine_add_thirdparty(THIRDPARTY_NAME "cJSON" THIRDPARTY_DIR "${EIGHTGINE_THIRDPARTY_DIR}")
-#eightgine_add_thirdparty(THIRDPARTY_NAME "SDL2" THIRDPARTY_DIR "${EIGHTGINE_THIRDPARTY_DIR}")
+eightgine_add_thirdparty(THIRDPARTY_NAME "SDL2" THIRDPARTY_DIR "${EIGHTGINE_THIRDPARTY_DIR}")
+eightgine_add_thirdparty(THIRDPARTY_NAME "SDL2_image" THIRDPARTY_DIR "${EIGHTGINE_THIRDPARTY_DIR}")
+#eightgine_add_thirdparty(THIRDPARTY_NAME "SDL2_mixer" THIRDPARTY_DIR "${EIGHTGINE_THIRDPARTY_DIR}")
+eightgine_add_thirdparty(THIRDPARTY_NAME "SDL2_ttf" THIRDPARTY_DIR "${EIGHTGINE_THIRDPARTY_DIR}")
+eightgine_add_thirdparty(THIRDPARTY_NAME "SDL2_net" THIRDPARTY_DIR "${EIGHTGINE_THIRDPARTY_DIR}")
 eightgine_add_thirdparty(THIRDPARTY_NAME "Automation" THIRDPARTY_DIR "${EIGHTGINE_THIRDPARTY_DIR}")
 
 
 # [[Dependencies]]
 eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineCore" DEPENDENCY_NAME "cJSON")
-#eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineCore" DEPENDENCY_NAME "SDL2")
-
-# eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineCore"
-#     DEPENDENCY_NAME "SDL2_image"
-#     DEPENDENCY_INCLUDE_DIR "${EIGHTGINE_THIRDPARTY_DIR}/SDL2_image/include" "${EIGHTGINE_THIRDPARTY_DIR}/SDL2_image/include/SDL2"
-#     DEPENDENCY_LIB_DIR "${EIGHTGINE_THIRDPARTY_DIR}/SDL2_image/lib"
-#     DEPENDENCY_BIN_DIR "${EIGHTGINE_THIRDPARTY_DIR}/SDL2_image/bin"
-# )
-
-# eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineCore"
-#     DEPENDENCY_NAME "glfw3"
-#     DEPENDENCY_INCLUDE_DIR "${EIGHTGINE_THIRDPARTY_DIR}/GLFW/include"
-#     DEPENDENCY_LIB_DIR "${EIGHTGINE_THIRDPARTY_DIR}/GLFW/lib"
-#     DEPENDENCY_BIN_DIR "${EIGHTGINE_THIRDPARTY_DIR}/GLFW/bin"
-# )
-
-
+eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineCore" DEPENDENCY_NAME "SDL2")
+eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineCore" DEPENDENCY_NAME "SDL2_image")
+#eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineCore" DEPENDENCY_NAME "SDL2_mixer")
+eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineCore" DEPENDENCY_NAME "SDL2_ttf")
+eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineCore" DEPENDENCY_NAME "SDL2_net")
 eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineCore" DEPENDENCY_NAME "Automation")

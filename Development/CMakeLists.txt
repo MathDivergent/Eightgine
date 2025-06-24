@@ -6,6 +6,7 @@ project(EmptyProject)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_C_STANDARD 11)
 
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 set(CMAKE_DEBUG_POSTFIX "-Debug")
@@ -14,6 +15,7 @@ set(CMAKE_RELWITHDEBINFO_POSTFIX "-RelWithDebInfo")
 
 # [[Options]]
 option(EIGHTGINE_WITH_EDITOR "Build with the Eightgine Editor" ON)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build static when not specified" FORCE)
 
 
 # [[Includes]]
@@ -94,8 +96,4 @@ eightgine_add_executable(EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}"
 
 # [[Dependencies]]
 eightgine_install_libcxx_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}")
-
-eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}"
-    DEPENDENCY_NAME "EightgineCore"
-    DEPENDENCY_INCLUDE_DIR "${EIGHTGINE_ENGINE_DIR}/Core"
-)
+eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}" DEPENDENCY_NAME "EightgineCore")

@@ -30,9 +30,9 @@ else()
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-    add_compile_definitions(""EIGHTGINE_RELWITHDEBINFO=1")
+    add_compile_definitions("EIGHTGINE_RELWITHDEBINFO=1")
 else()
-    add_compile_definitions(""EIGHTGINE_RELWITHDEBINFO=0")
+    add_compile_definitions("EIGHTGINE_RELWITHDEBINFO=0")
 endif()
 
 

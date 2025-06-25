@@ -1,5 +1,5 @@
 # [[Subdirectories]]
-add_subdirectory(SDL2_net EXCLUDE_FROM_ALL)
+add_subdirectory("SDL2_net" EXCLUDE_FROM_ALL)
 
 
 # [[Binaries]]

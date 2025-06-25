@@ -2,38 +2,45 @@
 set(EIGHTGINE_DEFAULT_MODULE_TYPE SHARED)
 set(EIGHTGINE_DIRTY_MODULE_OR_EXECUTABLE_NAME_PREFIX "8")
 
-if(WIN32)
-    add_compile_definitions("EIGHTGINE_PLATFORM_WINDOWS=1")
-    set(EIGHTGINE_BIN_TYPE "dll")
-else()
-    add_compile_definitions("EIGHTGINE_PLATFORM_WINDOWS=0")
-endif()
-
-if(LINUX)
-    add_compile_definitions("EIGHTGINE_PLATFORM_LINUX=1")
-    set(EIGHTGINE_BIN_TYPE "so")
-else()
-    add_compile_definitions("EIGHTGINE_PLATFORM_LINUX=0")
-endif()
-
-if(APPLE)
-    add_compile_definitions("EIGHTGINE_PLATFORM_MACOS=1")
-    set(EIGHTGINE_BIN_TYPE "dylib")
-else()
-    add_compile_definitions("EIGHTGINE_PLATFORM_MACOS=0")
-endif()
-
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_compile_definitions("EIGHTGINE_DEBUG=1")
+    set(EIGHTGINE_DEBUG 1)
 else()
-    add_compile_definitions("EIGHTGINE_DEBUG=0")
+    set(EIGHTGINE_DEBUG 0)
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-    add_compile_definitions("EIGHTGINE_RELWITHDEBINFO=1")
+    set(EIGHTGINE_RELWITHDEBINFO 1)
 else()
-    add_compile_definitions("EIGHTGINE_RELWITHDEBINFO=0")
+    set(EIGHTGINE_RELWITHDEBINFO 0)
 endif()
+
+if(WIN32)
+    set(EIGHTGINE_PLATFORM_WINDOWS 1)
+    set(EIGHTGINE_BIN_TYPE "dll")
+else()
+    set(EIGHTGINE_PLATFORM_WINDOWS 0)
+endif()
+
+if(LINUX)
+    set(EIGHTGINE_PLATFORM_LINUX 1)
+    set(EIGHTGINE_BIN_TYPE "so")
+else()
+    set(EIGHTGINE_PLATFORM_LINUX 0)
+endif()
+
+if(APPLE)
+    set(EIGHTGINE_PLATFORM_MACOS 1)
+    set(EIGHTGINE_BIN_TYPE "dylib")
+else()
+    set(EIGHTGINE_PLATFORM_MACOS 0)
+endif()
+
+add_compile_definitions("EIGHTGINE_DEBUG=${EIGHTGINE_DEBUG}")
+add_compile_definitions("EIGHTGINE_RELWITHDEBINFO=${EIGHTGINE_RELWITHDEBINFO}")
+
+add_compile_definitions("EIGHTGINE_PLATFORM_WINDOWS=${EIGHTGINE_PLATFORM_WINDOWS}")
+add_compile_definitions("EIGHTGINE_PLATFORM_LINUX=${EIGHTGINE_PLATFORM_LINUX}")
+add_compile_definitions("EIGHTGINE_PLATFORM_MACOS=${EIGHTGINE_PLATFORM_MACOS}")
 
 
 # [[Macros]]
@@ -229,6 +236,7 @@ endfunction()
 function(eightgine_add_module)
     set(ONE_VALUE_ARGS
         MODULE_NAME
+        MODULE_ALIAS
         MODULE_TYPE
         MODULE_LIB_DIR MODULE_BIN_DIR
     )
@@ -247,6 +255,10 @@ function(eightgine_add_module)
     eightgine_set_module_or_executable(ARG_MODULE_NAME)
 
     add_library("${DIRTY_ARG_MODULE_NAME}" ${ARG_MODULE_TYPE})
+
+    if(ARG_MODULE_ALIAS)
+        add_library("${ARG_MODULE_ALIAS}" ALIAS "${DIRTY_ARG_MODULE_NAME}")
+    endif()
 
     if(WIN32)
         set(MODULE_EXPORT "__declspec(dllexport)")

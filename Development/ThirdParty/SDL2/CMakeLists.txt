@@ -11,7 +11,7 @@ endif()
 
 
 # [[Subdirectories]]
-add_subdirectory(SDL2 EXCLUDE_FROM_ALL)
+add_subdirectory("SDL2" EXCLUDE_FROM_ALL)
 
 
 # [[Binaries]]

@@ -1,6 +1,9 @@
 //#include <SDL2/SDL.h>
 //#include <GLFW/glfw3.h>
-#include <Automation/Core.hpp>
+#if EIGHTGINE_DEBUG
+#include <Eightest/Eightest.hpp>
+#endif
+
 #define WITH_SDL2
 #ifdef WITH_SDL2
 #include <SDL.h>
@@ -141,8 +144,10 @@ int fMain(int iArgumentCount, char** pArgumentValues)
         if (init) init();
     }
     #endif
+    #if EIGHTGINE_DEBUG
     TRY_CATCH(EXECUTE_ALL());
     TESTING_STAT();
+    #endif
 #endif
     // Registry::handler(nullptr);
     #ifdef WITH_SDL2

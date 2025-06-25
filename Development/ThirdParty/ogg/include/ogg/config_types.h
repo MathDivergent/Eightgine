@@ -2,9 +2,9 @@
 #define __CONFIG_TYPES_H__
 
 /* these are filled in by configure or cmake*/
-#define INCLUDE_INTTYPES_H inttypes.h
-#define INCLUDE_STDINT_H stdint.h
-#define INCLUDE_SYS_TYPES_H sys/types.h
+#define INCLUDE_INTTYPES_H 1
+#define INCLUDE_STDINT_H 1
+#define INCLUDE_SYS_TYPES_H 1
 
 #if INCLUDE_INTTYPES_H
 #  include <inttypes.h>

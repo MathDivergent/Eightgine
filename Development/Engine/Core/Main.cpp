@@ -160,7 +160,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
         return 1;
     }
 
-    auto window = SDL_CreateWindow("EightgineEditor", 100, 100, 640, 480, SDL_WINDOW_SHOWN | SDL_WINDOW_SKIP_TASKBAR);
+    auto window = SDL_CreateWindow("EightgineEditor", 100, 100, 640, 480, SDL_WINDOW_SHOWN);
     if (window == nullptr)
     {
         SDL_Quit();

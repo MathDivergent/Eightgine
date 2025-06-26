@@ -14,7 +14,7 @@ set(CMAKE_RELWITHDEBINFO_POSTFIX "-RelWithDebInfo")
 
 # [[Options]]
 option(EIGHTGINE_WITH_EDITOR "Build with the Eightgine Editor" ON)
-set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build static when not specified" FORCE)
+set(BUILD_SHARED_LIBS ON CACHE BOOL "Build static when not specified" FORCE)
 
 
 # [[Includes]]

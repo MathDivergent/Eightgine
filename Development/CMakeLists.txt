@@ -1,5 +1,3 @@
-# TODO: add multi SOURCES_, BIN_, LIB_ dirs
-
 # [[Root]]
 cmake_minimum_required(VERSION 3.12)
 project(EmptyProject)

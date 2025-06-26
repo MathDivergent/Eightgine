@@ -1,10 +1,6 @@
 # [[Defaults]]
 set(THIRDPARTY_WAVPACK_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
 
-if(THIRDPARTY_WAVPACK_BUILD_SHARED_LIBS)
-else()
-endif()
-
 
 # [[Subdirectories]]
 add_subdirectory("wavpack" EXCLUDE_FROM_ALL)

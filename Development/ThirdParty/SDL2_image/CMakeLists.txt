@@ -1,3 +1,7 @@
+# [[Defaults]]
+set(THIRDPARTY_SDL2IMAGE_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
+
+
 # [[Subdirectories]]
 add_subdirectory("SDL2_image" EXCLUDE_FROM_ALL)
 

@@ -6,7 +6,9 @@
 
 #define WITH_SDL2
 #ifdef WITH_SDL2
+#include <SDL_ttf.h>
 #include <SDL.h>
+#include <SDL_mixer.h>
 #endif
 // TEST(Test, Test)
 // {
@@ -32,6 +34,8 @@
 #include <vector>
 #include <string>
 
+#include <iostream>
+
 #define WITH_CJSON
 #ifdef WITH_CJSON
 #include <cJSON.h>
@@ -43,7 +47,6 @@
 
 #if EIGHTGINE_PLATFORM_LINUX
 #include <dlfcn.h>
-#include <iostream>
 #endif
 
 namespace Eightgine
@@ -152,22 +155,22 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     // Registry::handler(nullptr);
     #ifdef WITH_SDL2
     // // TODO: example code
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    if (SDL_Init(SDL_INIT_VIDEO) != 0 || TTF_Init() != 0)
     {
         return 1;
     }
 
-    auto pWindow = SDL_CreateWindow("EightgineEditor", 100, 100, 640, 480, SDL_WINDOW_SHOWN | SDL_WINDOW_SKIP_TASKBAR);
-    if (pWindow == nullptr)
+    auto window = SDL_CreateWindow("EightgineEditor", 100, 100, 640, 480, SDL_WINDOW_SHOWN | SDL_WINDOW_SKIP_TASKBAR);
+    if (window == nullptr)
     {
         SDL_Quit();
         return 1;
     }
 
-    auto pRenderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (pRenderer == nullptr)
+    auto renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (renderer == nullptr)
     {
-        SDL_DestroyWindow(pWindow);
+        SDL_DestroyWindow(window);
         SDL_Quit();
         return 1;
     }
@@ -178,34 +181,67 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     auto bRunning = true;
     SDL_Event aEvent;
 
+    TTF_Font* font = TTF_OpenFont(EIGHTGINE_PROJECT_RESOURCES_DIR "/Fonts/hand.otf", 64);
+    if (!font) {
+        std::cerr << "TTF_OpenFont Error: " << TTF_GetError() << "\n";
+        return 1;
+    }
 
-    while (bRunning)
-    {
-        auto iFrameStart = SDL_GetTicks();
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        std::cerr << "Mix_OpenAudio Error: " << Mix_GetError() << "\n";
+        SDL_Quit();
+        return 1;
+    }
 
-        while (SDL_PollEvent(&aEvent))
-        {
-            if (aEvent.type == SDL_QUIT)
-            {
-                bRunning = false;
-            }
-        }
+    Mix_Music* music = Mix_LoadMUS(EIGHTGINE_PROJECT_RESOURCES_DIR "/Music/theme.mp3");
+    if (!music) {
+        std::cerr << "Mix_LoadMUS Error: " << Mix_GetError() << "\n";
+        Mix_CloseAudio();
+        SDL_Quit();
+        return 1;
+    }
 
-        SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 0xff);
-        SDL_RenderClear(pRenderer);
-        SDL_RenderPresent(pRenderer);
+    if (Mix_PlayMusic(music, -1) == -1) {
+        std::cerr << "Mix_PlayMusic Error: " << Mix_GetError() << "\n";
+    }
+    char const* text = "Hello, Eightgine!";
+    SDL_Color color = {255, 255, 255};
+    SDL_Surface* textSurface = TTF_RenderUTF8_Blended(font, text, color);
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 
-        auto iFrameTime = SDL_GetTicks() - iFrameStart;
-        if (iFrameTime < iFrameDelay)
-        {
-            SDL_Delay(iFrameDelay - iFrameTime);
+    int textW = textSurface->w;
+    int textH = textSurface->h;
+    SDL_FreeSurface(textSurface);
+
+    int winW, winH;
+    SDL_GetWindowSize(window, &winW, &winH);
+    SDL_Rect dstRect = {
+        (winW - textW) / 2,
+        (winH - textH) / 2,
+        textW,
+        textH
+    };
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, textTexture, nullptr, &dstRect);
+    SDL_RenderPresent(renderer);
+
+    SDL_Event e;
+    bool running = true;
+    while (running) {
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE))
+                running = false;
         }
     }
 
-    SDL_DestroyRenderer(pRenderer);
-    SDL_DestroyWindow(pWindow);
+    SDL_DestroyTexture(textTexture);
+    TTF_CloseFont(font);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    TTF_Quit();
     SDL_Quit();
-    // ~
     #endif
     scanf("%*[^\n]");
     getchar();

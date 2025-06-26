@@ -1,3 +1,7 @@
+# [[Defaults]]
+set(THIRDPARTY_SDL2NET_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
+
+
 # [[Subdirectories]]
 add_subdirectory("SDL2_net" EXCLUDE_FROM_ALL)
 

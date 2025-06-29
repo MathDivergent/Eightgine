@@ -1,9 +1,5 @@
-# [[Defaults]]
-set(THIRDPARTY_EIGHTEST_BUILD_SHARED_LIBS ON)
-
-
 # [[Binaries]]
-if(THIRDPARTY_EIGHTEST_BUILD_SHARED_LIBS)
+if(BUILD_SHARED_LIBS)
     eightgine_add_module(MODULE_NAME "Eightest" MODULE_TYPE SHARED)
 else()
     eightgine_add_module(MODULE_NAME "Eightest" MODULE_TYPE STATIC)

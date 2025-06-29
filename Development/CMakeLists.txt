@@ -1,10 +1,10 @@
 # [[Root]]
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.13)
 project(EmptyProject)
 
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_C_STANDARD 11)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
@@ -14,7 +14,8 @@ set(CMAKE_RELWITHDEBINFO_POSTFIX "-RelWithDebInfo")
 
 # [[Options]]
 option(EIGHTGINE_WITH_EDITOR "Build with the Eightgine Editor" ON)
-set(BUILD_SHARED_LIBS ON CACHE BOOL "Build static when not specified" FORCE)
+option(BUILD_SHARED_LIBS "Build shared libraies by Default" ON)
+option(BUILD_FRAMEWORK "Build Framework bundle for OSX" OFF)
 
 
 # [[Includes]]
@@ -98,4 +99,4 @@ eightgine_add_executable(EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}"
 
 # [[Dependencies]]
 eightgine_install_libcxx_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}")
-eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}" DEPENDENCY_NAME "EightgineCore")
+eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}" DEPENDENCY_NAME "EightgineCore")

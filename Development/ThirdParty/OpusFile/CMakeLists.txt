@@ -1,9 +1,5 @@
-# [[Defaults]]
-set(THIRDPARTY_OPUSFILE_BUILD_SHARED_LIBS ON)
-
-
 # [[Binaries]]
-if(THIRDPARTY_OPUSFILE_BUILD_SHARED_LIBS)
+if(BUILD_SHARED_LIBS)
     eightgine_add_module(MODULE_NAME "opusfile"
         MODULE_ALIAS "OpusFile::opusfile"
         MODULE_TYPE SHARED
@@ -22,5 +18,5 @@ eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "opusfile"
 
 
 # [[Dependencies]]
-eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "opusfile" DEPENDENCY_NAME "ogg")
-eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "opusfile" DEPENDENCY_NAME "opus")
+eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "opusfile" DEPENDENCY_NAME "ogg")
+eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "opusfile" DEPENDENCY_NAME "opus")

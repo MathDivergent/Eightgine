@@ -175,6 +175,13 @@ int fMain(int iArgumentCount, char** pArgumentValues)
         return 1;
     }
 
+    if ((Mix_Init(MIX_INIT_OPUS) & MIX_INIT_OPUS) == 0)
+    {
+        printf("Failed to init OGG support: %s\n", Mix_GetError());
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    }
     auto const iFPS = 60;
     auto const iFrameDelay = 1000 / iFPS;
 
@@ -184,18 +191,22 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     TTF_Font* font = TTF_OpenFont(EIGHTGINE_PROJECT_RESOURCES_DIR "/Fonts/hand.otf", 64);
     if (!font) {
         std::cerr << "TTF_OpenFont Error: " << TTF_GetError() << "\n";
+        SDL_DestroyWindow(window);
+        SDL_Quit();
         return 1;
     }
 
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         std::cerr << "Mix_OpenAudio Error: " << Mix_GetError() << "\n";
+        SDL_DestroyWindow(window);
         SDL_Quit();
         return 1;
     }
 
-    Mix_Music* music = Mix_LoadMUS(EIGHTGINE_PROJECT_RESOURCES_DIR "/Music/theme.mp3");
+    Mix_Music* music = Mix_LoadMUS(EIGHTGINE_PROJECT_RESOURCES_DIR "/Music/theme.ogg");
     if (!music) {
         std::cerr << "Mix_LoadMUS Error: " << Mix_GetError() << "\n";
+        SDL_DestroyWindow(window);
         Mix_CloseAudio();
         SDL_Quit();
         return 1;
@@ -243,6 +254,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     TTF_Quit();
     SDL_Quit();
     #endif
+    exit:
     scanf("%*[^\n]");
     getchar();
 

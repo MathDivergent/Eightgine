@@ -1,2 +1,2 @@
-# [[Subdirs]]
+# [[Subdirectories]]
 add_subdirectory("Core")

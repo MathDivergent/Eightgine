@@ -1,5 +1,12 @@
 # [[Defaults]]
-set(EIGHTGINE_DEFAULT_MODULE_TYPE SHARED)
+set(EIGHTGINE_MESSAGE_MODES VERBOSE CHECK_START CHECK_PASS CHECK_FAIL)
+
+if(BUILD_SHARED_LIBS)
+    set(EIGHTGINE_DEFAULT_MODULE_TYPE SHARED)
+else()
+    set(EIGHTGINE_DEFAULT_MODULE_TYPE STATIC)
+endif()
+
 set(EIGHTGINE_DIRTY_MODULE_OR_EXECUTABLE_NAME_PREFIX "8")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -44,6 +51,14 @@ add_compile_definitions("EIGHTGINE_PLATFORM_MACOS=${EIGHTGINE_PLATFORM_MACOS}")
 
 
 # [[Macros]]
+macro(message)
+    eightgine_message(${ARGV})
+endmacro()
+
+macro(install)
+    # pass install
+endmacro()
+
 macro(eightgine_set_module_or_executable MODULE_OR_EXECUTABLE_NAME)
     set(DIRTY_${MODULE_OR_EXECUTABLE_NAME} "${EIGHTGINE_DIRTY_MODULE_OR_EXECUTABLE_NAME_PREFIX}${${MODULE_OR_EXECUTABLE_NAME}}")
 endmacro()
@@ -71,6 +86,13 @@ endmacro()
 
 
 # [[Functions]]
+function(eightgine_message)
+    if("${ARGV0}" IN_LIST EIGHTGINE_MESSAGE_MODES)
+        return()
+    endif()
+    _message(${ARGV})
+endfunction()
+
 function(eightgine_install_dependency)
     set(ONE_VALUE_ARGS
         MODULE_OR_EXECUTABLE_NAME
@@ -81,15 +103,24 @@ function(eightgine_install_dependency)
 
     eightgine_get_module_or_executable(ARG_MODULE_OR_EXECUTABLE_NAME)
 
+    set(DEPENDENCY_BIN_FILE_PATH "${ARG_DEPENDENCY_BIN_DIR}/${ARG_DEPENDENCY_NAME}.${EIGHTGINE_BIN_TYPE}")
+    if(NOT EXISTS "${DEPENDENCY_BIN_FILE_PATH}")
+        message(FATAL_ERROR "MISSING DEPENDENCY: ${DEPENDENCY_BIN_FILE_PATH}")
+    endif()
+
     add_custom_command(TARGET "${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}"
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${ARG_DEPENDENCY_BIN_DIR}/${ARG_DEPENDENCY_NAME}.${EIGHTGINE_BIN_TYPE}"
+        "${DEPENDENCY_BIN_FILE_PATH}"
         "$<TARGET_FILE_DIR:${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}>/${ARG_DEPENDENCY_NAME}.${EIGHTGINE_BIN_TYPE}"
     )
 endfunction()
 
-function(eightgine_install_libcxx_dependency) # TODO: Rework
+function(eightgine_install_libcxx_dependency)
+    if(NOT WIN32)
+        return()
+    endif()
+
     set(ONE_VALUE_ARGS
         MODULE_OR_EXECUTABLE_NAME
     )
@@ -106,20 +137,15 @@ function(eightgine_install_libcxx_dependency) # TODO: Rework
         return()
     endif()
 
-    if(NOT WIN32) # TODO: temp
-        return()
-    endif()
-
     foreach(LIBCXX_NAME ${LIBCXX_DLLS})
         set(DLL_PATH "${COMPILER_BIN_DIR}/${LIBCXX_NAME}.dll")
         if(EXISTS "${DLL_PATH}")
-            message(STATUS "FOUND DEPENDENCY DLL: ${DLL_PATH}")
             eightgine_install_dependency(MODULE_OR_EXECUTABLE_NAME "${ARG_MODULE_OR_EXECUTABLE_NAME}"
                 DEPENDENCY_NAME "${LIBCXX_NAME}"
                 DEPENDENCY_BIN_DIR "${COMPILER_BIN_DIR}"
             )
         else()
-            message(WARNING "MISSING DEPENDENCY DLL: ${DLL_PATH}")
+            message(WARNING "MISSING DEPENDENCY: ${DLL_PATH}")
         endif()
     endforeach()
 endfunction()
@@ -342,7 +368,7 @@ function(eightgine_add_thirdparty)
     )
 endfunction()
 
-function(eightgine_link_dependency)
+function(eightgine_add_dependency)
     set(ONE_VALUE_ARGS
         MODULE_OR_EXECUTABLE_NAME
         DEPENDENCY_NAME
@@ -361,6 +387,7 @@ function(eightgine_link_dependency)
         set(DIRTY_ARG_DEPENDENCY_NAME "${ARG_DEPENDENCY_NAME}")
     endif()
 
+    add_dependencies("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" "${DIRTY_ARG_DEPENDENCY_NAME}")
     target_link_libraries("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_NAME_EXTERNAL} "${DIRTY_ARG_DEPENDENCY_NAME}")
 
     if(NOT ARG_DEPENDENCY_BIN_DIR AND TARGET "${DIRTY_ARG_DEPENDENCY_NAME}")
@@ -368,7 +395,7 @@ function(eightgine_link_dependency)
     endif()
 
     eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "${ARG_MODULE_OR_EXECUTABLE_NAME}"
-        MODULE_OR_EXECUTABLE_LIB_DIR "${ARG_DEPENDENCY_LIB_DIR}" MODULE_OR_EXECUTABLE_BIN_DIR "${ARG_DEPENDENCY_BIN_DIR}"
+        MODULE_OR_EXECUTABLE_LIB_DIR "${ARG_DEPENDENCY_LIB_DIR}"
         MODULE_OR_EXECUTABLE_INCLUDE_DIR ${ARG_DEPENDENCY_INCLUDE_DIR}
     )
 

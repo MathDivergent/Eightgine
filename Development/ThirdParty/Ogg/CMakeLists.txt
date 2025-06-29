@@ -1,12 +1,14 @@
-# [[Defaults]]
-set(THIRDPARTY_OGG_BUILD_SHARED_LIBS ON)
-
-
 # [[Binaries]]
-if(THIRDPARTY_OGG_BUILD_SHARED_LIBS)
-    eightgine_add_module(MODULE_NAME "ogg" MODULE_TYPE SHARED)
+if(BUILD_SHARED_LIBS)
+    eightgine_add_module(MODULE_NAME "ogg"
+        MODULE_ALIAS "Ogg::ogg"
+        MODULE_TYPE SHARED
+    )
 else()
-    eightgine_add_module(MODULE_NAME "ogg" MODULE_TYPE STATIC)
+    eightgine_add_module(MODULE_NAME "ogg"
+        MODULE_ALIAS "Ogg::ogg"
+        MODULE_TYPE STATIC
+    )
 endif()
 
 eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "ogg"

@@ -10,6 +10,6 @@ eightgine_add_module(MODULE_NAME "${PROJECT_GAME_MODULE_NAME}"
 
 
 # [[Dependencies]]
-eightgine_link_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_GAME_MODULE_NAME}"
+eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_GAME_MODULE_NAME}"
     DEPENDENCY_NAME "EightgineCore"
 )

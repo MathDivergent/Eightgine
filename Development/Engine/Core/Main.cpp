@@ -129,7 +129,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
         void* handle = dlopen(fullName.c_str(), RTLD_NOW);
         if (!handle)
         {
-            std::cerr << "Failed to load " << fullName << ": " << dlerror() << std::endl;
+            std::cout << "Failed to load " << fullName << ": " << dlerror() << std::endl;
             continue;
         }
 
@@ -139,7 +139,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
         const char* dlsym_error = dlerror();
         if (dlsym_error)
         {
-            std::cerr << "Cannot load symbol 'RegisterModule' from " << fullName << ": " << dlsym_error << std::endl;
+            std::cout << "Cannot load symbol 'RegisterModule' from " << fullName << ": " << dlsym_error << std::endl;
             dlclose(handle);
             continue;
         }
@@ -175,13 +175,19 @@ int fMain(int iArgumentCount, char** pArgumentValues)
         return 1;
     }
 
-    if ((Mix_Init(MIX_INIT_OPUS) & MIX_INIT_OPUS) == 0)
-    {
-        printf("Failed to init OGG support: %s\n", Mix_GetError());
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return 1;
-    }
+    const char* ld_path = std::getenv("LD_LIBRARY_PATH");
+    if (ld_path)
+        std::cout << "LD_LIBRARY_PATH = " << ld_path << "\n";
+    else
+        std::cout << "LD_LIBRARY_PATH not set\n";
+
+    // if ((Mix_Init(MIX_INIT_OPUS) & MIX_INIT_OPUS) == 0)
+    // {
+    //     printf("Failed to init OPUS support: %s\n", Mix_GetError());
+    //     SDL_DestroyWindow(window);
+    //     SDL_Quit();
+    //     return 1;
+    // }
     auto const iFPS = 60;
     auto const iFrameDelay = 1000 / iFPS;
 
@@ -190,14 +196,14 @@ int fMain(int iArgumentCount, char** pArgumentValues)
 
     TTF_Font* font = TTF_OpenFont(EIGHTGINE_PROJECT_RESOURCES_DIR "/Fonts/hand.otf", 64);
     if (!font) {
-        std::cerr << "TTF_OpenFont Error: " << TTF_GetError() << "\n";
+        std::cout << "TTF_OpenFont Error: " << TTF_GetError() << "\n";
         SDL_DestroyWindow(window);
         SDL_Quit();
         return 1;
     }
 
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-        std::cerr << "Mix_OpenAudio Error: " << Mix_GetError() << "\n";
+        std::cout << "Mix_OpenAudio Error: " << Mix_GetError() << "\n";
         SDL_DestroyWindow(window);
         SDL_Quit();
         return 1;
@@ -205,7 +211,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
 
     Mix_Music* music = Mix_LoadMUS(EIGHTGINE_PROJECT_RESOURCES_DIR "/Music/theme.ogg");
     if (!music) {
-        std::cerr << "Mix_LoadMUS Error: " << Mix_GetError() << "\n";
+        std::cout << "Mix_LoadMUS Error: " << Mix_GetError() << "\n";
         SDL_DestroyWindow(window);
         Mix_CloseAudio();
         SDL_Quit();
@@ -213,7 +219,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     }
 
     if (Mix_PlayMusic(music, -1) == -1) {
-        std::cerr << "Mix_PlayMusic Error: " << Mix_GetError() << "\n";
+        std::cout << "Mix_PlayMusic Error: " << Mix_GetError() << "\n";
     }
     char const* text = "Hello, Eightgine!";
     SDL_Color color = {255, 255, 255};

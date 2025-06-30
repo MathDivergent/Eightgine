@@ -336,8 +336,10 @@ function(eightgine_add_executable)
 
     if(WIN32)
         set(DEFAULT_EXECUTABLE_PROPERTIES WIN32_EXECUTABLE TRUE)
+    elseif(LINUX)
+        set(DEFAULT_EXECUTABLE_PROPERTIES INSTALL_RPATH "$ORIGIN")
     elseif(APPLE)
-        set(DEFAULT_EXECUTABLE_PROPERTIES MACOSX_BUNDLE TRUE)
+        set(DEFAULT_EXECUTABLE_PROPERTIES MACOSX_BUNDLE TRUE INSTALL_RPATH "@loader_path")
     endif()
 
     eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "${ARG_EXECUTABLE_NAME}"

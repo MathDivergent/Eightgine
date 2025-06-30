@@ -1,4 +1,6 @@
 # [[Subdirectories]]
+add_subdirectory("linux" EXCLUDE_FROM_ALL)
+
 add_subdirectory("cJSON" EXCLUDE_FROM_ALL)
 
 add_subdirectory("Ogg" EXCLUDE_FROM_ALL)

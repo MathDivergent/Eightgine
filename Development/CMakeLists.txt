@@ -1,5 +1,5 @@
 # [[Root]]
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.16)
 project(EmptyProject)
 
 set(CMAKE_C_STANDARD 11)
@@ -82,7 +82,6 @@ add_compile_definitions(
 
 # [[Subdirectories]]
 eightgine_add_symlink(ORIGINAL "${EIGHTGINE_ENGINE_DIR}" LINKNAME "${PROJECT_ENGINE_DIR}")
-
 add_subdirectory("${EIGHTGINE_THIRDPARTY_DIR}" "${CMAKE_BINARY_DIR}/${THIRDPARTY_DIR_NAME}")
 add_subdirectory("${PROJECT_ENGINE_DIR}" "${CMAKE_BINARY_DIR}/${ENGINE_DIR_NAME}")
 add_subdirectory("${PROJECT_GAME_DIR}")

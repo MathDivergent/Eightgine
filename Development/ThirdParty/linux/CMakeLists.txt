@@ -1,7 +1,7 @@
 # [[Binaries]]
-eightgine_add_module(MODULE_NAME "glibc" MODULE_TYPE INTERFACE)
-eightgine_add_module(MODULE_NAME "X11" MODULE_TYPE INTERFACE)
-eightgine_add_module(MODULE_NAME "Wayland" MODULE_TYPE INTERFACE)
+eightgine_add_module(MODULE_NAME "glibc" MODULE_TYPE INTERFACE MODULE_API_DEFINITION OFF)
+eightgine_add_module(MODULE_NAME "X11" MODULE_TYPE INTERFACE MODULE_API_DEFINITION OFF)
+eightgine_add_module(MODULE_NAME "Wayland" MODULE_TYPE INTERFACE MODULE_API_DEFINITION OFF)
 
 
 # [[Dependencies]]

@@ -264,6 +264,7 @@ function(eightgine_add_module)
         MODULE_NAME
         MODULE_ALIAS
         MODULE_TYPE
+        MODULE_API_DEFINITION
         MODULE_LIB_DIR MODULE_BIN_DIR
     )
     set(MULTI_VALUE_ARGS
@@ -286,23 +287,23 @@ function(eightgine_add_module)
         add_library("${ARG_MODULE_ALIAS}" ALIAS "${DIRTY_ARG_MODULE_NAME}")
     endif()
 
-    if(WIN32)
-        set(MODULE_EXPORT "__declspec(dllexport)")
-        set(MODULE_IMPORT "__declspec(dllimport)")
-    else()
-        set(MODULE_EXPORT "__attribute__((visibility(\"default\")))")
-        set(MODULE_IMPORT "")
-    endif()
+    if(NOT ARG_MODULE_API_DEFINITION STREQUAL "OFF")
+        if(WIN32)
+            set(MODULE_EXPORT "__declspec(dllexport)")
+            set(MODULE_IMPORT "__declspec(dllimport)")
+        else()
+            set(MODULE_EXPORT "__attribute__((visibility(\"default\")))")
+            set(MODULE_IMPORT "")
+        endif()
 
-    string(TOUPPER "${ARG_MODULE_NAME}" MODULE_NAME_UPPER)
-    set(MODULE_NAME_API "${MODULE_NAME_UPPER}_API")
-
-    if(ARG_MODULE_TYPE STREQUAL "INTERFACE")
-        set(MODULE_DEFAULT_DEFINITIONS INTERFACE "${MODULE_NAME_API}=${MODULE_IMPORT}")
-    elseif(ARG_MODULE_TYPE STREQUAL "SHARED")
-        set(MODULE_DEFAULT_DEFINITIONS PRIVATE "${MODULE_NAME_API}=${MODULE_EXPORT}" INTERFACE "${MODULE_NAME_API}=${MODULE_IMPORT}")
-    elseif(ARG_MODULE_TYPE STREQUAL "STATIC")
-        set(MODULE_DEFAULT_DEFINITIONS PUBLIC "${MODULE_NAME_API}=")
+        string(TOUPPER "${ARG_MODULE_NAME}_API" MODULE_API_DEFINITION)
+        if(ARG_MODULE_TYPE STREQUAL "INTERFACE")
+            set(MODULE_DEFAULT_DEFINITIONS INTERFACE "${MODULE_API_DEFINITION}=${MODULE_IMPORT}")
+        elseif(ARG_MODULE_TYPE STREQUAL "SHARED")
+            set(MODULE_DEFAULT_DEFINITIONS PRIVATE "${MODULE_API_DEFINITION}=${MODULE_EXPORT}" INTERFACE "${MODULE_API_DEFINITION}=${MODULE_IMPORT}")
+        elseif(ARG_MODULE_TYPE STREQUAL "STATIC")
+            set(MODULE_DEFAULT_DEFINITIONS PUBLIC "${MODULE_API_DEFINITION}=")
+        endif()
     endif()
 
     eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "${ARG_MODULE_NAME}"

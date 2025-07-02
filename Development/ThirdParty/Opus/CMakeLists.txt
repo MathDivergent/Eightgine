@@ -5,6 +5,7 @@ add_subdirectory("opus" EXCLUDE_FROM_ALL)
 # [[Binaries]]
 eightgine_add_module(MODULE_NAME "opus"
     MODULE_TYPE INTERFACE
+    MODULE_API_DEFINITION OFF
     MODULE_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/opus/include"
 )
 

@@ -4,7 +4,7 @@
 namespace Eightgine
 {
 
-int EIGHTGINECORE_API fMain(int iArgumentCount, char** pArgumentValues);
+EIGHTGINECORE_API int fMain(int iArgumentCount, char** pArgumentValues);
 
 } // namespace Eightgine
 

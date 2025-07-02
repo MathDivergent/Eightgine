@@ -2,6 +2,7 @@
 add_subdirectory("linux" EXCLUDE_FROM_ALL)
 
 add_subdirectory("cJSON" EXCLUDE_FROM_ALL)
+add_subdirectory("lua" EXCLUDE_FROM_ALL)
 
 add_subdirectory("Ogg" EXCLUDE_FROM_ALL)
 add_subdirectory("Vorbis" EXCLUDE_FROM_ALL)
@@ -16,5 +17,7 @@ add_subdirectory("SDL2_image" EXCLUDE_FROM_ALL)
 add_subdirectory("SDL2_mixer" EXCLUDE_FROM_ALL)
 add_subdirectory("SDL2_ttf" EXCLUDE_FROM_ALL)
 add_subdirectory("SDL2_net" EXCLUDE_FROM_ALL)
+
+add_subdirectory("Box2D" EXCLUDE_FROM_ALL)
 
 add_subdirectory("Eightest" EXCLUDE_FROM_ALL)

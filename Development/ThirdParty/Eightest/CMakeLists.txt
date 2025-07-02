@@ -1,8 +1,14 @@
 # [[Binaries]]
 if(BUILD_SHARED_LIBS)
-    eightgine_add_module(MODULE_NAME "Eightest" MODULE_TYPE SHARED)
+    eightgine_add_module(MODULE_NAME "Eightest"
+        MODULE_TYPE SHARED
+        MODULE_API_DEFINITION OFF
+    )
 else()
-    eightgine_add_module(MODULE_NAME "Eightest" MODULE_TYPE STATIC)
+    eightgine_add_module(MODULE_NAME "Eightest"
+        MODULE_TYPE STATIC
+        MODULE_API_DEFINITION OFF
+    )
 endif()
 
 eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "Eightest"

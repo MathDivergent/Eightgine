@@ -5,6 +5,7 @@ add_subdirectory("wavpack" EXCLUDE_FROM_ALL)
 # [[Binaries]]
 eightgine_add_module(MODULE_NAME "wavpack"
     MODULE_TYPE INTERFACE
+    MODULE_API_DEFINITION OFF
     MODULE_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/wavpack/include"
 )
 

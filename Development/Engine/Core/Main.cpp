@@ -49,11 +49,17 @@
 #include <dlfcn.h>
 #endif
 
+#include <box2d/box2d.h>
+#include <lua.hpp>
+
 namespace Eightgine
 {
 
 int fMain(int iArgumentCount, char** pArgumentValues)
 {
+    b2WorldDef worldDef;
+    b2CreateWorld(&worldDef);
+
     // CJSON_IMPORT_SYMBOLS;
     // CJSON_EXPORT_SYMBOLS;
 
@@ -175,11 +181,11 @@ int fMain(int iArgumentCount, char** pArgumentValues)
         return 1;
     }
 
-    const char* ld_path = std::getenv("LD_LIBRARY_PATH");
-    if (ld_path)
-        std::cout << "LD_LIBRARY_PATH = " << ld_path << "\n";
-    else
-        std::cout << "LD_LIBRARY_PATH not set\n";
+    // const char* ld_path = std::getenv("LD_LIBRARY_PATH");
+    // if (ld_path)
+    //     std::cout << "LD_LIBRARY_PATH = " << ld_path << "\n";
+    // else
+    //     std::cout << "LD_LIBRARY_PATH not set\n";
 
     // if ((Mix_Init(MIX_INIT_OPUS) & MIX_INIT_OPUS) == 0)
     // {

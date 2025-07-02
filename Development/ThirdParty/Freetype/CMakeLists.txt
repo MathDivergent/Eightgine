@@ -6,6 +6,7 @@ add_subdirectory("freetype" EXCLUDE_FROM_ALL)
 eightgine_add_module(MODULE_NAME "freetype"
     MODULE_ALIAS "Freetype::Freetype"
     MODULE_TYPE INTERFACE
+    MODULE_API_DEFINITION OFF
     MODULE_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/freetype/include"
 )
 

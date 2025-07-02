@@ -3,11 +3,13 @@ if(BUILD_SHARED_LIBS)
     eightgine_add_module(MODULE_NAME "opusfile"
         MODULE_ALIAS "OpusFile::opusfile"
         MODULE_TYPE SHARED
+        MODULE_API_DEFINITION OFF
     )
 else()
     eightgine_add_module(MODULE_NAME "opusfile"
         MODULE_ALIAS "OpusFile::opusfile"
         MODULE_TYPE STATIC
+        MODULE_API_DEFINITION OFF
     )
 endif()
 

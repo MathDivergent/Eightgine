@@ -57,8 +57,8 @@ namespace Eightgine
 
 int fMain(int iArgumentCount, char** pArgumentValues)
 {
-    b2WorldDef worldDef;
-    b2CreateWorld(&worldDef);
+    //b2WorldDef worldDef;
+    //b2CreateWorld(&worldDef);
 
     // CJSON_IMPORT_SYMBOLS;
     // CJSON_EXPORT_SYMBOLS;

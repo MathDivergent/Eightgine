@@ -305,7 +305,11 @@ int fMain(int iArgumentCount, char** pArgumentValues)
 
             window_shown = false;
         }
-
+        const char* err = SDL_GetError();
+        if (err && *err) {
+            printf("SDL_RenderClear error: %s\n", err);
+            SDL_ClearError();
+        }
         SDL_Delay(delay);
     }
 

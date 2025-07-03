@@ -161,6 +161,10 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     // Registry::handler(nullptr);
     #ifdef WITH_SDL2
     // // TODO: example code
+
+    // TODO: dont use
+    //SDL_setenv("SDL_AUDIODRIVER", "alsa", 1);
+
     if (SDL_Init(SDL_INIT_VIDEO) != 0 || TTF_Init() != 0)
     {
         return 1;
@@ -173,17 +177,34 @@ int fMain(int iArgumentCount, char** pArgumentValues)
         return 1;
     }
 
-    auto renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (renderer == nullptr)
-    {
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return 1;
+    std::cout << "Available renderer drivers:\n";
+
+    int best = -1;
+    int bestScore = -1;
+
+    for (int i = 0; i < SDL_GetNumRenderDrivers(); ++i) {
+        SDL_RendererInfo info;
+        SDL_GetRenderDriverInfo(i, &info);
+        std::cout << "  " << i << ": " << info.name << '\n';
+        int score = 0;
+        if (info.flags & SDL_RENDERER_ACCELERATED) score += 10;
+        if (info.flags & SDL_RENDERER_PRESENTVSYNC) score += 5;
+        if (info.flags & SDL_RENDERER_TARGETTEXTURE) score += 2;
+
+        if (score > bestScore) {
+            bestScore = score;
+            best = i;
+        }
     }
+
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, best, 0);
+    SDL_RendererInfo info;
+    SDL_GetRenderDriverInfo(best, &info);
+    std::cout << "Selected RendrererDriver: " << info.name << '\n';
 
     // const char* ld_path = std::getenv("LD_LIBRARY_PATH");
     // if (ld_path)
-    //     std::cout << "LD_LIBRARY_PATH = " << ld_path << "\n";
+    //     std::cout << "LD_LIBRARY_PATH = " << ld_path << '\n';
     // else
     //     std::cout << "LD_LIBRARY_PATH not set\n";
 
@@ -202,31 +223,39 @@ int fMain(int iArgumentCount, char** pArgumentValues)
 
     TTF_Font* font = TTF_OpenFont(EIGHTGINE_PROJECT_RESOURCES_DIR "/Fonts/hand.otf", 64);
     if (!font) {
-        std::cout << "TTF_OpenFont Error: " << TTF_GetError() << "\n";
+        std::cout << "TTF_OpenFont Error: " << TTF_GetError() << '\n';
         SDL_DestroyWindow(window);
         SDL_Quit();
         return 1;
     }
 
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-        std::cout << "Mix_OpenAudio Error: " << Mix_GetError() << "\n";
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return 1;
+    std::cout << "Available SDL audio drivers:\n";
+    for (int i = 0; i <  SDL_GetNumAudioDrivers(); ++i) {
+        std::cout << "  " << i << ": " << SDL_GetAudioDriver(i) << '\n';
     }
 
-    Mix_Music* music = Mix_LoadMUS(EIGHTGINE_PROJECT_RESOURCES_DIR "/Music/theme.ogg");
-    if (!music) {
-        std::cout << "Mix_LoadMUS Error: " << Mix_GetError() << "\n";
-        SDL_DestroyWindow(window);
-        Mix_CloseAudio();
-        SDL_Quit();
-        return 1;
+    if (SDL_GetNumAudioDrivers() > 0) {
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+            std::cout << "Mix_OpenAudio Error: " << Mix_GetError() << '\n';
+            SDL_DestroyWindow(window);
+            SDL_Quit();
+            return 1;
+        }
+
+        Mix_Music* music = Mix_LoadMUS(EIGHTGINE_PROJECT_RESOURCES_DIR "/Music/theme.ogg");
+        if (!music) {
+            std::cout << "Mix_LoadMUS Error: " << Mix_GetError() << '\n';
+            SDL_DestroyWindow(window);
+            Mix_CloseAudio();
+            SDL_Quit();
+            return 1;
+        }
+
+        if (Mix_PlayMusic(music, -1) == -1) {
+            std::cout << "Mix_PlayMusic Error: " << Mix_GetError() << '\n';
+        }
     }
 
-    if (Mix_PlayMusic(music, -1) == -1) {
-        std::cout << "Mix_PlayMusic Error: " << Mix_GetError() << "\n";
-    }
     char const* text = "Hello, Eightgine!";
     SDL_Color color = {255, 255, 255};
     SDL_Surface* textSurface = TTF_RenderUTF8_Blended(font, text, color);

@@ -276,11 +276,6 @@ int fMain(int iArgumentCount, char** pArgumentValues)
         textH
     };
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, textTexture, nullptr, &dstRect);
-    SDL_RenderPresent(renderer);
-
     bool running = true;
     bool window_shown = false;
     Uint32 delay = static_cast<Uint32>(1000.0f / 30.0f);
@@ -298,8 +293,13 @@ int fMain(int iArgumentCount, char** pArgumentValues)
         }
 
         if (window_shown) {
+            int winW, winH;
+            SDL_GetWindowSize(window, &winW, &winH);
+
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            SDL_RenderClear(renderer);
+            SDL_Rect fullRect = {0, 0, winW, winH};
+            SDL_RenderFillRect(renderer, &fullRect);
+
             SDL_RenderCopy(renderer, textTexture, nullptr, &dstRect);
             SDL_RenderPresent(renderer);
 
@@ -308,6 +308,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
 
         SDL_Delay(delay);
     }
+
 
     SDL_DestroyTexture(textTexture);
     TTF_CloseFont(font);

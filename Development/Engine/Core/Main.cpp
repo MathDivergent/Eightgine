@@ -281,13 +281,32 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     SDL_RenderCopy(renderer, textTexture, nullptr, &dstRect);
     SDL_RenderPresent(renderer);
 
-    SDL_Event e;
     bool running = true;
+    bool window_shown = false;
+    Uint32 delay = static_cast<Uint32>(1000.0f / 30.0f);
+    SDL_Event e;
+
     while (running) {
         while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE))
+            if (e.type == SDL_QUIT ||
+                (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)) {
                 running = false;
+            }
+            else if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_SHOWN) {
+                window_shown = true;
+            }
         }
+
+        if (window_shown) {
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_RenderClear(renderer);
+            SDL_RenderCopy(renderer, textTexture, nullptr, &dstRect);
+            SDL_RenderPresent(renderer);
+
+            window_shown = false;
+        }
+
+        SDL_Delay(delay);
     }
 
     SDL_DestroyTexture(textTexture);

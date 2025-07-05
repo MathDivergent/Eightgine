@@ -216,7 +216,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     }
 
     SDL_RendererInfo info;
-    SDL_GetRenderDriverInfo(best, &info);
+    SDL_GetRendererInfo(renderer, &info);
     std::cout << "Selected RendrererDriver: " << info.name << '\n';
 
     // const char* ld_path = std::getenv("LD_LIBRARY_PATH");

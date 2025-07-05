@@ -200,8 +200,14 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     }
     char const* err = NULL;
     SDL_Renderer* renderer = SDL_CreateRenderer(window, best, 0);
+    err = SDL_GetError();
+    if (err && *err) {
+        printf("SDL_CreateRenderer error: %s\n", err);
+        SDL_ClearError();
+    }
     if (renderer == NULL) {
-        printf("renderer == NULL\n");
+        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE | SDL_RENDERER_TARGETTEXTURE);
+        printf("renderer == NULL, try fallback renderer\n");
     }
     err = SDL_GetError();
     if (err && *err) {

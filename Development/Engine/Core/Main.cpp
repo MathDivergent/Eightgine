@@ -206,7 +206,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
         SDL_ClearError();
     }
     if (renderer == NULL) {
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE | SDL_RENDERER_TARGETTEXTURE);
+        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
         printf("renderer == NULL, try fallback renderer\n");
     }
     err = SDL_GetError();
@@ -218,7 +218,11 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     SDL_RendererInfo info;
     SDL_GetRendererInfo(renderer, &info);
     std::cout << "Selected RendrererDriver: " << info.name << '\n';
-
+    if (info.flags & SDL_RENDERER_TARGETTEXTURE) {
+        printf("Target texture is supported!\n");
+    } else {
+        printf("Target texture NOT supported on this renderer.\n");
+    }
     // const char* ld_path = std::getenv("LD_LIBRARY_PATH");
     // if (ld_path)
     //     std::cout << "LD_LIBRARY_PATH = " << ld_path << '\n';

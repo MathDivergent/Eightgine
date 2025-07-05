@@ -245,18 +245,18 @@
 
 
 [LINUX]
-; Setup desktop for Debian
-sudo apt purge -y 'gnome*' gdm3 task-gnome-desktop task-desktop gnome-shell mutter nautilus yelp gedit gnome-terminal && sudo apt autoremove --purge -y && sudo apt install -y cifs-utils p7zip-full sway xwayland
-
-
 ; Build and setup 'fresh' gcc
 ; Use mirro when low download speed:
 ; https://ftp.sotirov-bg.net/pub/mirrors/gnu/gcc/gcc-13.2.0/gcc-13.2.0.tar.gz
-sudo apt update && sudo apt install -y cifs-utils p7zip-full build-essential libgmp-dev libmpfr-dev libmpc-dev flex bison texinfo zlib1g-dev curl cmake git libx11-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev libxfixes-dev libxi-dev && cd /tmp && curl -LO https://ftp.gnu.org/gnu/gcc/gcc-13.2.0/gcc-13.2.0.tar.gz && tar -xf gcc-13.2.0.tar.gz && cd gcc-13.2.0 && ./contrib/download_prerequisites && mkdir ../gcc-build && cd ../gcc-build && ../gcc-13.2.0/configure --enable-languages=c,c++ --disable-multilib --prefix=/opt/gcc-13.2.0 && make -j$(nproc) && sudo make install && sudo update-alternatives --install /usr/bin/gcc gcc /opt/gcc-13.2.0/bin/gcc 100 && sudo update-alternatives --install /usr/bin/g++ g++ /opt/gcc-13.2.0/bin/g++ 100 && sudo update-alternatives --config gcc && sudo update-alternatives --config g++
+sudo apt update && sudo apt install -y cifs-utils p7zip-full build-essential libwayland-dev libasound2-dev libpulse-dev libgmp-dev libmpfr-dev libmpc-dev flex bison texinfo zlib1g-dev curl cmake git libx11-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev libxfixes-dev libxi-dev && cd /tmp && curl -LO https://ftp.gnu.org/gnu/gcc/gcc-13.2.0/gcc-13.2.0.tar.gz && tar -xf gcc-13.2.0.tar.gz && cd gcc-13.2.0 && ./contrib/download_prerequisites && mkdir ../gcc-build && cd ../gcc-build && ../gcc-13.2.0/configure --enable-languages=c,c++ --disable-multilib --prefix=/opt/gcc-13.2.0 && make -j$(nproc) && sudo make install && sudo update-alternatives --install /usr/bin/gcc gcc /opt/gcc-13.2.0/bin/gcc 100 && sudo update-alternatives --install /usr/bin/g++ g++ /opt/gcc-13.2.0/bin/g++ 100 && sudo update-alternatives --config gcc && sudo update-alternatives --config g++
 
 
-; Setup gcc and g++ for Ubuntu 
-sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt update && sudo apt install -y cifs-utils p7zip-full build-essential libx11-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev libxfixes-dev libxi-dev git gcc-9 g++-9 && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 90 && sudo update-alternatives --config gcc && sudo update-alternatives --config g++ && sudo snap install cmake --classic
+; Setup Debian
+sudo apt purge -y 'gnome*' gdm3 task-gnome-desktop task-desktop gnome-shell mutter nautilus yelp gedit gnome-terminal && sudo apt autoremove --purge -y && sudo apt install -y cifs-utils p7zip-full sway xwayland libwayland-dev libasound2-dev libpulse-dev
+
+
+; Setup Ubuntu 
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt update && sudo apt install -y cifs-utils p7zip-full build-essential libwayland-dev libasound2-dev libpulse-dev libx11-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev libxfixes-dev libxi-dev git gcc-9 g++-9 && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 90 && sudo update-alternatives --config gcc && sudo update-alternatives --config g++ && sudo snap install cmake --classic
 
 
 ; Download project

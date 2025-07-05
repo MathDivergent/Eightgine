@@ -18,7 +18,6 @@ eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Platforms-Linux-Graphics" DE
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Platforms-Linux-Graphics" DEPENDENCY_NAME "Xrandr")
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Platforms-Linux-Graphics" DEPENDENCY_NAME "Xcursor")
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Platforms-Linux-Graphics" DEPENDENCY_NAME "Xi")
-eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Platforms-Linux-Graphics" DEPENDENCY_NAME "Wayland")
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Platforms-Linux-Graphics" DEPENDENCY_NAME "wayland-client")
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Platforms-Linux-Graphics" DEPENDENCY_NAME "wayland-cursor")
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Platforms-Linux-Graphics" DEPENDENCY_NAME "wayland-egl")

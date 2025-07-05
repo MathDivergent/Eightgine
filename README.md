@@ -246,17 +246,17 @@
 
 [LINUX]
 ; Setup desktop for Debian
-sudo apt purge -y 'gnome*' gdm3 task-gnome-desktop task-desktop gnome-shell mutter nautilus yelp gedit gnome-terminal && sudo apt autoremove --purge -y && sudo apt install -y p7zip-full sway xwayland
+sudo apt purge -y 'gnome*' gdm3 task-gnome-desktop task-desktop gnome-shell mutter nautilus yelp gedit gnome-terminal && sudo apt autoremove --purge -y && sudo apt install -y cifs-utils p7zip-full sway xwayland
 
 
 ; Build and setup 'fresh' gcc
 ; Use mirro when low download speed:
 ; https://ftp.sotirov-bg.net/pub/mirrors/gnu/gcc/gcc-13.2.0/gcc-13.2.0.tar.gz
-sudo apt update && sudo apt install -y p7zip-full build-essential libgmp-dev libmpfr-dev libmpc-dev flex bison texinfo zlib1g-dev curl cmake git libx11-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev libxfixes-dev libxi-dev && cd /tmp && curl -LO https://ftp.gnu.org/gnu/gcc/gcc-13.2.0/gcc-13.2.0.tar.gz && tar -xf gcc-13.2.0.tar.gz && cd gcc-13.2.0 && ./contrib/download_prerequisites && mkdir ../gcc-build && cd ../gcc-build && ../gcc-13.2.0/configure --enable-languages=c,c++ --disable-multilib --prefix=/opt/gcc-13.2.0 && make -j$(nproc) && sudo make install && sudo update-alternatives --install /usr/bin/gcc gcc /opt/gcc-13.2.0/bin/gcc 100 && sudo update-alternatives --install /usr/bin/g++ g++ /opt/gcc-13.2.0/bin/g++ 100 && sudo update-alternatives --config gcc && sudo update-alternatives --config g++
+sudo apt update && sudo apt install -y cifs-utils p7zip-full build-essential libgmp-dev libmpfr-dev libmpc-dev flex bison texinfo zlib1g-dev curl cmake git libx11-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev libxfixes-dev libxi-dev && cd /tmp && curl -LO https://ftp.gnu.org/gnu/gcc/gcc-13.2.0/gcc-13.2.0.tar.gz && tar -xf gcc-13.2.0.tar.gz && cd gcc-13.2.0 && ./contrib/download_prerequisites && mkdir ../gcc-build && cd ../gcc-build && ../gcc-13.2.0/configure --enable-languages=c,c++ --disable-multilib --prefix=/opt/gcc-13.2.0 && make -j$(nproc) && sudo make install && sudo update-alternatives --install /usr/bin/gcc gcc /opt/gcc-13.2.0/bin/gcc 100 && sudo update-alternatives --install /usr/bin/g++ g++ /opt/gcc-13.2.0/bin/g++ 100 && sudo update-alternatives --config gcc && sudo update-alternatives --config g++
 
 
 ; Setup gcc and g++ for Ubuntu 
-sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt update && sudo apt install -y p7zip-full build-essential libx11-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev libxfixes-dev libxi-dev git gcc-9 g++-9 && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 90 && sudo update-alternatives --config gcc && sudo update-alternatives --config g++ && sudo snap install cmake --classic
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt update && sudo apt install -y cifs-utils p7zip-full build-essential libx11-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev libxfixes-dev libxi-dev git gcc-9 g++-9 && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 90 && sudo update-alternatives --config gcc && sudo update-alternatives --config g++ && sudo snap install cmake --classic
 
 
 ; Download project
@@ -268,12 +268,20 @@ export Eightgine=/home/user/Documents/Eightgine && cd ${Eightgine}/Development &
 
 
 ; Build project
-export Eightgine=/home/user/Documents/Eightgine && cd ${Eightgine}/Development/Intermediate && /snap/bin/cmake --build . -- -j8
+cd /home/user/Documents/Eightgine/Development/Intermediate && /snap/bin/cmake --build . -- -j8
 
 
 ; Run project
-export Eightgine=/home/user/Documents/Eightgine && cd ${Eightgine}/BinariesWithEditor && ./Launcher
+cd /home/user/Documents/Eightgine/BinariesWithEditor && ./Launcher
 
 
 ; Package project
-rm -rf /home/user/Desktop/Eightgine && mkdir -p /home/user/Desktop/Eightgine && cp -r /home/user/Documents/Eightgine/BinariesWithEditor /home/user/Documents/Eightgine/Resources /home/user/Desktop/Eightgine && 7z a -t7z /home/user/Desktop/Eightgine.7z /home/user/Desktop/Eightgine
+7z a -t7z /home/user/Documents/Eightgine.7z /home/user/Documents/Eightgine/ -xr\!.git -xr\!.gitignore -xr\!Development -xr\!README.md 
+
+
+; Upload to Shared folder
+sudo mkdir -p /mnt/Shared && sudo mount -t cifs //192.168.0.102/Shared /mnt/Shared -o username=user,password=0000 && cp /home/user/Documents/Eightgine.7z /mnt/Shared/ && sudo umount /mnt/Shared
+
+
+; Download from Shared foler
+sudo mkdir -p /mnt/Shared && sudo mount -t cifs //192.168.0.102/Shared /mnt/Shared -o username=user,password=0000 && rm -rf /home/user/Documents/Eightgine && 7z x /mnt/Shared/Eightgine.7z -o/home/user/Documents/ && sudo umount /mnt/Shared

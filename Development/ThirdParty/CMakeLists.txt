@@ -1,6 +1,6 @@
 # [[Subdirectories]]
 add_subdirectory("Platforms/Linux" EXCLUDE_FROM_ALL)
-add_subdirectory("Platforms/MacOS" EXCLUDE_FROM_ALL)
+add_subdirectory("Platforms/macOS" EXCLUDE_FROM_ALL)
 
 add_subdirectory("cJSON" EXCLUDE_FROM_ALL)
 add_subdirectory("lua" EXCLUDE_FROM_ALL)

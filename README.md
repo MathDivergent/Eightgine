@@ -275,6 +275,10 @@ cd /home/user/Documents/Eightgine/Development/Intermediate && /snap/bin/cmake --
 cd /home/user/Documents/Eightgine/BinariesWithEditor && ./Launcher
 
 
+; Run project (No sound)
+export SDL_AUDIODRIVER=dummy && cd /home/user/Documents/Eightgine/BinariesWithEditor && ./Launcher
+
+
 ; Package project
 7z a -t7z /home/user/Documents/Eightgine.7z /home/user/Documents/Eightgine/ -xr\!.git -xr\!.gitignore -xr\!Development -xr\!README.md 
 

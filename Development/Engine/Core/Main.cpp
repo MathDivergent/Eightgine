@@ -198,8 +198,17 @@ int fMain(int iArgumentCount, char** pArgumentValues)
             best = i;
         }
     }
-
+    char const* err = NULL;
     SDL_Renderer* renderer = SDL_CreateRenderer(window, best, 0);
+    if (renderer == NULL) {
+        printf("renderer == NULL\n");
+    }
+    err = SDL_GetError();
+    if (err && *err) {
+        printf("SDL_CreateRenderer error: %s\n", err);
+        SDL_ClearError();
+    }
+
     SDL_RendererInfo info;
     SDL_GetRenderDriverInfo(best, &info);
     std::cout << "Selected RendrererDriver: " << info.name << '\n';
@@ -262,6 +271,11 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     SDL_Color color = {255, 255, 255};
     SDL_Surface* textSurface = TTF_RenderUTF8_Blended(font, text, color);
     SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    err = SDL_GetError();
+    if (err && *err) {
+        printf("SDL_CreateTextureFromSurface error: %s\n", err);
+        SDL_ClearError();
+    }
 
     int textW = textSurface->w;
     int textH = textSurface->h;
@@ -297,19 +311,33 @@ int fMain(int iArgumentCount, char** pArgumentValues)
             SDL_GetWindowSize(window, &winW, &winH);
 
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            err = SDL_GetError();
+            if (err && *err) {
+                printf("SDL_SetRenderDrawColor error: %s\n", err);
+                SDL_ClearError();
+            }
             SDL_Rect fullRect = {0, 0, winW, winH};
             SDL_RenderFillRect(renderer, &fullRect);
-
+            err = SDL_GetError();
+            if (err && *err) {
+                printf("SDL_RenderFillRect error: %s\n", err);
+                SDL_ClearError();
+            }
             SDL_RenderCopy(renderer, textTexture, nullptr, &dstRect);
+            err = SDL_GetError();
+            if (err && *err) {
+                printf("SDL_RenderCopy error: %s\n", err);
+                SDL_ClearError();
+            }
             SDL_RenderPresent(renderer);
-
+            err = SDL_GetError();
+            if (err && *err) {
+                printf("SDL_RenderPresent error: %s\n", err);
+                SDL_ClearError();
+            }
             window_shown = false;
         }
-        const char* err = SDL_GetError();
-        if (err && *err) {
-            printf("SDL_RenderClear error: %s\n", err);
-            SDL_ClearError();
-        }
+
         SDL_Delay(delay);
     }
 

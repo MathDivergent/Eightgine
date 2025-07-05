@@ -164,7 +164,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
 
     // TODO: dont use, temp
     #if EIGHTGINE_PLATFORM_LINUX
-    SDL_setenv("SDL_AUDIODRIVER", "dummy", 1);
+    // SDL_setenv("SDL_AUDIODRIVER", "dummy", 1);
     #endif
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0 || TTF_Init() != 0)

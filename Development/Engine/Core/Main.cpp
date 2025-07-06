@@ -360,7 +360,6 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     SDL_Quit();
     #endif
     exit:
-    scanf("%*[^\n]");
     getchar();
 
 #if EIGHTGINE_PLATFORM_WINDOWS

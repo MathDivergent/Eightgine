@@ -1,6 +1,11 @@
 # [[Subdirectories]]
-add_subdirectory("Platforms/Linux" EXCLUDE_FROM_ALL)
-add_subdirectory("Platforms/macOS" EXCLUDE_FROM_ALL)
+if(EIGHTGINE_PLATFORM_WINDOWS)
+    add_subdirectory("Platforms/Windows" EXCLUDE_FROM_ALL)
+elseif(EIGHTGINE_PLATFORM_LINUX)
+    add_subdirectory("Platforms/Linux" EXCLUDE_FROM_ALL)
+else(EIGHTGINE_PLATFORM_MACOS)
+    add_subdirectory("Platforms/macOS" EXCLUDE_FROM_ALL)
+endif()
 
 add_subdirectory("cJSON" EXCLUDE_FROM_ALL)
 add_subdirectory("lua" EXCLUDE_FROM_ALL)
@@ -21,4 +26,6 @@ add_subdirectory("SDL2_net" EXCLUDE_FROM_ALL)
 
 add_subdirectory("Box2D" EXCLUDE_FROM_ALL)
 
-add_subdirectory("Eightest" EXCLUDE_FROM_ALL)
+if(EIGHTGINE_DEBUG)
+    add_subdirectory("Eightest" EXCLUDE_FROM_ALL)
+endif()

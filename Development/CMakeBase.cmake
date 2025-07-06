@@ -8,6 +8,15 @@ else()
 endif()
 
 set(EIGHTGINE_DIRTY_MODULE_OR_EXECUTABLE_NAME_PREFIX "8")
+set(EIGHTGINE_COMMAND_NAME_PREFIX "x")
+
+if(WIN32)
+    set(EIGHTGINE_MODULE_EXPORT "__declspec(dllexport)")
+    set(EIGHTGINE_MODULE_IMPORT "__declspec(dllimport)")
+else()
+    set(EIGHTGINE_MODULE_EXPORT "__attribute__((visibility(\"default\")))")
+    set(EIGHTGINE_MODULE_IMPORT "")
+endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(EIGHTGINE_DEBUG 1)
@@ -42,6 +51,12 @@ else()
     set(EIGHTGINE_PLATFORM_MACOS 0)
 endif()
 
+if(LINUX)
+    set(EIGHTGINE_RPATH "$ORIGIN")
+elseif(APPLE)
+    set(EIGHTGINE_RPATH "@loader_path")
+endif()
+
 add_compile_definitions("EIGHTGINE_DEBUG=${EIGHTGINE_DEBUG}")
 add_compile_definitions("EIGHTGINE_RELWITHDEBINFO=${EIGHTGINE_RELWITHDEBINFO}")
 
@@ -57,6 +72,14 @@ endmacro()
 
 macro(install)
     # pass install
+endmacro()
+
+macro(eightgine_bin_dir EIGHTGINE_BIN_DIR)
+    if(WIN32)
+        set(${EIGHTGINE_BIN_DIR} "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+    else()
+        set(${EIGHTGINE_BIN_DIR} "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+    endif()
 endmacro()
 
 macro(eightgine_set_module_or_executable MODULE_OR_EXECUTABLE_NAME)
@@ -91,63 +114,6 @@ function(eightgine_message)
         return()
     endif()
     _message(${ARGV})
-endfunction()
-
-function(eightgine_install_dependency)
-    set(ONE_VALUE_ARGS
-        MODULE_OR_EXECUTABLE_NAME
-        DEPENDENCY_NAME
-        DEPENDENCY_BIN_DIR
-    )
-    cmake_parse_arguments("ARG" "" "${ONE_VALUE_ARGS}" "" ${ARGN})
-
-    eightgine_get_module_or_executable(ARG_MODULE_OR_EXECUTABLE_NAME)
-
-    set(DEPENDENCY_BIN_FILE_PATH "${ARG_DEPENDENCY_BIN_DIR}/${ARG_DEPENDENCY_NAME}.${EIGHTGINE_BIN_TYPE}")
-    if(NOT EXISTS "${DEPENDENCY_BIN_FILE_PATH}")
-        message(FATAL_ERROR "MISSING DEPENDENCY: ${DEPENDENCY_BIN_FILE_PATH}")
-    endif()
-
-    add_custom_command(TARGET "${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}"
-        POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${DEPENDENCY_BIN_FILE_PATH}"
-        "$<TARGET_FILE_DIR:${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}>/${ARG_DEPENDENCY_NAME}.${EIGHTGINE_BIN_TYPE}"
-    )
-endfunction()
-
-function(eightgine_install_libcxx_dependency)
-    if(NOT WIN32)
-        return()
-    endif()
-
-    set(ONE_VALUE_ARGS
-        MODULE_OR_EXECUTABLE_NAME
-    )
-    cmake_parse_arguments("ARG" "" "${ONE_VALUE_ARGS}" "" ${ARGN})
-
-    get_filename_component(COMPILER_BIN_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
-
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang") # Clang / LLVM
-        set(LIBCXX_DLLS "libc++" "libunwind")
-    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU") # MinGW GCC
-        set(LIBCXX_DLLS "libstdc++-6" "libgcc_s_seh-1" "libwinpthread-1")
-    else()
-        message(WARNING "UNKNOWN COMPILER: ${CMAKE_CXX_COMPILER_ID}")
-        return()
-    endif()
-
-    foreach(LIBCXX_NAME ${LIBCXX_DLLS})
-        set(DLL_PATH "${COMPILER_BIN_DIR}/${LIBCXX_NAME}.dll")
-        if(EXISTS "${DLL_PATH}")
-            eightgine_install_dependency(MODULE_OR_EXECUTABLE_NAME "${ARG_MODULE_OR_EXECUTABLE_NAME}"
-                DEPENDENCY_NAME "${LIBCXX_NAME}"
-                DEPENDENCY_BIN_DIR "${COMPILER_BIN_DIR}"
-            )
-        else()
-            message(WARNING "MISSING DEPENDENCY: ${DLL_PATH}")
-        endif()
-    endforeach()
 endfunction()
 
 function(eightgine_add_symlink)
@@ -206,7 +172,8 @@ endfunction()
 function(eightgine_configure_module_or_executable)
     set(ONE_VALUE_ARGS
         MODULE_OR_EXECUTABLE_NAME
-        MODULE_OR_EXECUTABLE_LIB_DIR MODULE_OR_EXECUTABLE_BIN_DIR
+        MODULE_OR_EXECUTABLE_LIB_DIR
+        MODULE_OR_EXECUTABLE_BIN_DIR MODULE_OR_EXECUTABLE_BIN_DIR_DESTINATION
     )
     set(MULTI_VALUE_ARGS
         MODULE_OR_EXECUTABLE_INCLUDE_DIR
@@ -235,7 +202,7 @@ function(eightgine_configure_module_or_executable)
             if(EXISTS "${SOURCE_FILE}")
                 list(APPEND SOURCES_FILES "${SOURCE_FILE}")
             else()
-                message(WARNING "SOURCE '${SOURCE_FILE}' DOES NOT EXIST")
+                message(WARNING "MISSING FILE: ${SOURCE_FILE}")
             endif()
         endforeach()
 
@@ -247,7 +214,24 @@ function(eightgine_configure_module_or_executable)
     endif()
 
     if(ARG_MODULE_OR_EXECUTABLE_BIN_DIR)
-         set_target_properties("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" PROPERTIES MODULE_OR_EXECUTABLE_BIN_DIR "${ARG_MODULE_OR_EXECUTABLE_BIN_DIR}")
+        set(MODULE_OR_EXECUTABLE_BIN_FILE "${ARG_MODULE_OR_EXECUTABLE_NAME}.${EIGHTGINE_BIN_TYPE}")
+        set(MODULE_OR_EXECUTABLE_COMMAND_NAME "${EIGHTGINE_COMMAND_NAME_PREFIX}${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}")
+
+        if(NOT EXISTS "${ARG_MODULE_OR_EXECUTABLE_BIN_DIR}/${MODULE_OR_EXECUTABLE_BIN_FILE}")
+            message(WARNING "MISSING FILE: ${MODULE_OR_EXECUTABLE_BIN_FILE} IN DIR: ${ARG_MODULE_OR_EXECUTABLE_BIN_DIR}")
+        endif()
+
+        if(NOT ARG_MODULE_OR_EXECUTABLE_BIN_DIR_DESTINATION)
+            eightgine_bin_dir(ARG_MODULE_OR_EXECUTABLE_BIN_DIR_DESTINATION)
+        endif()
+
+        add_custom_target("${MODULE_OR_EXECUTABLE_COMMAND_NAME}" ALL
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${ARG_MODULE_OR_EXECUTABLE_BIN_DIR}/${MODULE_OR_EXECUTABLE_BIN_FILE}"
+                "${ARG_MODULE_OR_EXECUTABLE_BIN_DIR_DESTINATION}/${MODULE_OR_EXECUTABLE_BIN_FILE}"
+        )
+
+        add_dependencies("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" "${MODULE_OR_EXECUTABLE_COMMAND_NAME}")
     endif()
 
     if(ARG_MODULE_OR_EXECUTABLE_DEFINITIONS)
@@ -265,7 +249,8 @@ function(eightgine_add_module)
         MODULE_ALIAS
         MODULE_TYPE
         MODULE_API_DEFINITION
-        MODULE_LIB_DIR MODULE_BIN_DIR
+        MODULE_LIB_DIR
+        MODULE_BIN_DIR MODULE_BIN_DIR_DESTINATION
     )
     set(MULTI_VALUE_ARGS
         MODULE_INCLUDE_DIR
@@ -288,26 +273,19 @@ function(eightgine_add_module)
     endif()
 
     if(NOT ARG_MODULE_API_DEFINITION STREQUAL "OFF")
-        if(WIN32)
-            set(MODULE_EXPORT "__declspec(dllexport)")
-            set(MODULE_IMPORT "__declspec(dllimport)")
-        else()
-            set(MODULE_EXPORT "__attribute__((visibility(\"default\")))")
-            set(MODULE_IMPORT "")
-        endif()
-
         string(TOUPPER "${ARG_MODULE_NAME}_API" MODULE_API_DEFINITION)
         if(ARG_MODULE_TYPE STREQUAL "INTERFACE")
-            set(MODULE_DEFAULT_DEFINITIONS INTERFACE "${MODULE_API_DEFINITION}=${MODULE_IMPORT}")
+            set(MODULE_DEFAULT_DEFINITIONS INTERFACE "${MODULE_API_DEFINITION}=${EIGHTGINE_MODULE_IMPORT}")
         elseif(ARG_MODULE_TYPE STREQUAL "SHARED")
-            set(MODULE_DEFAULT_DEFINITIONS PRIVATE "${MODULE_API_DEFINITION}=${MODULE_EXPORT}" INTERFACE "${MODULE_API_DEFINITION}=${MODULE_IMPORT}")
+            set(MODULE_DEFAULT_DEFINITIONS PRIVATE "${MODULE_API_DEFINITION}=${EIGHTGINE_MODULE_EXPORT}" INTERFACE "${MODULE_API_DEFINITION}=${EIGHTGINE_MODULE_IMPORT}")
         elseif(ARG_MODULE_TYPE STREQUAL "STATIC")
             set(MODULE_DEFAULT_DEFINITIONS PUBLIC "${MODULE_API_DEFINITION}=")
         endif()
     endif()
 
     eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "${ARG_MODULE_NAME}"
-        MODULE_OR_EXECUTABLE_LIB_DIR "${ARG_MODULE_LIB_DIR}" MODULE_OR_EXECUTABLE_BIN_DIR "${ARG_MODULE_BIN_DIR}"
+        MODULE_OR_EXECUTABLE_LIB_DIR "${ARG_MODULE_LIB_DIR}"
+        MODULE_OR_EXECUTABLE_BIN_DIR "${ARG_MODULE_BIN_DIR}" MODULE_OR_EXECUTABLE_BIN_DIR_DESTINATION "${ARG_MODULE_BIN_DIR_DESTINATION}"
         MODULE_OR_EXECUTABLE_INCLUDE_DIR ${ARG_MODULE_INCLUDE_DIR}
         MODULE_OR_EXECUTABLE_SOURCES_DIR ${ARG_MODULE_SOURCES_DIR} MODULE_OR_EXECUTABLE_SOURCES_FILES ${ARG_MODULE_SOURCES_FILES}
         MODULE_OR_EXECUTABLE_DEFINITIONS
@@ -341,12 +319,12 @@ function(eightgine_add_executable)
         )
     elseif(LINUX)
         set(DEFAULT_EXECUTABLE_PROPERTIES
-            INSTALL_RPATH "$ORIGIN" BUILD_RPATH "$ORIGIN" BUILD_WITH_INSTALL_RPATH TRUE
+            INSTALL_RPATH "${EIGHTGINE_BIN_DIR_RPATH}" BUILD_RPATH "${EIGHTGINE_BIN_DIR_RPATH}" BUILD_WITH_INSTALL_RPATH TRUE
         )
     elseif(APPLE)
         set(DEFAULT_EXECUTABLE_PROPERTIES
             MACOSX_BUNDLE TRUE
-            INSTALL_RPATH "@loader_path" BUILD_RPATH "loader_path" BUILD_WITH_INSTALL_RPATH TRUE
+            INSTALL_RPATH "${EIGHTGINE_BIN_DIR_RPATH}" BUILD_RPATH "${EIGHTGINE_BIN_DIR_RPATH}" BUILD_WITH_INSTALL_RPATH TRUE
         )
     endif()
 
@@ -382,7 +360,7 @@ function(eightgine_add_dependency)
     set(ONE_VALUE_ARGS
         MODULE_OR_EXECUTABLE_NAME
         DEPENDENCY_NAME
-        DEPENDENCY_LIB_DIR DEPENDENCY_BIN_DIR
+        DEPENDENCY_LIB_DIR
     )
     set(MULTI_VALUE_ARGS
         DEPENDENCY_INCLUDE_DIR
@@ -403,19 +381,8 @@ function(eightgine_add_dependency)
 
     target_link_libraries("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_NAME_EXTERNAL} "${DIRTY_ARG_DEPENDENCY_NAME}")
 
-    if(NOT ARG_DEPENDENCY_BIN_DIR AND TARGET "${DIRTY_ARG_DEPENDENCY_NAME}")
-        get_target_property(ARG_DEPENDENCY_BIN_DIR "${DIRTY_ARG_DEPENDENCY_NAME}" MODULE_OR_EXECUTABLE_BIN_DIR)
-    endif()
-
     eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "${ARG_MODULE_OR_EXECUTABLE_NAME}"
         MODULE_OR_EXECUTABLE_LIB_DIR "${ARG_DEPENDENCY_LIB_DIR}"
         MODULE_OR_EXECUTABLE_INCLUDE_DIR ${ARG_DEPENDENCY_INCLUDE_DIR}
     )
-
-    if(ARG_DEPENDENCY_BIN_DIR)
-        eightgine_install_dependency(MODULE_OR_EXECUTABLE_NAME "${ARG_MODULE_OR_EXECUTABLE_NAME}"
-            DEPENDENCY_NAME "${ARG_DEPENDENCY_NAME}"
-            DEPENDENCY_BIN_DIR "${ARG_DEPENDENCY_BIN_DIR}"
-        )
-    endif()
 endfunction()

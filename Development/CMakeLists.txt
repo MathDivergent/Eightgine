@@ -95,5 +95,8 @@ eightgine_add_executable(EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}"
 
 
 # [[Dependencies]]
-eightgine_install_libcxx_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}")
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}" DEPENDENCY_NAME "EightgineCore")
+
+if(EIGHTGINE_PLATFORM_WINDOWS)
+    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_LAUNCHER_NAME}" DEPENDENCY_NAME "Platforms-Windows-Executable")
+endif()

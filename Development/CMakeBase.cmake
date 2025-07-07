@@ -40,6 +40,7 @@ endif()
 if(LINUX)
     set(EIGHTGINE_PLATFORM_LINUX 1)
     set(EIGHTGINE_BIN_TYPE "so")
+    set(EIGHTGINE_RPATH "$ORIGIN")
 else()
     set(EIGHTGINE_PLATFORM_LINUX 0)
 endif()
@@ -47,14 +48,9 @@ endif()
 if(APPLE)
     set(EIGHTGINE_PLATFORM_MACOS 1)
     set(EIGHTGINE_BIN_TYPE "dylib")
+    set(EIGHTGINE_RPATH "@loader_path")
 else()
     set(EIGHTGINE_PLATFORM_MACOS 0)
-endif()
-
-if(LINUX)
-    set(EIGHTGINE_RPATH "$ORIGIN")
-elseif(APPLE)
-    set(EIGHTGINE_RPATH "@loader_path")
 endif()
 
 add_compile_definitions("EIGHTGINE_DEBUG=${EIGHTGINE_DEBUG}")
@@ -75,9 +71,9 @@ macro(install)
 endmacro()
 
 macro(eightgine_bin_dir EIGHTGINE_BIN_DIR)
-    if(WIN32)
+    if(EIGHTGINE_PLATFORM_WINDOWS)
         set(${EIGHTGINE_BIN_DIR} "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
-    else()
+    elseif(EIGHTGINE_PLATFORM_LINUX OR EIGHTGINE_PLATFORM_MACOS)
         set(${EIGHTGINE_BIN_DIR} "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
     endif()
 endmacro()
@@ -313,15 +309,15 @@ function(eightgine_add_executable)
 
     add_executable("${DIRTY_ARG_EXECUTABLE_NAME}")
 
-    if(WIN32)
+    if(EIGHTGINE_PLATFORM_WINDOWS)
         set(DEFAULT_EXECUTABLE_PROPERTIES
             WIN32_EXECUTABLE TRUE
         )
-    elseif(LINUX)
+    elseif(EIGHTGINE_PLATFORM_LINUX)
         set(DEFAULT_EXECUTABLE_PROPERTIES
             INSTALL_RPATH "${EIGHTGINE_RPATH}" BUILD_RPATH "${EIGHTGINE_RPATH}" BUILD_WITH_INSTALL_RPATH TRUE
         )
-    elseif(APPLE)
+    elseif(EIGHTGINE_PLATFORM_MACOS)
         set(DEFAULT_EXECUTABLE_PROPERTIES
             MACOSX_BUNDLE TRUE
             INSTALL_RPATH "${EIGHTGINE_RPATH}" BUILD_RPATH "${EIGHTGINE_RPATH}" BUILD_WITH_INSTALL_RPATH TRUE

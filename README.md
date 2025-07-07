@@ -255,6 +255,10 @@ sudo apt update && sudo apt install -y cifs-utils p7zip-full build-essential lib
 sudo apt purge -y 'gnome*' gdm3 task-gnome-desktop task-desktop gnome-shell mutter nautilus yelp gedit gnome-terminal && sudo apt autoremove --purge -y && sudo apt install -y cifs-utils p7zip-full sway xwayland
 
 
+; Setup Fedora (Use)
+sudo dnf install p7zip p7zip-plugins
+
+
 ; Setup Ubuntu (Dev)
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt update && sudo apt install -y cifs-utils p7zip-full build-essential libwayland-dev libegl1-mesa-dev libasound2-dev libpulse-dev libx11-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev libxfixes-dev libxi-dev git gcc-9 g++-9 && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 90 && sudo update-alternatives --config gcc && sudo update-alternatives --config g++ && sudo snap install cmake --classic
 

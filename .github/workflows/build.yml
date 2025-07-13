@@ -40,5 +40,5 @@ jobs:
       with:
         name: Eightgine
         path: |
-          Eightgine/Binaries/
-          Eightgine/Resources/
+          ${{ github.workspace }}/Binaries/
+          ${{ github.workspace }}/Resources/

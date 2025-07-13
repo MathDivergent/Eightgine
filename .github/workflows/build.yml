@@ -21,7 +21,7 @@ jobs:
         sudo apt install -y libasound2-dev libpulse-dev
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90
         sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 90
-        sudo update-alternatives --config gcс
+        sudo update-alternatives --config gcc
         sudo update-alternatives --config g++
         sudo snap install cmake --classic
 

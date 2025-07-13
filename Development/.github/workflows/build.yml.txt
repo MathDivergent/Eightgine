@@ -1,0 +1,45 @@
+name: Manual Build Eightgine Project
+
+on:
+  workflow_dispatch:
+    inputs:
+      with_editor:
+        description: 'Build with editor? (ON/OFF)'
+        required: true
+        default: 'ON'
+      build_type:
+        description: 'Build type (Debug/Release)'
+        required: true
+        default: 'Release'
+
+jobs:
+  build-windows:
+    name: Build on Windows
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: choco install cmake ninja -y
+
+    - name: Configure CMake
+      run: >
+        cmake -S Eightgine/Development
+             -B Eightgine/Development/Intermediate/${{ github.event.inputs.build_type }}
+             -G "Ninja"
+             -DWITH_EDITOR=${{ github.event.inputs.with_editor }}
+             -DCMAKE_BUILD_TYPE=${{ github.event.inputs.build_type }}
+
+    - name: Build
+      run: >
+        cmake --build Eightgine/Development/Intermediate/${{ github.event.inputs.build_type }}
+
+    - name: Upload binaries
+      uses: actions/upload-artifact@v4
+      with:
+        name: Eightgine-${{ github.event.inputs.build_type }}-Editor-${{ github.event.inputs.with_editor }}
+        path: |
+          Eightgine/Binaries/
+          Eightgine/Resources/

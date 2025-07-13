@@ -231,7 +231,7 @@ function(eightgine_configure_module_or_executable)
     endif()
 
     if(ARG_MODULE_OR_EXECUTABLE_DEFINITIONS)
-        target_compile_definitions("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_DEFINITIONS})
+        target_compile_definitions("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_NAME_EXTERNAL} ${ARG_MODULE_OR_EXECUTABLE_DEFINITIONS})
     endif()
 
     if(ARG_MODULE_OR_EXECUTABLE_PROPERTIES)

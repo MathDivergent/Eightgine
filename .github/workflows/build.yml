@@ -1,4 +1,4 @@
-name: Eightgine
+name: EightgineWithEditor
 
 on:
   workflow_dispatch:
@@ -40,5 +40,5 @@ jobs:
       with:
         name: Eightgine
         path: |
-          ${{ github.workspace }}/Binaries/
+          ${{ github.workspace }}/BinariesWithEditor/
           ${{ github.workspace }}/Resources/

@@ -29,6 +29,13 @@ jobs:
         cmake -S . -B Intermediate -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
         cmake --build Intermediate --parallel
 
+    - name: "Prepare project to Package"
+      shell: cmd
+      run: |
+        ren EmptyProject.app tmp_EmptyProject.app
+        mkdir EmptyProject.app
+        move tmp_EmptyProject.app EmptyProject.app/EmptyProject.app
+
     - name: "Package and Upload project"
       uses: actions/upload-artifact@v4
       with:

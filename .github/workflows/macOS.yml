@@ -19,7 +19,6 @@ jobs:
         brew install cmake ninja llvm
         cmake --version
         clang --version
-        sysctl -n hw.ncpu
 
     - name: "Regenerate and Rebuild project"
       run: |

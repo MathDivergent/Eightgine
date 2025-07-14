@@ -268,11 +268,11 @@ cd /home/user/Documents/ && git clone https://github.com/Sigma-Ryden/Eightgine
 
 
 ; Regenerate and Rebuild project
-export Eightgine=/home/user/Documents/Eightgine && cd ${Eightgine}/Development && rm -rf Intermediate && mkdir Intermediate && cd Intermediate && /snap/bin/cmake .. && /snap/bin/cmake --build . -- -j$(nproc)
+export Eightgine=/home/user/Documents/Eightgine && cd ${Eightgine}/Development && rm -rf Intermediate && mkdir Intermediate && cd Intermediate && /snap/bin/cmake .. && /snap/bin/cmake --build . --parallel
 
 
 ; Build project
-cd /home/user/Documents/Eightgine/Development/Intermediate && /snap/bin/cmake --build . -- -j$(nproc)
+cd /home/user/Documents/Eightgine/Development/Intermediate && /snap/bin/cmake --build . --parallel
 
 
 ; Run project

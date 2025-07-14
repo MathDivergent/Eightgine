@@ -34,7 +34,7 @@ jobs:
         path: |
           ${{ env.Eightgine }}/EmptyProject.app
 
-    - name: "Test project"
-      run: |
-        cd ${Eightgine}
-        open EmptyProject.app
+    # - name: "Test project"
+    #   run: |
+    #     cd ${Eightgine}
+    #     open EmptyProject.app

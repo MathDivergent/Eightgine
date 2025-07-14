@@ -4,7 +4,7 @@
 #include <Eightest/Eightest.hpp>
 #endif
 
-extern "C" EMPTYPROJECT_API void RegisterModule()
+extern "C" EMPTYPROJECTCORE_API void RegisterModule()
 {
     printf("%s\n", "Hello, DLL!");
 }

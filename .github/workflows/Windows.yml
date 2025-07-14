@@ -1,0 +1,33 @@
+name: EightgineWithEditor
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2022
+
+    steps:
+    - name: "Download project"
+      uses: actions/checkout@v3
+
+    - name: "Setup Windows (Dev)"
+      run: choco install ninja cmake llvm -y
+
+    - name: "Regenerate and Rebuild project"
+      shell: cmd
+      run: |
+        set Eightgine=%GITHUB_WORKSPACE%
+        cd %Eightgine%\Development
+        rmdir /s /q Intermediate
+        cmake -S . -B Intermediate -G "Ninja" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+        cmake --build Intermediate --parallel
+
+    - name: "Package and Upload project"
+      uses: actions/upload-artifact@v4
+      with:
+        name: Eightgine
+        path: |
+          ${{ github.workspace }}\Binaries\
+          ${{ github.workspace }}\BinariesWithEditor\
+          ${{ github.workspace }}\Resources\

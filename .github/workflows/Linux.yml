@@ -1,4 +1,4 @@
-name: Linux-EightgineWithEditor
+name: EightgineWithEditor-Linux
 
 on:
   workflow_dispatch:
@@ -34,13 +34,13 @@ jobs:
       run: |
         cd ${Eightgine}/Development
         rm -rf Intermediate
-        /snap/bin/cmake -S . -B Intermediate -G "Ninja" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+        /snap/bin/cmake -S . -B Intermediate -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
         /snap/bin/cmake --build Intermediate --parallel
 
     - name: "Package and Upload project"
       uses: actions/upload-artifact@v4
       with:
-        name: Eightgine
+        name: ${{ github.workflow }}
         path: |
           ${{ env.Eightgine }}/Binaries/        
           ${{ env.Eightgine }}/BinariesWithEditor/

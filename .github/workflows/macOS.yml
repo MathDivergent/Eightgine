@@ -1,27 +1,30 @@
-name: EightgineWithEditor-Windows
+name: EightgineWithEditor-macOS
 
 on:
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: windows-2022
+    runs-on: macos-13
 
     env:
       Eightgine: ${{ github.workspace }}
 
     steps:
-    - name: "Download project"
+    - name: "Checkout project"
       uses: actions/checkout@v3
 
-    - name: "Setup Windows (Dev)"
-      run: choco install ninja cmake llvm -y
+    - name: "Setup macOS (Dev)"
+      run: |
+        brew install cmake ninja llvm
+        cmake --version
+        clang --version
+        sysctl -n hw.ncpu
 
     - name: "Regenerate and Rebuild project"
-      shell: cmd
       run: |
-        cd %Eightgine%\Development
-        rmdir /s /q Intermediate
+        cd "${Eightgine}/Development"
+        rm -rf Intermediate
         cmake -S . -B Intermediate -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
         cmake --build Intermediate --parallel
 
@@ -30,6 +33,6 @@ jobs:
       with:
         name: ${{ github.workflow }}
         path: |
-          ${{ env.Eightgine }}\Binaries\
-          ${{ env.Eightgine }}\BinariesWithEditor\
-          ${{ env.Eightgine }}\Resources\
+          ${{ env.Eightgine }}/Binaries/
+          ${{ env.Eightgine }}/BinariesWithEditor/
+          ${{ env.Eightgine }}/Resources/

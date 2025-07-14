@@ -4,6 +4,7 @@ if(BUILD_SHARED_LIBS)
         MODULE_ALIAS "Ogg::ogg"
         MODULE_TYPE SHARED
         MODULE_API_DEFINITION OFF
+        MODULE_PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON
     )
 else()
     eightgine_add_module(MODULE_NAME "ogg"

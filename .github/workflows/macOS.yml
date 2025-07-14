@@ -32,4 +32,4 @@ jobs:
       with:
         name: ${{ github.workflow }}
         path: |
-          ${{ env.Eightgine }}/EmptyProject.app/
+          ${{ env.Eightgine }}/EmptyProject.app

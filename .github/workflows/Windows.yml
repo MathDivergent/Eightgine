@@ -17,7 +17,9 @@ jobs:
     - name: "Setup Windows (Dev)"
       run: |
         choco install ninja cmake mingw -y
-        clang --version
+        cmake --version
+        gcc --version
+        g++ --version
 
     - name: "Regenerate and Rebuild project"
       shell: cmd
@@ -32,4 +34,4 @@ jobs:
       with:
         name: ${{ github.workflow }}
         path: |
-          ${{ env.Eightgine }}/EmptyProject.app/
+          ${{ env.Eightgine }}/EmptyProject.app

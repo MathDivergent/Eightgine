@@ -22,7 +22,7 @@ jobs:
 
     - name: "Regenerate and Rebuild project"
       run: |
-        cd "${Eightgine}/Development"
+        cd ${Eightgine}
         rm -rf Intermediate
         cmake -S . -B Intermediate -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
         cmake --build Intermediate --parallel
@@ -32,6 +32,4 @@ jobs:
       with:
         name: ${{ github.workflow }}
         path: |
-          ${{ env.Eightgine }}/Binaries/
-          ${{ env.Eightgine }}/BinariesWithEditor/
-          ${{ env.Eightgine }}/Resources/
+          ${{ env.Eightgine }}/EmptyProject.app/

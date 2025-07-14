@@ -25,7 +25,7 @@ jobs:
     - name: "Regenerate and Rebuild project"
       shell: cmd
       run: |
-        cd %Eightgine%\Development
+        cd %Eightgine%
         rmdir /s /q Intermediate
         cmake -S . -B Intermediate -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
         cmake --build Intermediate --parallel

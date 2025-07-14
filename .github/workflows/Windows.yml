@@ -16,10 +16,7 @@ jobs:
 
     - name: "Setup Windows (Dev)"
       run: |
-        choco install ninja cmake -y
-        curl -L https://github.com/mstorsjo/llvm-mingw/releases/download/20250709/llvm-mingw-20250709-ucrt-x86_64.zip -o llvm-mingw.zip
-        powershell -Command "Expand-Archive llvm-mingw.zip -DestinationPath C:\llvm-mingw"
-        setx PATH "C:\llvm-mingw\bin;%PATH%"
+        choco install ninja cmake mingw -y
         clang --version
 
     - name: "Regenerate and Rebuild project"
@@ -27,7 +24,7 @@ jobs:
       run: |
         cd %Eightgine%
         rmdir /s /q Intermediate
-        cmake -S . -B Intermediate -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+        cmake -S . -B Intermediate -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
         cmake --build Intermediate --parallel
 
     - name: "Package and Upload project"
@@ -35,6 +32,4 @@ jobs:
       with:
         name: ${{ github.workflow }}
         path: |
-          ${{ env.Eightgine }}\Binaries\
-          ${{ env.Eightgine }}\BinariesWithEditor\
-          ${{ env.Eightgine }}\Resources\
+          ${{ env.Eightgine }}/EmptyProject.app/

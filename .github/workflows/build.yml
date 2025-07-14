@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:20.04
+      image: ubuntu-20.04
 
     steps:
     - name: "Download project"
@@ -15,6 +15,8 @@ jobs:
 
     - name: "Setup Ubuntu (Dev)"
       run: |
+        apt update
+        apt install -y software-properties-common
         add-apt-repository ppa:ubuntu-toolchain-r/test
         apt update
         apt install -y build-essential gcc-9 g++-9
@@ -24,8 +26,8 @@ jobs:
         update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90
         update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 90
         update-alternatives --config gcc
-        sudo update-alternatives --config g++
-        install cmake --classic
+        update-alternatives --config g++
+        apt install -y cmake
         ldd --version
 
     - name: "Regenerate and Rebuild project"

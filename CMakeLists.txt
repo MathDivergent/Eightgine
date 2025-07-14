@@ -30,7 +30,6 @@ set(GAME_DIR_NAME "Game")
 set(PROJECT_DIR_NAME "${PROJECT_NAME}")
 set(RESOURCES_DIR_NAME "Resources") # readonly
 set(PLUGINS_DIR_NAME "PlugIns") # readonly
-set(PROJECT_LAUNCHER_NAME "Launcher")
 
 set(DEVELOPMENT_DIR_NAME "Development")
 set(THIRDPARTY_DIR_NAME "ThirdParty")
@@ -95,7 +94,6 @@ set(PROJECT_JAUNCHER_CPP "${CMAKE_BINARY_DIR}/Launcher.cpp")
 file(WRITE "${PROJECT_JAUNCHER_CPP}" "#include <Main.h>")
 
 eightgine_add_executable(EXECUTABLE_NAME "${PROJECT_NAME}"
-    LAUNCHER_NAME "${PROJECT_LAUNCHER_NAME}"
     EXECUTABLE_SOURCES_FILES "${PROJECT_JAUNCHER_CPP}" "${PROJECT_RESOURCES_DIR}/icon.rc"
 )
 

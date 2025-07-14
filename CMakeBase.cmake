@@ -297,7 +297,6 @@ endfunction()
 function(eightgine_add_executable)
     set(ONE_VALUE_ARGS
         EXECUTABLE_NAME
-        LAUNCHER_NAME
     )
     set(MULTI_VALUE_ARGS
         EXECUTABLE_INCLUDE_DIR
@@ -306,10 +305,6 @@ function(eightgine_add_executable)
         EXECUTABLE_PROPERTIES
     )
     cmake_parse_arguments("ARG" "" "${ONE_VALUE_ARGS}" "${MULTI_VALUE_ARGS}" ${ARGN})
-
-    if(NOT ARG_LAUNCHER_NAME)
-        set(ARG_LAUNCHER_NAME "${ARG_EXECUTABLE_NAME}")
-    endif()
 
     eightgine_set_module_or_executable(ARG_EXECUTABLE_NAME)
 
@@ -335,7 +330,7 @@ function(eightgine_add_executable)
         MODULE_OR_EXECUTABLE_SOURCES_DIR ${ARG_EXECUTABLE_SOURCES_DIR} MODULE_OR_EXECUTABLE_SOURCES_FILES ${ARG_EXECUTABLE_SOURCES_FILES}
         MODULE_OR_EXECUTABLE_DEFINITIONS ${ARG_EXECUTABLE_DEFINITIONS}
         MODULE_OR_EXECUTABLE_PROPERTIES
-            OUTPUT_NAME "${ARG_LAUNCHER_NAME}"
+            OUTPUT_NAME "${ARG_EXECUTABLE_NAME}"
             DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}"
             RELWITHDEBINFO_POSTFIX "${CMAKE_RELWITHDEBINFO_POSTFIX}"
             ${DEFAULT_EXECUTABLE_PROPERTIES}

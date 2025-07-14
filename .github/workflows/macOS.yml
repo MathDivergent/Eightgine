@@ -26,6 +26,7 @@ jobs:
         rm -rf Intermediate
         cmake -S . -B Intermediate -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
         cmake --build Intermediate --parallel
+        ls -R
 
     - name: "Package and Upload project"
       uses: actions/upload-artifact@v4

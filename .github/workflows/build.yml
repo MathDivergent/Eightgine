@@ -26,7 +26,6 @@ jobs:
         sudo update-alternatives --config gcc
         sudo update-alternatives --config g++
         sudo snap install cmake --classic
-        sudo ldd --version
 
     - name: "Regenerate and Rebuild project"
       run: |

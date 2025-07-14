@@ -15,14 +15,14 @@ jobs:
       uses: actions/checkout@v3
 
     - name: "Setup Windows (Dev)"
-      run: choco install ninja cmake llvm -y
+      run: choco install ninja cmake mingw -y
 
     - name: "Regenerate and Rebuild project"
       shell: cmd
       run: |
         cd %Eightgine%\Development
         rmdir /s /q Intermediate
-        cmake -S . -B Intermediate -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+        cmake -S . -B Intermediate -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ 
         cmake --build Intermediate --parallel
 
     - name: "Package and Upload project"

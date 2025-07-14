@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: ubuntu:18.04
 
     steps:
     - name: "Download project"
@@ -24,21 +26,21 @@ jobs:
         sudo update-alternatives --config gcc
         sudo update-alternatives --config g++
         sudo snap install cmake --classic
+        ldd --version
 
     - name: "Regenerate and Rebuild project"
       run: |
         export Eightgine=${{ github.workspace }}
         cd ${Eightgine}/Development
         rm -rf Intermediate
-        mkdir Intermediate
-        cd Intermediate
-        /snap/bin/cmake ..
-        /snap/bin/cmake --build . -- -j$(nproc)
+        /snap/bin/cmake -S . -B Intermediate -G "Ninja" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+        /snap/bin/cmake --build Intermediate --parallel
 
     - name: "Package and Upload project"
       uses: actions/upload-artifact@v4
       with:
         name: Eightgine
         path: |
+          ${{ github.workspace }}/Binaries/        
           ${{ github.workspace }}/BinariesWithEditor/
           ${{ github.workspace }}/Resources/

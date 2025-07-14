@@ -1,4 +1,4 @@
-name: EightgineWithEditor
+name: Linux-EightgineWithEditor
 
 on:
   workflow_dispatch:
@@ -6,6 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
+
+    env:
+      Eightgine: ${{ github.workspace }}
 
     steps:
     - name: "Download project"
@@ -29,7 +32,6 @@ jobs:
 
     - name: "Regenerate and Rebuild project"
       run: |
-        export Eightgine=${{ github.workspace }}
         cd ${Eightgine}/Development
         rm -rf Intermediate
         /snap/bin/cmake -S . -B Intermediate -G "Ninja" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
@@ -40,6 +42,6 @@ jobs:
       with:
         name: Eightgine
         path: |
-          ${{ github.workspace }}/Binaries/        
-          ${{ github.workspace }}/BinariesWithEditor/
-          ${{ github.workspace }}/Resources/
+          ${{ env.Eightgine }}/Binaries/        
+          ${{ env.Eightgine }}/BinariesWithEditor/
+          ${{ env.Eightgine }}/Resources/

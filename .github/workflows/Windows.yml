@@ -1,4 +1,4 @@
-name: EightgineWithEditor
+name: Windows-EightgineWithEditor
 
 on:
   workflow_dispatch:
@@ -6,6 +6,9 @@ on:
 jobs:
   build:
     runs-on: windows-2022
+
+    env:
+      Eightgine: ${{ github.workspace }}
 
     steps:
     - name: "Download project"
@@ -17,7 +20,6 @@ jobs:
     - name: "Regenerate and Rebuild project"
       shell: cmd
       run: |
-        set Eightgine=%GITHUB_WORKSPACE%
         cd %Eightgine%\Development
         rmdir /s /q Intermediate
         cmake -S . -B Intermediate -G "Ninja" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
@@ -28,6 +30,6 @@ jobs:
       with:
         name: Eightgine
         path: |
-          ${{ github.workspace }}\Binaries\
-          ${{ github.workspace }}\BinariesWithEditor\
-          ${{ github.workspace }}\Resources\
+          ${{ env.Eightgine }}\Binaries\
+          ${{ env.Eightgine }}\BinariesWithEditor\
+          ${{ env.Eightgine }}\Resources\

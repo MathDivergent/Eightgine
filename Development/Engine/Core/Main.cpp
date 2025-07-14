@@ -52,7 +52,7 @@
 
 #include <box2d/box2d.h>
 #include <lua.hpp>
-#include <Rew/Core.hpp>
+//#include <Rew/Core.hpp>
 
 namespace Eightgine
 {
@@ -76,7 +76,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     std::ios::sync_with_stdio();
     // FreeConsole(); // to close console
 #endif
-    auto type = rew::global.find("std::string");
+    //auto type = rew::global.find("std::string");
 
     std::vector<std::string> libraries;
     libraries.reserve(8);

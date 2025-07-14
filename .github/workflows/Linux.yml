@@ -37,3 +37,8 @@ jobs:
         name: ${{ github.workflow }}
         path: |
           ${{ env.Eightgine }}/EmptyProject.app
+
+    - name: "Test project"
+      run: |
+        cd ${Eightgine}/EmptyProject.app/Contents/Linux
+        ./EmptyProject

@@ -71,14 +71,6 @@ if(WIN32)
     list(APPEND VORBIS_SOURCES vorbisenc.c)
 endif()
 
-if(WIN32)
-    list(APPEND VORBIS_SOURCES ../win32/vorbis.def)
-    if(VORBIS_VORBISENC)
-        list(APPEND VORBISENC_SOURCES ../win32/vorbisenc.def)
-    endif()
-    list(APPEND VORBISFILE_SOURCES ../win32/vorbisfile.def)
-endif()
-
 if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
     add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
@@ -106,6 +98,14 @@ if (NOT BUILD_FRAMEWORK)
     endif()
     get_version_info(VORBISFILE_VERSION_INFO "VF_LIB_CURRENT" "VF_LIB_AGE" "VF_LIB_REVISION")
     set_target_properties(vorbisfile PROPERTIES SOVERSION ${VORBISFILE_VERSION_INFO})
+
+    if(BUILD_SHARED_LIBS)
+        set_target_properties(vorbis PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+        if(VORBIS_VORBISENC)
+            set_target_properties(vorbisenc PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+        endif()
+        set_target_properties(vorbisfile PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+    endif()
 
     target_include_directories(vorbis
         PUBLIC

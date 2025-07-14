@@ -1,2 +1,6 @@
-/Binaries
-/BinariesWithEditor
+CMakeLists.txt.user
+Intermediate/
+EmptyProject.app/Contents/Windows/
+EmptyProject.app/Contents/Linux/
+EmptyProject.app/Contents/MacOS/
+EmptyProject.app/Contents/Frameworks/

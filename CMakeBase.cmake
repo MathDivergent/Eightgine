@@ -48,7 +48,7 @@ endif()
 if(APPLE)
     set(EIGHTGINE_PLATFORM_MACOS 1)
     set(EIGHTGINE_BIN_TYPE "dylib")
-    set(EIGHTGINE_RPATH "@loader_path")
+    set(EIGHTGINE_RPATH "@loader_path/../Frameworks")
 else()
     set(EIGHTGINE_PLATFORM_MACOS 0)
 endif()
@@ -316,12 +316,12 @@ function(eightgine_add_executable)
         )
     elseif(EIGHTGINE_PLATFORM_LINUX)
         set(DEFAULT_EXECUTABLE_PROPERTIES
-            INSTALL_RPATH "${EIGHTGINE_RPATH}" BUILD_RPATH "${EIGHTGINE_RPATH}" BUILD_WITH_INSTALL_RPATH TRUE
+            BUILD_RPATH "${EIGHTGINE_RPATH}"
         )
     elseif(EIGHTGINE_PLATFORM_MACOS)
         set(DEFAULT_EXECUTABLE_PROPERTIES
             MACOSX_BUNDLE TRUE
-            INSTALL_RPATH "${EIGHTGINE_RPATH}" BUILD_RPATH "${EIGHTGINE_RPATH}" BUILD_WITH_INSTALL_RPATH TRUE
+            BUILD_RPATH "${EIGHTGINE_RPATH}"
         )
     endif()
 

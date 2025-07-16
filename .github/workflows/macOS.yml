@@ -11,7 +11,7 @@ jobs:
       Eightgine: ${{ github.workspace }}
 
     steps:
-    - name: "Checkout project"
+    - name: "Download project"
       uses: actions/checkout@v3
 
     - name: "Setup macOS (Dev)"

@@ -310,6 +310,7 @@ function(eightgine_add_executable)
 
     add_executable("${DIRTY_ARG_EXECUTABLE_NAME}")
 
+    # TODO: add for module RPATH
     if(EIGHTGINE_PLATFORM_WINDOWS)
         set(DEFAULT_EXECUTABLE_PROPERTIES
             WIN32_EXECUTABLE TRUE

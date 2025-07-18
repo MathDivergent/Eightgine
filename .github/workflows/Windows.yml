@@ -18,17 +18,15 @@ jobs:
 
     - name: "Setup Windows (Dev)"
       run: |
-        choco install ninja cmake mingw -y
         cmake --version
-        gcc --version
-        g++ --version
+        clang --version
 
     - name: "Regenerate and Rebuild project"
       shell: cmd
       run: |
         cd %Eightgine%
         rmdir /s /q Intermediate
-        cmake -S . -B Intermediate -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+        cmake -S . -B Intermediate -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
         cmake --build Intermediate --parallel
 
     - name: "Prepare project to Package"

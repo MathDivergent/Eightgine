@@ -1,5 +1,4 @@
 TODO: update structure of engine, project
-TODO: add MACOSX_RPATH
 
 Структура папок движка:
 - Eightgine - Содержит 3 ключевые папки.

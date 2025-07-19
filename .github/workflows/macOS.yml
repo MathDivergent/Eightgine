@@ -18,7 +18,6 @@ jobs:
 
     - name: "Setup macOS (Dev)"
       run: |
-        brew install cmake ninja llvm
         cmake --version
         clang --version
 

@@ -1,17 +1,18 @@
-# [[Binaries]]
-if(BUILD_SHARED_LIBS)
-    eightgine_add_module(MODULE_NAME "Eightest"
-        MODULE_TYPE SHARED
-        MODULE_API_DEFINITION OFF
-    )
-else()
-    eightgine_add_module(MODULE_NAME "Eightest"
-        MODULE_TYPE STATIC
-        MODULE_API_DEFINITION OFF
-    )
-endif()
+# [[Defaults]]
+option(EIGHTEST_BUILD_SHARED_LIBS "" ON)
 
-eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "Eightest"
-    MODULE_OR_EXECUTABLE_SOURCES_DIR "${CMAKE_CURRENT_LIST_DIR}/src"
-    MODULE_OR_EXECUTABLE_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/include" "${CMAKE_CURRENT_LIST_DIR}/include/Eightest"
+
+# [[Subdirectories]]
+add_subdirectory("Eightest" EXCLUDE_FROM_ALL)
+
+
+# [[Binaries]]
+eightgine_add_module(MODULE_NAME "Eightest"
+    MODULE_TYPE INTERFACE
+    MODULE_API_DEFINITION OFF
+    MODULE_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/Eightest/include"
 )
+
+
+# [[Dependencies]]
+eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Eightest" DEPENDENCY_NAME "Eightest")

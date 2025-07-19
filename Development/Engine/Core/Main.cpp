@@ -1,7 +1,7 @@
 //#include <SDL2/SDL.h>
 //#include <GLFW/glfw3.h>
 #if EIGHTGINE_DEBUG
-#include <Eightest/Eightest.hpp>
+#include <Eightest/Core.hpp>
 #endif
 
 #define WITH_SDL2
@@ -35,7 +35,7 @@
 #include <string>
 
 #include <iostream>
-#include <SF/Core.hpp>
+#include <Eightser/Core.hpp>
 
 #define WITH_CJSON
 #ifdef WITH_CJSON
@@ -52,7 +52,8 @@
 
 #include <box2d/box2d.h>
 #include <lua.hpp>
-//#include <Rew/Core.hpp>
+#include <Eightrefl/Core.hpp>
+#include <Eightrefl/Standard/Standard.hpp>
 
 namespace Eightgine
 {
@@ -76,7 +77,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     std::ios::sync_with_stdio();
     // FreeConsole(); // to close console
 #endif
-    //auto type = rew::global.find("std::string");
+    auto type = eightrefl::standard()->find("std::string");
 
     std::vector<std::string> libraries;
     libraries.reserve(8);

@@ -26,9 +26,9 @@ add_subdirectory("SDL2_net" EXCLUDE_FROM_ALL)
 
 add_subdirectory("Box2D" EXCLUDE_FROM_ALL)
 
-add_subdirectory("Rew" EXCLUDE_FROM_ALL)
-add_subdirectory("SF" EXCLUDE_FROM_ALL)
-
 if(EIGHTGINE_DEBUG)
     add_subdirectory("Eightest" EXCLUDE_FROM_ALL)
 endif()
+
+add_subdirectory("Eightrefl" EXCLUDE_FROM_ALL)
+add_subdirectory("Eightser" EXCLUDE_FROM_ALL)

@@ -1,7 +1,7 @@
 #include <cstdio>
 
 #if EIGHTGINE_DEBUG
-#include <Eightest/Eightest.hpp>
+#include <Eightest/Core.hpp>
 #endif
 
 extern "C" EMPTYPROJECTCORE_API void RegisterModule()

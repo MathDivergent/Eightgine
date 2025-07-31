@@ -10,7 +10,7 @@ add_subdirectory("Eightest" EXCLUDE_FROM_ALL)
 eightgine_add_module(MODULE_NAME "Eightest"
     MODULE_TYPE INTERFACE
     MODULE_API_DEFINITION OFF
-    MODULE_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/Eightest/include"
+    MODULE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Eightest/include"
 )
 
 

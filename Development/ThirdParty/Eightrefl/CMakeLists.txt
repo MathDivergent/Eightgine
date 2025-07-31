@@ -10,7 +10,7 @@ add_subdirectory("Eightrefl" EXCLUDE_FROM_ALL)
 eightgine_add_module(MODULE_NAME "Eightrefl"
     MODULE_TYPE INTERFACE
     MODULE_API_DEFINITION OFF
-    MODULE_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/Eightrefl/include"
+    MODULE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Eightrefl/include"
 )
 
 

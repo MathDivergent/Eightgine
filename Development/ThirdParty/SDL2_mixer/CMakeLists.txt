@@ -23,7 +23,7 @@ add_subdirectory("SDL2_mixer" EXCLUDE_FROM_ALL)
 eightgine_add_module(MODULE_NAME "SDL2_mixer"
     MODULE_TYPE INTERFACE
     MODULE_API_DEFINITION OFF
-    MODULE_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/SDL2_mixer/include"
+    MODULE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/SDL2_mixer/include"
 )
 
 

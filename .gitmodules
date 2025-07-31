@@ -1,9 +1,0 @@
-[submodule "Development/ThirdParty/Eightest/Eightest"]
-	path = Development/ThirdParty/Eightest/Eightest
-	url = https://github.com/Sigma-Ryden/Eightest
-[submodule "Development/ThirdParty/Eightrefl/Eightrefl"]
-	path = Development/ThirdParty/Eightrefl/Eightrefl
-	url = https://github.com/Sigma-Ryden/Eightrefl
-[submodule "Development/ThirdParty/Eightser/Eightser"]
-	path = Development/ThirdParty/Eightser/Eightser
-	url = https://github.com/Sigma-Ryden/Eightser

@@ -14,7 +14,7 @@ add_subdirectory("BoringSSL" EXCLUDE_FROM_ALL)
 eightgine_add_module(MODULE_NAME "BoringSSL"
     MODULE_TYPE INTERFACE
     MODULE_API_DEFINITION OFF
-    MODULE_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/BoringSSL/include"
+    MODULE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/BoringSSL/include"
 )
 
 

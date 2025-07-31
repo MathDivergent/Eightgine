@@ -6,7 +6,7 @@ add_subdirectory("box2d" EXCLUDE_FROM_ALL)
 eightgine_add_module(MODULE_NAME "box2d"
     MODULE_TYPE INTERFACE
     MODULE_API_DEFINITION OFF
-    MODULE_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/box2d/include"
+    MODULE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/box2d/include"
 )
 
 

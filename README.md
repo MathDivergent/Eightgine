@@ -1,4 +1,5 @@
 TODO: update structure of engine, project
+TODO: git config core.ignorecase false
 
 Структура папок движка:
 - Eightgine - Содержит 3 ключевые папки.

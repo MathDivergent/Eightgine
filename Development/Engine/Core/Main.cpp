@@ -77,7 +77,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     std::ios::sync_with_stdio();
     // FreeConsole(); // to close console
 #endif
-    auto type = eightrefl::standard()->find("std::string");
+    auto type = eightrefl::builtin()->find("std::size_t");
 
     std::vector<std::string> libraries;
     libraries.reserve(8);
@@ -158,8 +158,8 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     }
     #endif
     #if EIGHTGINE_DEBUG
-    TRY_CATCH(EXECUTE_ALL());
-    TESTING_STAT();
+    eightest::global()->try_catch([] { eightest::global()->execute_all(); });
+    /*return !*/eightest::global()->stat();
     #endif
 #endif
     // Registry::handler(nullptr);

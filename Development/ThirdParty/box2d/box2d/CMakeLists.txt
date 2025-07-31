@@ -52,85 +52,85 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # Needed for samples.exe to find box2d.dll
-# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
-# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 
 add_subdirectory(src)
 
 # This hides samples, test, and doxygen from apps that use box2d via FetchContent
-# if(PROJECT_IS_TOP_LEVEL)
-# 	option(BOX2D_SAMPLES "Build the Box2D samples" ON)
-# 	option(BOX2D_BENCHMARKS "Build the Box2D benchmarks" OFF)
-# 	option(BOX2D_DOCS "Build the Box2D documentation" OFF)
-# 	option(BOX2D_PROFILE "Enable profiling with Tracy" OFF)
-# 	option(BOX2D_VALIDATE "Enable heavy validation" ON)
-# 	option(BOX2D_UNIT_TESTS "Build the Box2D unit tests" ON)
+if(PROJECT_IS_TOP_LEVEL)
+	option(BOX2D_SAMPLES "Build the Box2D samples" ON)
+	option(BOX2D_BENCHMARKS "Build the Box2D benchmarks" OFF)
+	option(BOX2D_DOCS "Build the Box2D documentation" OFF)
+	option(BOX2D_PROFILE "Enable profiling with Tracy" OFF)
+	option(BOX2D_VALIDATE "Enable heavy validation" ON)
+	option(BOX2D_UNIT_TESTS "Build the Box2D unit tests" ON)
 	
-# 	if(BOX2D_UNIT_TESTS OR BOX2D_SAMPLES OR BOX2D_BENCHMARKS)
+	if(BOX2D_UNIT_TESTS OR BOX2D_SAMPLES OR BOX2D_BENCHMARKS)
 
-# 		if(MSVC AND NOT BOX2D_SANITIZE)
-# 			# enable hot reloading
-# 			add_compile_options("$<$<CONFIG:Debug>:/ZI>")
-# 			add_link_options("$<$<CONFIG:Debug>:/INCREMENTAL>")
-# 		endif()
+		if(MSVC AND NOT BOX2D_SANITIZE)
+			# enable hot reloading
+			add_compile_options("$<$<CONFIG:Debug>:/ZI>")
+			add_link_options("$<$<CONFIG:Debug>:/INCREMENTAL>")
+		endif()
 
-# 		# Emscripten pthread support for enkiTS
-# 		if(EMSCRIPTEN)
-# 			set(EMSCRIPTEN_PTHREADS_COMPILER_FLAGS "-pthread -s USE_PTHREADS=1")
-# 			set(EMSCRIPTEN_PTHREADS_LINKER_FLAGS "${EMSCRIPTEN_PTHREADS_COMPILER_FLAGS} -s ALLOW_MEMORY_GROWTH")
-# 			string(APPEND CMAKE_C_FLAGS " ${EMSCRIPTEN_PTHREADS_COMPILER_FLAGS}")
-# 			string(APPEND CMAKE_CXX_FLAGS " ${EMSCRIPTEN_PTHREADS_COMPILER_FLAGS}")
-# 			string(APPEND CMAKE_EXE_LINKER_FLAGS " ${EMSCRIPTEN_PTHREADS_LINKER_FLAGS}")
-# 		endif()
+		# Emscripten pthread support for enkiTS
+		if(EMSCRIPTEN)
+			set(EMSCRIPTEN_PTHREADS_COMPILER_FLAGS "-pthread -s USE_PTHREADS=1")
+			set(EMSCRIPTEN_PTHREADS_LINKER_FLAGS "${EMSCRIPTEN_PTHREADS_COMPILER_FLAGS} -s ALLOW_MEMORY_GROWTH")
+			string(APPEND CMAKE_C_FLAGS " ${EMSCRIPTEN_PTHREADS_COMPILER_FLAGS}")
+			string(APPEND CMAKE_CXX_FLAGS " ${EMSCRIPTEN_PTHREADS_COMPILER_FLAGS}")
+			string(APPEND CMAKE_EXE_LINKER_FLAGS " ${EMSCRIPTEN_PTHREADS_LINKER_FLAGS}")
+		endif()
 
-# 		# Task system used in tests and samples
-# 		set(ENKITS_BUILD_EXAMPLES OFF CACHE BOOL "Build enkiTS examples")
-# 		FetchContent_Declare(
-# 			enkits
-# 			GIT_REPOSITORY https://github.com/dougbinks/enkiTS.git
-# 			GIT_TAG master
-# 			GIT_SHALLOW TRUE
-# 			GIT_PROGRESS TRUE
-# 		)
-# 		FetchContent_MakeAvailable(enkits)
+		# Task system used in tests and samples
+		set(ENKITS_BUILD_EXAMPLES OFF CACHE BOOL "Build enkiTS examples")
+		FetchContent_Declare(
+			enkits
+			GIT_REPOSITORY https://github.com/dougbinks/enkiTS.git
+			GIT_TAG master
+			GIT_SHALLOW TRUE
+			GIT_PROGRESS TRUE
+		)
+	        FetchContent_MakeAvailable(enkits)
 
-# 		add_subdirectory(shared)
-# 	endif()
+		add_subdirectory(shared)
+	endif()
 
-# 	# Tests need static linkage because they test internal Box2D functions
-# 	if(NOT BUILD_SHARED_LIBS AND BOX2D_UNIT_TESTS)
-# 		message(STATUS "Adding Box2D unit tests")
-# 		add_subdirectory(test)
-# 		set_target_properties(test PROPERTIES XCODE_GENERATE_SCHEME TRUE)
-# 	else()
-# 		message(STATUS "Skipping Box2D unit tests")
-# 	endif()
+	# Tests need static linkage because they test internal Box2D functions
+	if(NOT BUILD_SHARED_LIBS AND BOX2D_UNIT_TESTS)
+		message(STATUS "Adding Box2D unit tests")
+		add_subdirectory(test)
+		set_target_properties(test PROPERTIES XCODE_GENERATE_SCHEME TRUE)
+	else()
+		message(STATUS "Skipping Box2D unit tests")
+	endif()
 
-# 	if(BOX2D_SAMPLES)
-# 		add_subdirectory(samples)
+	if(BOX2D_SAMPLES)
+		add_subdirectory(samples)
 
-# 		# default startup project for Visual Studio
-# 		if(MSVC)
-# 			set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT samples)
-# 			set_property(TARGET samples PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
-# 		endif()
+		# default startup project for Visual Studio
+		if(MSVC)
+			set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT samples)
+			set_property(TARGET samples PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+		endif()
 
-# 		if(APPLE)
-# 			set_target_properties(samples PROPERTIES
-# 				XCODE_GENERATE_SCHEME TRUE
-# 				XCODE_SCHEME_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
-# 		endif()
-# 	endif()
+		if(APPLE)
+			set_target_properties(samples PROPERTIES
+				XCODE_GENERATE_SCHEME TRUE
+				XCODE_SCHEME_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+		endif()
+	endif()
 
-# 	if(BOX2D_BENCHMARKS)
-# 		add_subdirectory(benchmark)
-# 		set_target_properties(benchmark PROPERTIES XCODE_GENERATE_SCHEME TRUE)
-# 	endif()
+	if(BOX2D_BENCHMARKS)
+		add_subdirectory(benchmark)
+		set_target_properties(benchmark PROPERTIES XCODE_GENERATE_SCHEME TRUE)
+	endif()
 
-# 	if(BOX2D_DOCS)
-# 		add_subdirectory(docs)
-# 	endif()
-# endif()
+	if(BOX2D_DOCS)
+		add_subdirectory(docs)
+	endif()
+endif()
 
 # # Building on clang in windows
 # cmake -S .. -B . -G "Visual Studio 17 2022" -A x64 -T ClangCL

@@ -70,10 +70,6 @@ macro(install)
     # pass install
 endmacro()
 
-macro(find_package)
-    # pass find_package
-endmacro()
-
 macro(eightgine_bin_dir EIGHTGINE_BIN_DIR)
     if(EIGHTGINE_PLATFORM_WINDOWS)
         set(${EIGHTGINE_BIN_DIR} "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")

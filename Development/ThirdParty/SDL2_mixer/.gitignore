@@ -16,4 +16,3 @@ SDL2_mixer/configure
 SDL2_mixer/LICENSE.txt
 SDL2_mixer/Makefile.*
 SDL2_mixer/*.c
-SDL2_mixer/*.in

@@ -19,9 +19,9 @@ SDL2_image/compile
 SDL2_image/config.guess
 SDL2_image/config.sub
 SDL2_image/configure
-SDL2_mixer/depcomp
-SDL2_mixer/install-sh
-SDL2_mixer/*.am
-SDL2_mixer/Makefile.*
-SDL2_mixer/missing
-SDL2_mixer/test-driver
+SDL2_image/depcomp
+SDL2_image/install-sh
+SDL2_image/*.am
+SDL2_image/Makefile.*
+SDL2_image/missing
+SDL2_image/test-driver

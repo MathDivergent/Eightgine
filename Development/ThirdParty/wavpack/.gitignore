@@ -23,5 +23,4 @@ wavpack/license.txt
 wavpack/Makefile.*
 wavpack/masm.rules
 wavpack/NEWS
-wavpack/*.in
 wavpack/*.sln

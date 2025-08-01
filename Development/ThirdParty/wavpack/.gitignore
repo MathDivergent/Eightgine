@@ -16,7 +16,6 @@ wavpack/wvunpackexe/
 wavpack/xmms/
 wavpack/*.yml
 wavpack/AUTHORS
-
 wavpack/*.sh
 wavpack/COPYING
 wavpack/license.txt

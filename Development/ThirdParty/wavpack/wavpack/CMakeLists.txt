@@ -91,6 +91,7 @@ option(WAVPACK_ENABLE_DSD "Enable support for WavPack DSD files" ON)
 option(WAVPACK_INSTALL_CMAKE_MODULE "Generate and install CMake package configuration module" ${WAVPACK_ROOTPROJECT})
 option(WAVPACK_INSTALL_DOCS "Install documentation" ${WAVPACK_ROOTPROJECT})
 option(WAVPACK_INSTALL_PKGCONFIG_MODULE "Generate and install wavpack.pc" ${WAVPACK_ROOTPROJECT})
+option(BUILD_SHARED_LIBS "Build the library as a shared library" OFF)
 option(BUILD_TESTING "Build tests" OFF)
 
 # Configuration tests

@@ -18,8 +18,8 @@ option(SDL2MIXER_WAVPACK "" ON)
 # [[Subdirectories]]
 add_subdirectory("SDL2_mixer" EXCLUDE_FROM_ALL)
 
-target_compile_definitions(SDL2_mixer PRIVATE WAVPACK_HEADER="<wavpack.h>")
-target_compile_definitions(SDL2_mixer PRIVATE OPUSFILE_HEADER="<opusfile.h>")
+target_compile_definitions(SDL2_mixer PRIVATE "WAVPACK_HEADER=\"wavpack.h\"")
+target_compile_definitions(SDL2_mixer PRIVATE "OPUSFILE_HEADER=\"opusfile.h\"")
 
 
 # [[Binaries]]

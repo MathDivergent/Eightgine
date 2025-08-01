@@ -1,10 +1,8 @@
 wavpack/audition/
 wavpack/cli/
-wavpack/cmake/
 wavpack/doc/
 wavpack/fuzzing/
 wavpack/man/
-wavpack/wavpackdll/
 wavpack/wavpackexe/
 wavpack/winamp/
 wavpack/wvgainexe/

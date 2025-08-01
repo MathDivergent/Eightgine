@@ -1,3 +1,4 @@
+![engine](https://img.shields.io/badge/type-game--engine-%235a6770)
 ![language](https://img.shields.io/badge/language-C%2B%2B-blue)
 ![OS](https://img.shields.io/badge/OS-linux,%20windows,%20mac-red)
 ![tests](https://img.shields.io/badge/tests-automated-yellow)

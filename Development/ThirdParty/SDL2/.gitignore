@@ -20,6 +20,7 @@ SDL2/XCode-iOS/
 SDL2/.clang-format
 SDL2/.editorconfig
 SDL2/.wikiheaders-options
+SDL2/Android.mk
 SDL2/*.sh
 SDL2/cmake_uninstall.cmake
 SDL2/configure
@@ -27,4 +28,3 @@ SDL2/CREDITS.txt
 SDL2/INSTALL.txt
 SDL2/Makefile.*
 SDL2/*.m4
-SDL2/*.in

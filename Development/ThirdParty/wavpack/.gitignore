@@ -7,5 +7,5 @@ wavpack/*
 !wavpack/src/**/*.asm
 !wavpack/src/**/*.S
 !wavpack/configure.ac
-!wavpack/**/*.CMakeLists.txt
-!wavpack/**/*.README.md
+!wavpack/**/CMakeLists.txt
+!wavpack/**/README.md

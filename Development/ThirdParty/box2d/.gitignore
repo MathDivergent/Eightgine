@@ -1,0 +1,14 @@
+box2d/.github/
+box2d/benchmark/
+box2d/docs/
+box2d/extern/
+box2d/samples/
+box2d/shared/
+box2d/src/box2d.natvis
+box2d/test/
+box2d/.clang-format
+box2d/build.sh
+box2d/build_emscripten.sh
+box2d/create_sln.bat
+box2d/deploy_docs.sh
+box2d/LICENSE

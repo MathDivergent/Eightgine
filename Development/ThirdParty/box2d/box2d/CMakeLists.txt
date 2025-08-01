@@ -92,7 +92,7 @@ if(PROJECT_IS_TOP_LEVEL)
 			GIT_SHALLOW TRUE
 			GIT_PROGRESS TRUE
 		)
-	        FetchContent_MakeAvailable(enkits)
+		FetchContent_MakeAvailable(enkits)
 
 		add_subdirectory(shared)
 	endif()

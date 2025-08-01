@@ -14,7 +14,7 @@ set(CMAKE_RELWITHDEBINFO_POSTFIX "-RelWithDebInfo")
 
 
 # [[Options]]
-option(EIGHTGINE_WITH_EDITOR "Build with the Eightgine Editor" 1)
+option(EIGHTGINE_WITH_EDITOR "Build with the Eightgine Editor" ON)
 option(BUILD_SHARED_LIBS "Build shared libraies by Default" ON)
 option(BUILD_FRAMEWORK "Build Framework bundle for OSX" OFF)
 
@@ -75,8 +75,13 @@ set(ENV{PKG_CONFIG_PATH} "${EIGHTGINE_THIRDPARTY_DIR}")
 
 
 # [[Definitions]]
+if(EIGHTGINE_WITH_EDITOR)
+    add_compile_definitions("EIGHTGINE_WITH_EDITOR=1")
+else()
+    add_compile_definitions("EIGHTGINE_WITH_EDITOR=0")
+endif()
+
 add_compile_definitions(
-    "EIGHTGINE_WITH_EDITOR=${EIGHTGINE_WITH_EDITOR}"
     "EIGHTGINE_PROJECT_RESOURCES_DIR=\"../${RESOURCES_DIR_NAME}\""
     "EIGHTGINE_PROJECT_PLUGINS_DIR=\"../${PLUGINS_DIR_NAME}\""
 )

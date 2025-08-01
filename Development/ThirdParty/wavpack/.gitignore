@@ -1,0 +1,11 @@
+wavpack/*
+!wavpack/include/
+!wavpack/include/**/*.h
+!wavpack/src/
+!wavpack/src/**/*.h
+!wavpack/src/**/*.c
+!wavpack/src/**/*.asm
+!wavpack/src/**/*.S
+!wavpack/configure.ac
+!wavpack/**/*.CMakeLists.txt
+!wavpack/**/*.README.md

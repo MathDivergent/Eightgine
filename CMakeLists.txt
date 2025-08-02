@@ -15,6 +15,7 @@ set(CMAKE_RELWITHDEBINFO_POSTFIX "-RelWithDebInfo")
 
 # [[Options]]
 option(EIGHTGINE_WITH_EDITOR "Build with the Eightgine Editor" ON)
+option(EIGHTGINE_WITH_CONSOLE "Build with the Eightgine Console" OFF)
 option(BUILD_SHARED_LIBS "Build shared libraies by Default" ON)
 option(BUILD_FRAMEWORK "Build Framework bundle for OSX" OFF)
 
@@ -82,6 +83,12 @@ if(EIGHTGINE_WITH_EDITOR)
     add_compile_definitions("EIGHTGINE_WITH_EDITOR=1")
 else()
     add_compile_definitions("EIGHTGINE_WITH_EDITOR=0")
+endif()
+
+if(EIGHTGINE_WITH_CONSOLE)
+    add_compile_definitions("EIGHTGINE_WITH_CONSOLE=1")
+else()
+    add_compile_definitions("EIGHTGINE_WITH_CONSOLE=0")
 endif()
 
 add_compile_definitions(

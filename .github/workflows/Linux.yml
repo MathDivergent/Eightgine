@@ -46,9 +46,7 @@ jobs:
         path: |
           ${{ env.Eightgine }}/EmptyProject.app
 
-    # - name: "Test project"
-    #   run: |
-    #     cd ${Eightgine}/EmptyProject.app/Contents/Linux
-    #     export LD_LIBRARY_PATH=${Eightgine}/EmptyProject.app/Contents/Linux:$LD_LIBRARY_PATH
-    #     export SDL_AUDIODRIVER=dummy
-    #     ./EmptyProject
+    - name: "Test project"
+      run: |
+        cd "${Eightgine}/EmptyProject.app/Contents/Linux"
+        ./EmptyProject

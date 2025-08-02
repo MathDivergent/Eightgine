@@ -1,5 +1,7 @@
 # [[Defaults]]
-option(ENABLE_CJSON_TEST "" OFF)
+option(ENABLE_CJSON_UTILS "" ON)
+option(ENABLE_CJSON_TEST "" OFF) # const
+option(ENABLE_FUZZING "" OFF) # const
 
 
 # [[Subdirectories]]

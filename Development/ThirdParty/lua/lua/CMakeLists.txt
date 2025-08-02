@@ -3,4 +3,4 @@ project(Lua C)
 
 add_compile_definitions(LUA_COMPAT_5_3)
 
-add_sbudirectory(src)
+add_subdirectory(src)

@@ -78,8 +78,6 @@ add_library(SDL2_net
     SDLnetUDP.c
 )
 
-target_compile_options(SDL2_net PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:-w> $<$<CXX_COMPILER_ID:MSVC>:/w>)
-
 add_library(SDL2_net::${sdl2_net_export_name} ALIAS SDL2_net)
 target_include_directories(SDL2_net PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"

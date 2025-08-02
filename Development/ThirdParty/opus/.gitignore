@@ -17,7 +17,6 @@ opus/.gitmodules
 opus/AUTHORS
 opus/*.bat
 opus/*.sh
-opus/*.mk
 opus/COPYING
 opus/Makefile.*
 opus/*.build

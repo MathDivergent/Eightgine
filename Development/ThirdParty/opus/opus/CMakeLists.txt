@@ -1,10 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-# include(OpusPackageVersion)
-# get_package_version(PACKAGE_VERSION PROJECT_VERSION)
-set(PACKAGE_VERSION 1)
-set(PROJECT_VERSION 1)
+include(OpusPackageVersion)
+get_package_version(PACKAGE_VERSION PROJECT_VERSION)
 
 project(Opus LANGUAGES C VERSION ${PROJECT_VERSION})
 
@@ -283,8 +281,6 @@ endif()
 
 add_library(opus ${opus_headers} ${opus_sources} ${opus_sources_float} ${Opus_PUBLIC_HEADER})
 add_library(Opus::opus ALIAS opus)
-
-target_compile_options(opus PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:-w> $<$<CXX_COMPILER_ID:MSVC>:/w>)
 
 get_library_version(OPUS_LIBRARY_VERSION OPUS_LIBRARY_VERSION_MAJOR)
 message(DEBUG "Opus library version: ${OPUS_LIBRARY_VERSION}")

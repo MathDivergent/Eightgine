@@ -11,4 +11,4 @@ eightgine_add_module(MODULE_NAME "cJSON"
 
 
 # [[Dependencies]]
-eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "cJSON" DEPENDENCY_NAME "cJSON")
+eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "cJSON" DEPENDENCY_NAME "cjson")

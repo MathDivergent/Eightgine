@@ -275,5 +275,5 @@ if(ENABLE_LOCALES)
 	add_definitions(-DENABLE_LOCALES)
 endif()
 
-#[[add_subdirectory(tests)]]
-#[[add_subdirectory(fuzzing)]]
+add_subdirectory(tests)
+add_subdirectory(fuzzing)

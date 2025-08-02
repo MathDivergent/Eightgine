@@ -1,3 +1,7 @@
+# [[Defaults]]
+option(ENABLE_CJSON_TEST "" OFF)
+
+
 # [[Subdirectories]]
 add_subdirectory("cJSON" EXCLUDE_FROM_ALL)
 

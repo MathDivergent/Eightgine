@@ -59,6 +59,9 @@ int fMain(int iArgumentCount, char** pArgumentValues)
             if (auto plugin = cJSON_GetStringValue(aPlugInsJSONListItem))
             {
                 plugins.emplace_back(plugin);
+                #if EIGHTGINE_DEBUG
+                plugins.back().append("-Debug");
+                #endif
             }
         }
     }
@@ -67,7 +70,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     #if EIGHTGINE_PLATFORM_WINDOWS
     for (auto const& plugin : plugins)
     {
-        std::string fullName = std::string(EIGHTGINE_PROJECT_PLUGINS_DIR) + "/" + plugin + ".dll";
+        std::string fullName = plugin + ".dll";
         HMODULE hGameModule = LoadLibrary(fullName.c_str());
         if (!hGameModule)
         {

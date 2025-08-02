@@ -7,6 +7,8 @@ option(ENABLE_FUZZING "" OFF) # readonly
 # [[Subdirectories]]
 add_subdirectory("cJSON" EXCLUDE_FROM_ALL)
 
+target_compile_options(cjson PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:-w>) # disable warnings
+
 
 # [[Binaries]]
 eightgine_add_module(MODULE_NAME "cJSON"

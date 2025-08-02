@@ -1,5 +1,6 @@
 # [[Defaults]]
 option(EIGHTREFL_BUILD_SHARED_LIBS "" ON)
+option(EIGHTREFL_BUILD_TEST_LIBS "" ${EIGHTGINE_WITH_EDITOR})
 
 
 # [[Subdirectories]]
@@ -16,3 +17,7 @@ eightgine_add_module(MODULE_NAME "Eightrefl"
 
 # [[Dependencies]]
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Eightrefl" DEPENDENCY_NAME "Eightrefl")
+
+if(EIGHTGINE_WITH_EDITOR)
+    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Eightrefl" DEPENDENCY_NAME "EightreflTests")
+endif()

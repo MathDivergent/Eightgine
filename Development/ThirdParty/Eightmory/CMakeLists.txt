@@ -1,5 +1,6 @@
 # [[Defaults]]
 option(EIGHTMORY_BUILD_SHARED_LIBS "" ON)
+option(EIGHTMORY_BUILD_TEST_LIBS "" ${EIGHTGINE_WITH_EDITOR})
 
 
 # [[Subdirectories]]
@@ -16,3 +17,7 @@ eightgine_add_module(MODULE_NAME "Eightmory"
 
 # [[Dependencies]]
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Eightmory" DEPENDENCY_NAME "Eightmory")
+
+if(EIGHTGINE_WITH_EDITOR)
+    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Eightmory" DEPENDENCY_NAME "EightmoryTests")
+endif()

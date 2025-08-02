@@ -31,6 +31,12 @@ jobs:
         cmake -S . -B Intermediate -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
         cmake --build Intermediate --parallel
 
+    - name: "Test project"
+      shell: cmd
+      run: |
+        cd "%Eightgine%/EmptyProject.app/Contents/Windows"
+        EmptyProject.exe
+
     - name: "Prepare project to Package"
       shell: cmd
       run: |
@@ -44,9 +50,3 @@ jobs:
         name: ${{ github.workflow }}
         path: |
           ${{ env.Eightgine }}/EmptyProject.app
-
-    - name: "Test project"
-      shell: cmd
-      run: |
-        cd "%Eightgine%/EmptyProject.app/Contents/Windows"
-        EmptyProject.exe

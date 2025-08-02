@@ -9,7 +9,7 @@
 
 #if EIGHTGINE_PLATFORM_WINDOWS
 #include <windows.h>
-#elif EIGHTGINE_PLATFORM_LINUX
+#elif EIGHTGINE_PLATFORM_LINUX || EIGHTGINE_PLATFORM_MACOS
 #include <dlfcn.h>
 #endif
 

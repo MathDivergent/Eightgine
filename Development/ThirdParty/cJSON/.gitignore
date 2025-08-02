@@ -1,0 +1,7 @@
+cJSON/fuzzing/
+cJSON/tests/
+cJSON/*.yml
+cJSON/LICENSE
+cJSON/Makefile
+cJSON/test.c
+cJSON/*.supp

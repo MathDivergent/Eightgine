@@ -75,6 +75,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
         if (!hGameModule)
         {
             std::cout << "Failed to load " << fullName << std::endl;
+            continue;
         }
         else
         {
@@ -110,7 +111,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     #if EIGHTGINE_PLATFORM_MACOS
     for (const auto& plugin : plugins)
     {
-        std::string fullName = plugin + ".so";
+        std::string fullName = plugin + ".dylib";
         void* handle = dlopen(fullName.c_str(), RTLD_NOW);
         if (!handle)
         {

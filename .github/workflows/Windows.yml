@@ -40,9 +40,9 @@ jobs:
     - name: "Prepare project to Package"
       shell: cmd
       run: |
-        ren EmptyProject.app tmp_EmptyProject.app
+        ren EmptyProject.app _EmptyProject.app
         mkdir EmptyProject.app
-        move tmp_EmptyProject.app EmptyProject.app/EmptyProject.app
+        move _EmptyProject.app EmptyProject.app/EmptyProject.app
 
     - name: "Package and Upload project"
       uses: actions/upload-artifact@v4

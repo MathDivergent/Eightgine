@@ -30,7 +30,7 @@ jobs:
 
     - name: "Test project"
       run: |
-        cd "${Eightgine}/Binaries/EmptyProject.app/Contents/MacOS"
+        cd "${Eightgine}/EmptyProject.app/Contents/MacOS"
         ./EmptyProject
 
     - name: "Prepare project to Package"

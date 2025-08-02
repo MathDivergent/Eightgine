@@ -18,17 +18,17 @@ namespace eightgine
 
 int fMain(int iArgumentCount, char** pArgumentValues)
 {
-    #if EIGHTGINE_PLATFORM_WINDOWS
-    AllocConsole();
+    // #if EIGHTGINE_PLATFORM_WINDOWS
+    // AllocConsole();
 
-    FILE* fp;
-    freopen_s(&fp, "CONOUT$", "w", stdout);
-    freopen_s(&fp, "CONOUT$", "w", stderr);
-    freopen_s(&fp, "CONIN$", "r", stdin);
+    // FILE* fp;
+    // freopen_s(&fp, "CONOUT$", "w", stdout);
+    // freopen_s(&fp, "CONOUT$", "w", stderr);
+    // freopen_s(&fp, "CONIN$", "r", stdin);
 
-    std::ios::sync_with_stdio();
-    // FreeConsole(); // to close console
-    #endif
+    // std::ios::sync_with_stdio();
+    // // FreeConsole(); // to close console
+    // #endif
 
     std::ifstream aPlugInsFile(std::string(EIGHTGINE_PROJECT_PLUGINS_DIR) + "/PlugIns.json", std::ios::ate | std::ios::binary);
     if (!aPlugInsFile)
@@ -135,13 +135,16 @@ int fMain(int iArgumentCount, char** pArgumentValues)
 
     #if EIGHTGINE_WITH_EDITOR
     eightest::global()->try_catch([] { eightest::global()->execute_all(); });
+    auto code = !eightest::global()->stat();
+    #else
+    auto code = 0;
     #endif
 
-    #if EIGHTGINE_PLATFORM_WINDOWS
-    FreeConsole();
-    #endif
+    // #if EIGHTGINE_PLATFORM_WINDOWS
+    // FreeConsole();
+    // #endif
 
-    return !eightest::global()->stat();
+    return code;
 }
 
 } // namespace eightgine

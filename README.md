@@ -1,6 +1,6 @@
 ![engine](https://img.shields.io/badge/type-game--engine-%235a6770)
 ![language](https://img.shields.io/badge/language-C%2B%2B-blue)
-![OS](https://img.shields.io/badge/OS-linux,%20windows,%20mac-red)
+![OS](https://img.shields.io/badge/OS-windows,%20linux,%20mac-red)
 ![tests](https://img.shields.io/badge/tests-automated-yellow)
 [![Free](https://img.shields.io/badge/MIT-license-green)](https://github.com/svatostop/anthrax-ai?tab=MIT-1-ov-file)
 

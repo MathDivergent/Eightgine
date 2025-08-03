@@ -67,6 +67,10 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     }
     cJSON_Delete(aPlugInsJSON);
 
+    std::cout << "EIGHTGINE_PROJECT_EXECUTABLE_DIR: " << EIGHTGINE_PROJECT_EXECUTABLE_DIR << '\n';
+    std::cout << "EIGHTGINE_PROJECT_RESOURCES_DIR: " << EIGHTGINE_PROJECT_RESOURCES_DIR << '\n';
+    std::cout << "EIGHTGINE_PROJECT_PLUGINS_DIR: " << EIGHTGINE_PROJECT_PLUGINS_DIR << '\n';
+
     #if EIGHTGINE_PLATFORM_WINDOWS
     for (auto const& plugin : plugins)
     {

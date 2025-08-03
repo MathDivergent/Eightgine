@@ -1,4 +1,6 @@
-![engine](https://img.shields.io/badge/type-game--engine-%235a6770)
+# Eightgine - simple game engine
+
+![type](https://img.shields.io/badge/type-game%20engine-%235a6770)
 ![language](https://img.shields.io/badge/language-C%2B%2B-blue)
 ![OS](https://img.shields.io/badge/OS-windows,%20linux,%20mac-red)
 ![tests](https://img.shields.io/badge/tests-automated-yellow)
@@ -76,7 +78,7 @@ TODO: git config core.ignorecase false
     - RSprite - Определяет визуальную составляющую обьекта в пространстве.
     - RSpriteComposite - Описывает стопку спрайтов для рисования. Используется для контроля видимости.
     - RRenderTarget - Описывает холст рисования. 
-    - RPostProcessManager -	Предоставляет функциональность для работы с готовым кадром. Используется для цветокорекции, сглаживания, размытия.
+    - RPostProcessManager - Предоставляет функциональность для работы с готовым кадром. Используется для цветокорекции, сглаживания, размытия.
     - RRendererManager - Управляет рисованием окон и холстов.
 
 - Audio - Содержит классы для работы с аудио.

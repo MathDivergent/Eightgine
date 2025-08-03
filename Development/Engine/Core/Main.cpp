@@ -30,6 +30,10 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     // // FreeConsole(); // to close console
     // #endif
 
+    std::cout << "EIGHTGINE_PROJECT_EXECUTABLE_DIR: " << EIGHTGINE_PROJECT_EXECUTABLE_DIR << '\n';
+    std::cout << "EIGHTGINE_PROJECT_RESOURCES_DIR: " << EIGHTGINE_PROJECT_RESOURCES_DIR << '\n';
+    std::cout << "EIGHTGINE_PROJECT_PLUGINS_DIR: " << EIGHTGINE_PROJECT_PLUGINS_DIR << '\n';
+
     std::ifstream aPlugInsFile(std::string(EIGHTGINE_PROJECT_PLUGINS_DIR) + "/PlugIns.json", std::ios::ate | std::ios::binary);
     if (!aPlugInsFile)
     {
@@ -67,14 +71,10 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     }
     cJSON_Delete(aPlugInsJSON);
 
-    std::cout << "EIGHTGINE_PROJECT_EXECUTABLE_DIR: " << EIGHTGINE_PROJECT_EXECUTABLE_DIR << '\n';
-    std::cout << "EIGHTGINE_PROJECT_RESOURCES_DIR: " << EIGHTGINE_PROJECT_RESOURCES_DIR << '\n';
-    std::cout << "EIGHTGINE_PROJECT_PLUGINS_DIR: " << EIGHTGINE_PROJECT_PLUGINS_DIR << '\n';
-
     #if EIGHTGINE_PLATFORM_WINDOWS
     for (auto const& plugin : plugins)
     {
-        std::string fullName = std::string(EIGHTGINE_PROJECT_EXECUTABLE_DIR) + plugin + ".dll";
+        std::string fullName = std::string(EIGHTGINE_PROJECT_EXECUTABLE_DIR) + "/" + plugin + ".dll";
         HMODULE hGameModule = LoadLibrary(fullName.c_str());
         if (!hGameModule)
         {
@@ -91,7 +91,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     #if EIGHTGINE_PLATFORM_LINUX
     for (const auto& plugin : plugins)
     {
-        std::string fullName = std::string(EIGHTGINE_PROJECT_EXECUTABLE_DIR) + plugin + ".so";
+        std::string fullName = std::string(EIGHTGINE_PROJECT_EXECUTABLE_DIR) + "/" + plugin + ".so";
         void* handle = dlopen(fullName.c_str(), RTLD_NOW);
         if (!handle)
         {
@@ -115,7 +115,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     #if EIGHTGINE_PLATFORM_MACOS
     for (const auto& plugin : plugins)
     {
-        std::string fullName = std::string(EIGHTGINE_PROJECT_EXECUTABLE_DIR) + plugin + ".dylib";
+        std::string fullName = std::string(EIGHTGINE_PROJECT_EXECUTABLE_DIR) + "/" + plugin + ".dylib";
         void* handle = dlopen(fullName.c_str(), RTLD_NOW);
         if (!handle)
         {

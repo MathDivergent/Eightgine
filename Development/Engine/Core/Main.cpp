@@ -119,12 +119,15 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     #if EIGHTGINE_PLATFORM_MACOS
     char buf [PATH_MAX];
     uint32_t bufsize = PATH_MAX;
-    if (!_NSGetExecutablePath(buf, &bufsize))
+    if (_NSGetExecutablePath(buf, &bufsize) == 0)
         puts(buf);
+
+    std::string exec_path = std::string(buf, bufsize);
+    std::cout << "exec_path: " << exec_path << '\n';
 
     for (const auto& plugin : plugins)
     {
-        std::string fullName = std::string(buf, bufsize) + "/../Frameworks/" + plugin + ".dylib";
+        std::string fullName = exec_path + "/../Frameworks/" + plugin + ".dylib";
         void* handle = dlopen(fullName.c_str(), RTLD_NOW);
         if (!handle)
         {

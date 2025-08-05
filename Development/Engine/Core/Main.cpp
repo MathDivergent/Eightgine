@@ -38,7 +38,19 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     std::cout << "EIGHTGINE_PROJECT_RESOURCES_DIR: " << EIGHTGINE_PROJECT_RESOURCES_DIR << '\n';
     std::cout << "EIGHTGINE_PROJECT_PLUGINS_DIR: " << EIGHTGINE_PROJECT_PLUGINS_DIR << '\n';
 
-    std::ifstream aPlugInsFile(std::string(EIGHTGINE_PROJECT_PLUGINS_DIR) + "/PlugIns.json", std::ios::ate | std::ios::binary);
+    std::string exec_path = "./";
+
+    #if EIGHTGINE_PLATFORM_MACOS
+    char buf [PATH_MAX];
+    uint32_t bufsize = PATH_MAX;
+    if (_NSGetExecutablePath(buf, &bufsize) == 0)
+        puts(buf);
+
+    exec_path = std::string(buf, bufsize);
+    std::cout << "exec_path: " << exec_path << '\n';
+    #endif
+
+    std::ifstream aPlugInsFile(exec_path + "/PlugIns.json", std::ios::ate | std::ios::binary);
     if (!aPlugInsFile)
     {
         std::cerr << "Failed to open PlugIns.json file\n";
@@ -117,14 +129,6 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     }
     #endif
     #if EIGHTGINE_PLATFORM_MACOS
-    char buf [PATH_MAX];
-    uint32_t bufsize = PATH_MAX;
-    if (_NSGetExecutablePath(buf, &bufsize) == 0)
-        puts(buf);
-
-    std::string exec_path = std::string(buf, bufsize);
-    std::cout << "exec_path: " << exec_path << '\n';
-
     for (const auto& plugin : plugins)
     {
         std::string fullName = exec_path + "/../Frameworks/" + plugin + ".dylib";

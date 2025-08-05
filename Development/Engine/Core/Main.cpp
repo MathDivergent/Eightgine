@@ -13,6 +13,10 @@
 #include <dlfcn.h>
 #endif
 
+#if EIGHTGINE_PLATFORM_MACOS
+#include <mach-o/dyld.h>
+#endif
+
 namespace eightgine
 {
 
@@ -113,9 +117,14 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     }
     #endif
     #if EIGHTGINE_PLATFORM_MACOS
+    char buf [PATH_MAX];
+    uint32_t bufsize = PATH_MAX;
+    if (!_NSGetExecutablePath(buf, &bufsize))
+        puts(buf);
+
     for (const auto& plugin : plugins)
     {
-        std::string fullName = "@executable_path/../Frameworks/" + plugin + ".dylib";
+        std::string fullName = std::string(buf, bufsize) + "/../Frameworks/" + plugin + ".dylib";
         void* handle = dlopen(fullName.c_str(), RTLD_NOW);
         if (!handle)
         {

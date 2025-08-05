@@ -115,7 +115,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     #if EIGHTGINE_PLATFORM_MACOS
     for (const auto& plugin : plugins)
     {
-        std::string fullName = /*std::string(EIGHTGINE_PROJECT_EXECUTABLE_DIR) + */"./../" + plugin + ".dylib";
+        std::string fullName = /*std::string(EIGHTGINE_PROJECT_EXECUTABLE_DIR) + */"./../Frameworks/" + plugin + ".dylib";
         void* handle = dlopen(fullName.c_str(), RTLD_NOW);
         if (!handle)
         {

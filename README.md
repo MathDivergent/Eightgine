@@ -1,6 +1,6 @@
-# Eightgine - simple game engine
+# Eightgine - Simple game engine
 
-![type](https://img.shields.io/badge/type-game%20engine-%235a6770)
+![type](https://img.shields.io/badge/type-engine-%235a6770)
 ![language](https://img.shields.io/badge/language-C%2B%2B-blue)
 ![OS](https://img.shields.io/badge/OS-windows,%20linux,%20mac-red)
 ![tests](https://img.shields.io/badge/tests-automated-yellow)

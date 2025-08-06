@@ -1,10 +1,10 @@
 # Eightgine - Simple game engine
 
-![type](https://img.shields.io/badge/type-engine-%235a6770)
-![language](https://img.shields.io/badge/language-C%2B%2B-blue)
-![OS](https://img.shields.io/badge/OS-windows,%20linux,%20mac-red)
-![tests](https://img.shields.io/badge/tests-automated-yellow)
-[![Free](https://img.shields.io/badge/MIT-license-green)](https://github.com/svatostop/anthrax-ai?tab=MIT-1-ov-file)
+![Type](https://img.shields.io/badge/type-engine-%235a6770)
+![Language](https://img.shields.io/badge/language-C%2B%2B-blue)
+![Platforms](https://img.shields.io/badge/platforms-Windows%20%7C%20Linux%20%7C%20macOS-red)
+![Tests](https://img.shields.io/badge/tests-automated-yellow)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://github.com/svatostop/anthrax-ai?tab=MIT-1-ov-file)
 
 TODO: update structure of engine, project
 TODO: git config core.ignorecase false

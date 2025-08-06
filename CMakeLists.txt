@@ -80,6 +80,9 @@ endforeach()
 
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE) # readonly
 set(CMAKE_INSTALL_RPATH "${EIGHTGINE_RPATH}") # readonly
+if(EIGHTGINE_PLATFORM_MACOS)
+    set(CMAKE_INSTALL_NAME_DIR "@rpath") # readonly
+endif()
 
 set(ENV{PKG_CONFIG_PATH} "${EIGHTGINE_THIRDPARTY_DIR}")
 

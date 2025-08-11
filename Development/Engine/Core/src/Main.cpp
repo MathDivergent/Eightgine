@@ -17,10 +17,7 @@
 #include <mach-o/dyld.h>
 #endif
 
-namespace eightgine
-{
-
-int fMain(int iArgumentCount, char** pArgumentValues)
+int EightgineMain(int iArgumentCount, char** pArgumentValues)
 {
     // #if EIGHTGINE_PLATFORM_WINDOWS
     // AllocConsole();
@@ -34,9 +31,9 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     // // FreeConsole(); // to close console
     // #endif
 
-    std::cout << "EIGHTGINE_PROJECT_EXECUTABLE_DIR: " << EIGHTGINE_PROJECT_EXECUTABLE_DIR << '\n';
-    std::cout << "EIGHTGINE_PROJECT_RESOURCES_DIR: " << EIGHTGINE_PROJECT_RESOURCES_DIR << '\n';
-    std::cout << "EIGHTGINE_PROJECT_PLUGINS_DIR: " << EIGHTGINE_PROJECT_PLUGINS_DIR << '\n';
+    // std::cout << "EIGHTGINE_PROJECT_EXECUTABLE_DIR: " << EIGHTGINE_PROJECT_EXECUTABLE_DIR << '\n';
+    // std::cout << "EIGHTGINE_PROJECT_RESOURCES_DIR: " << EIGHTGINE_PROJECT_RESOURCES_DIR << '\n';
+    // std::cout << "EIGHTGINE_PROJECT_PLUGINS_DIR: " << EIGHTGINE_PROJECT_PLUGINS_DIR << '\n';
 
     std::string exec_path = "./";
 
@@ -90,7 +87,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     #if EIGHTGINE_PLATFORM_WINDOWS
     for (auto const& plugin : plugins)
     {
-        std::string fullName = std::string(EIGHTGINE_PROJECT_EXECUTABLE_DIR) + "/" + plugin + ".dll";
+        std::string fullName = /*std::string(EIGHTGINE_PROJECT_EXECUTABLE_DIR) + */"./" + plugin + ".dll";
         HMODULE hGameModule = LoadLibrary(fullName.c_str());
         if (!hGameModule)
         {
@@ -107,7 +104,7 @@ int fMain(int iArgumentCount, char** pArgumentValues)
     #if EIGHTGINE_PLATFORM_LINUX
     for (const auto& plugin : plugins)
     {
-        std::string fullName = std::string(EIGHTGINE_PROJECT_EXECUTABLE_DIR) + "/" + plugin + ".so";
+        std::string fullName = /*std::string(EIGHTGINE_PROJECT_EXECUTABLE_DIR) + */"./" + plugin + ".so";
         void* handle = dlopen(fullName.c_str(), RTLD_NOW);
         if (!handle)
         {
@@ -166,8 +163,6 @@ int fMain(int iArgumentCount, char** pArgumentValues)
 
     return code;
 }
-
-} // namespace eightgine
 
 // //#include <SDL2/SDL.h>
 // //#include <GLFW/glfw3.h>

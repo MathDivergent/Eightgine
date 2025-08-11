@@ -100,10 +100,6 @@ else()
     add_compile_definitions("EIGHTGINE_WITH_CONSOLE=0")
 endif()
 
-add_compile_definitions("EIGHTGINE_PROJECT_EXECUTABLE_DIR=\"${PROJECT_EXECUTABLE_PATH}\"")
-add_compile_definitions("EIGHTGINE_PROJECT_RESOURCES_DIR=\"${PROJECT_EXECUTABLE_PATH}/../${RESOURCES_DIR_NAME}\"")
-add_compile_definitions("EIGHTGINE_PROJECT_PLUGINS_DIR=\"${PROJECT_EXECUTABLE_PATH}/../${PLUGINS_DIR_NAME}\"")
-
 
 # [[Subdirectories]]
 eightgine_add_symlink(ORIGINAL "${EIGHTGINE_ENGINE_DIR}" LINKNAME "${PROJECT_ENGINE_DIR}")
@@ -114,7 +110,7 @@ add_subdirectory("${PROJECT_GAME_DIR}")
 
 # [[Binaries]]
 set(PROJECT_JAUNCHER_CPP "${CMAKE_BINARY_DIR}/Launcher.cpp")
-file(WRITE "${PROJECT_JAUNCHER_CPP}" "#include <Main.h>")
+file(WRITE "${PROJECT_JAUNCHER_CPP}" "#include <Main.hpp>")
 
 eightgine_add_executable(EXECUTABLE_NAME "${PROJECT_NAME}"
     EXECUTABLE_SOURCES_FILES "${PROJECT_JAUNCHER_CPP}" "${PROJECT_RESOURCES_DIR}/icon.rc"
@@ -125,5 +121,5 @@ eightgine_add_executable(EXECUTABLE_NAME "${PROJECT_NAME}"
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_NAME}" DEPENDENCY_NAME "EightgineCore")
 
 if(EIGHTGINE_PLATFORM_WINDOWS)
-    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_NAME}" DEPENDENCY_NAME "Platforms-Windows-Executable")
+    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_NAME}" DEPENDENCY_NAME "PlatformsWindowsExecutable")
 endif()

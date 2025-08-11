@@ -3,7 +3,7 @@ get_filename_component(CXXCOMPILER_BIN_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
 
 
 # [[Binaries]]
-eightgine_add_module(MODULE_NAME "Platforms-Windows-Executable" MODULE_TYPE INTERFACE MODULE_API_DEFINITION OFF)
+eightgine_add_module(MODULE_NAME "PlatformsWindowsExecutable" MODULE_TYPE INTERFACE MODULE_API_DEFINITION OFF)
 
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -14,9 +14,9 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 
 
     # [[Dependencies]]
-    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Platforms-Windows-Executable" DEPENDENCY_NAME "libstdc++-6")
-    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Platforms-Windows-Executable" DEPENDENCY_NAME "libgcc_s_seh-1")
-    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Platforms-Windows-Executable" DEPENDENCY_NAME "libwinpthread-1")
+    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "PlatformsWindowsExecutable" DEPENDENCY_NAME "libstdc++-6")
+    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "PlatformsWindowsExecutable" DEPENDENCY_NAME "libgcc_s_seh-1")
+    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "PlatformsWindowsExecutable" DEPENDENCY_NAME "libwinpthread-1")
 
 
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -26,8 +26,8 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 
 
     # [[Dependencies]]
-    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Platforms-Windows-Executable" DEPENDENCY_NAME "libc++")
-    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Platforms-Windows-Executable" DEPENDENCY_NAME "libunwind")
+    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "PlatformsWindowsExecutable" DEPENDENCY_NAME "libc++")
+    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "PlatformsWindowsExecutable" DEPENDENCY_NAME "libunwind")
 
 
 else()

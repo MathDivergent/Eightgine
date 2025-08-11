@@ -1,11 +1,13 @@
 # [[Binaries]]
 eightgine_add_module(MODULE_NAME "EightgineCore"
     MODULE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include"
-    MODULE_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src"
+    MODULE_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src" "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
 
 # [[Dependencies]]
+eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineCore" DEPENDENCY_NAME "EightginePlatform")
+
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineCore" DEPENDENCY_NAME "cJSON")
 
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineCore" DEPENDENCY_NAME "SDL2")

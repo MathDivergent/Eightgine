@@ -16,6 +16,7 @@ set(CMAKE_RELWITHDEBINFO_POSTFIX "-RelWithDebInfo")
 # [[Options]]
 option(EIGHTGINE_WITH_EDITOR "Build with the Eightgine Editor" ON)
 option(EIGHTGINE_WITH_CONSOLE "Build with the Eightgine Console" OFF)
+option(EIGHTGINE_OVERRIDE_PLATFORM "Build with the Eightgine custom Platform" OFF)
 option(BUILD_SHARED_LIBS "Build shared libraies by Default" ON)
 option(BUILD_FRAMEWORK "Build Framework bundle for OSX" OFF)
 
@@ -110,7 +111,7 @@ add_subdirectory("${PROJECT_GAME_DIR}")
 
 # [[Binaries]]
 set(PROJECT_JAUNCHER_CPP "${CMAKE_BINARY_DIR}/Launcher.cpp")
-file(WRITE "${PROJECT_JAUNCHER_CPP}" "#include <Main.hpp>")
+file(WRITE "${PROJECT_JAUNCHER_CPP}" "#include <CLauncherImpl.hpp>")
 
 eightgine_add_executable(EXECUTABLE_NAME "${PROJECT_NAME}"
     EXECUTABLE_SOURCES_FILES "${PROJECT_JAUNCHER_CPP}" "${PROJECT_RESOURCES_DIR}/icon.rc"

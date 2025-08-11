@@ -217,6 +217,7 @@ function(eightgine_configure_module_or_executable)
         else()
             set(MODULE_OR_EXECUTABLE_COMMAND_NAME "${EIGHTGINE_COMMAND_NAME_PREFIX}${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}")
 
+            message(STATUS "BINDIR ${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}: ${MODULE_OR_EXECUTABLE_BIN_DIR_DESTINATION}")
             if(NOT ARG_MODULE_OR_EXECUTABLE_BIN_DIR_DESTINATION)
                 eightgine_bin_dir(ARG_MODULE_OR_EXECUTABLE_BIN_DIR_DESTINATION)
             endif()

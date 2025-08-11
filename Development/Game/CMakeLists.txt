@@ -1,11 +1,10 @@
 # [[Binaries]]
-eightgine_add_module(MODULE_NAME "EmptyProjectCore"
+eightgine_add_module(MODULE_NAME "Game"
     MODULE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}"
     MODULE_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}"
+    MODULE_BIN_DIR_DESTINATION "${PROJECT_PLUGINS_DIR}"
 )
 
 
 # [[Dependencies]]
-eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "EmptyProjectCore"
-    DEPENDENCY_NAME "EightgineCore"
-)
+eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Game" DEPENDENCY_NAME "EightgineCore")

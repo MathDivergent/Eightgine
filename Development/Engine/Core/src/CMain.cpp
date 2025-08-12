@@ -7,16 +7,6 @@
 #include <iostream> // cout, cerr
 #include <fstream> // ifstream
 
-#if EIGHTGINE_PLATFORM_WINDOWS
-#include <windows.h>
-#elif EIGHTGINE_PLATFORM_LINUX || EIGHTGINE_PLATFORM_MACOS
-#include <dlfcn.h>
-#endif
-
-#if EIGHTGINE_PLATFORM_MACOS
-#include <mach-o/dyld.h>
-#endif
-
 #include <CMain.hpp>
 
 #include <PPlatform.hpp>
@@ -44,6 +34,7 @@ int CMain::Execute(int iArgumentCount, char** pArgumentValues)
     }
 
     auto plugInsPath = PPlatform::Global()->FileSystem->ProjectPlugInsDir() / "PlugIns.json";
+    std::cout << "plugInsPath: " << plugInsPath << '\n';
     std::ifstream aPlugInsFile(plugInsPath.c_str(), std::ios::ate | std::ios::binary);
     if (!aPlugInsFile)
     {
@@ -84,7 +75,9 @@ int CMain::Execute(int iArgumentCount, char** pArgumentValues)
     for (auto const& plugIn : plugIns)
     {
         auto name = PPlatform::Global()->FileSystem->ProjectPlugInsDir() / plugIn;
-        PPlatform::Global()->ModuleController->LoadModule(name.string());
+        std::cout << "name: " << name;
+        auto module = PPlatform::Global()->ModuleController->LoadModule(name.string());
+        std::cout << " module: " << module << '\n';
     }
 
     for (auto const module : CModuleRegistry::Global()->All)

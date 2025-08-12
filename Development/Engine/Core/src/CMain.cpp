@@ -27,6 +27,10 @@ CMain* CMain::Global()
 
 int CMain::Execute(int iArgumentCount, char** pArgumentValues)
 {
+    eightmory::segment_t segment; (void)segment;
+    (void)eightser::instantiable_registry();
+    (void)eightrefl::global();
+
     if (PPlatform::Global()->ModuleController == nullptr)
     {
         return -1;

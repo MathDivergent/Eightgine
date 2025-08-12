@@ -11,6 +11,7 @@
 
 #include <Eightmory/Core.hpp>
 #include <Eightser/Core.hpp>
+#include <Eightser/Standard/AnyRegistry.hpp>
 #include <Eightrefl/Core.hpp>
 
 #include <PPlatform.hpp>
@@ -31,6 +32,7 @@ int CMain::Execute(int iArgumentCount, char** pArgumentValues)
     segment.is_used = false; (void)segment;
 
     (void)eightser::instantiable_registry();
+    (void)eightser::any_registry();
     (void)eightrefl::global();
 
     if (PPlatform::Global()->ModuleController == nullptr)

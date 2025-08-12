@@ -28,16 +28,16 @@ jobs:
         cmake -S . -B Intermediate -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
         cmake --build Intermediate --parallel
 
+    - name: "Test project"
+      run: |
+        cd "${Eightgine}/EmptyProject.app/Contents/MacOS"
+        ./EmptyProject
+
     - name: "Prepare project to Package"
       run: |
         mv EmptyProject.app tmp_EmptyProject.app
         mkdir EmptyProject.app
         mv tmp_EmptyProject.app EmptyProject.app/EmptyProject.app
-
-    - name: "Test project"
-      run: |
-        cd "${Eightgine}/EmptyProject.app/Contents/MacOS"
-        ./EmptyProject
 
     - name: "Package and Upload project"
       uses: actions/upload-artifact@v4

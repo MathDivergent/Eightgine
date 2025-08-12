@@ -27,7 +27,9 @@ CMain* CMain::Global()
 
 int CMain::Execute(int iArgumentCount, char** pArgumentValues)
 {
-    eightmory::segment_t segment; (void)segment;
+    eightmory::segment_t segment;
+    segment.is_used = false; (void)segment;
+
     (void)eightser::instantiable_registry();
     (void)eightrefl::global();
 

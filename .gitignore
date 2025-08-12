@@ -4,3 +4,6 @@ EmptyProject.app/Contents/Windows/
 EmptyProject.app/Contents/Linux/
 EmptyProject.app/Contents/MacOS/
 EmptyProject.app/Contents/Frameworks/
+EmptyProject.app/Contents/PlugIns/*.dll
+EmptyProject.app/Contents/PlugIns/*.so
+EmptyProject.app/Contents/PlugIns/*.dylib

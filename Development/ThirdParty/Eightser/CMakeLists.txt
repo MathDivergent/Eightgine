@@ -20,4 +20,5 @@ eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Eightser" DEPENDENCY_NAME "E
 
 if(EIGHTGINE_WITH_EDITOR)
     eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Eightser" DEPENDENCY_NAME "EightserTests")
+    eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "EightserTests" MODULE_OR_EXECUTABLE_DESTINATION_DIR "${PROJECT_PLUGINS_DIR}")
 endif()

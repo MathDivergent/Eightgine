@@ -1,7 +1,8 @@
 #include <PPlatform.hpp>
 #include <PFileSystemInterface.hpp>
 
-#include <string> // string, strlen
+#include <string> // string
+#include <cstring> // strlen
 
 #include <mach-o/dyld.h> // PATH_MAX, uint32_t, _NSGetExecutablePath
 #include <stdlib.h> // realpath

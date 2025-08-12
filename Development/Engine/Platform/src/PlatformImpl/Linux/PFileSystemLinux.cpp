@@ -1,7 +1,8 @@
 #include <PPlatform.hpp>
 #include <PFileSystemInterface.hpp>
 
-#include <string> // string, strlen
+#include <string> // string
+#include <cstring> // strlen
 
 #include <unistd.h> // PATH_MAX, ssize_t, readlink
 #include <stdlib.h> // realpath

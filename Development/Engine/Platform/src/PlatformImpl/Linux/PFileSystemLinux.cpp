@@ -4,8 +4,9 @@
 #include <string> // string
 #include <cstring> // strlen
 
-#include <unistd.h> // PATH_MAX, ssize_t, readlink
+#include <limits.h> // PATH_MAX
 #include <stdlib.h> // realpath
+#include <unistd.h> // ssize_t, readlink
 
 struct PFileSystemLinux : public PFileSystemInterface
 {

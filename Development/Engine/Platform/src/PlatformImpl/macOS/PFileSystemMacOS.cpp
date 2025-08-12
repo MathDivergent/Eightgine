@@ -4,8 +4,9 @@
 #include <string> // string
 #include <cstring> // strlen
 
-#include <mach-o/dyld.h> // PATH_MAX, uint32_t, _NSGetExecutablePath
+#include <limits.h> // PATH_MAX
 #include <stdlib.h> // realpath
+#include <mach-o/dyld.h> // uint32_t, _NSGetExecutablePath
 
 struct PFileSystemMacOS : public PFileSystemInterface
 {

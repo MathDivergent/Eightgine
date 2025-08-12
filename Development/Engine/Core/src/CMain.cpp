@@ -1,5 +1,3 @@
-#include <cJSON.h>
-
 #ifdef EIGHTGINE_WITH_EDITOR
 #include <Eightest/Core.hpp>
 #endif
@@ -7,7 +5,13 @@
 #include <iostream> // cout, cerr
 #include <fstream> // ifstream
 
+#include <cJSON.h>
+
 #include <CMain.hpp>
+
+#include <Eightmory/Core.hpp>
+#include <Eightser/Core.hpp>
+#include <Eightrefl/Core.hpp>
 
 #include <PPlatform.hpp>
 #include <PFileSystemInterface.hpp>

@@ -34,14 +34,14 @@ jobs:
         mkdir EmptyProject.app
         mv tmp_EmptyProject.app EmptyProject.app/EmptyProject.app
 
+    - name: "Test project"
+      run: |
+        cd "${Eightgine}/EmptyProject.app/Contents/MacOS"
+        ./EmptyProject
+
     - name: "Package and Upload project"
       uses: actions/upload-artifact@v4
       with:
         name: ${{ github.workflow }}
         path: |
           ${{ env.Eightgine }}/EmptyProject.app
-
-    - name: "Test project"
-      run: |
-        cd "${Eightgine}/EmptyProject.app/Contents/MacOS"
-        ./EmptyProject

@@ -28,11 +28,6 @@ jobs:
         cmake -S . -B Intermediate -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
         cmake --build Intermediate --parallel
 
-    - name: "Test project"
-      run: |
-        cd "${Eightgine}/EmptyProject.app/Contents/MacOS"
-        ./EmptyProject
-
     - name: "Prepare project to Package"
       run: |
         mv EmptyProject.app tmp_EmptyProject.app
@@ -45,3 +40,8 @@ jobs:
         name: ${{ github.workflow }}
         path: |
           ${{ env.Eightgine }}/EmptyProject.app
+
+    - name: "Test project"
+      run: |
+        cd "${Eightgine}/EmptyProject.app/EmptyProject.app/Contents/MacOS"
+        ./EmptyProject

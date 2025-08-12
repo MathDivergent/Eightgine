@@ -1,9 +1,16 @@
-#include <PModuleControllerLinux.hpp>
 #include <PPlatform.hpp>
+#include <PModuleControllerInterface.hpp>
 
 #include <dlfcn.h> // dlopen, RTLD_NOW, dlsym, dlclose
 
-EIGHTGINE_REGISTRY_PLATFORM(ModuleController, PModuleControllerLinux)
+struct PModuleControllerLinux : public PModuleControllerInterface
+{
+    void* LoadModule(std::string const& sModuleName) override;
+    void* GetFunction(void* pModule, std::string const& sFunctionName) override;
+    bool UnloadModule(void* pModule) override;
+};
+
+EIGHTGINE_REGISTER_PLATFORM(ModuleController, PModuleControllerLinux)
 
 
 void* PModuleControllerLinux::LoadModule(std::string const& sModuleName)

@@ -4,8 +4,7 @@
 
 #include <cstdio> // printf
 
-EIGHTGINE_REGISTRY_MODULE(GameModule)
-
+EIGHTGINE_REGISTER_MODULE(GameModule)
 
 void GameModule::OnLoad()
 {

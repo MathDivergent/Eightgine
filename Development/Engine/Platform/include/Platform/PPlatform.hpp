@@ -4,7 +4,7 @@
 #include <string> // string
 #include <filesystem> // filesystem
 
-#define EIGHTGINE_REGISTRY_PLATFORM(interface, name) \
+#define EIGHTGINE_REGISTER_PLATFORM(interface, name) \
     static struct name##Register \
     { \
         name##Register() \

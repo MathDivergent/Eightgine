@@ -1,9 +1,16 @@
-#include <PFileSystemWindows.hpp>
 #include <PPlatform.hpp>
+#include <PFileSystemInterface.hpp>
 
 #include <windows.h> // MAX_PATH, DWORD, GetModuleFileNameW
 
-EIGHTGINE_REGISTRY_PLATFORM(FileSystem, PFileSystemWindows)
+struct PFileSystemWindows : public PFileSystemInterface
+{
+    std::filesystem::path ProjectExecutableDir() override;
+    std::filesystem::path ProjectPlugInsDir() override;
+    std::filesystem::path ProjectResourcesDir() override;
+};
+
+EIGHTGINE_REGISTER_PLATFORM(FileSystem, PFileSystemWindows)
 
 
 std::filesystem::path PFileSystemWindows::ProjectExecutableDir()

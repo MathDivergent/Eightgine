@@ -3,7 +3,7 @@
 
 #include <vector> // vector
 
-#define EIGHTGINE_REGISTRY_MODULE(name) \
+#define EIGHTGINE_REGISTER_MODULE(name) \
     static struct name##Register \
     { \
         name##Register() \

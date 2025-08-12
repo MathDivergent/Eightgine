@@ -1,12 +1,19 @@
-#include <PFileSystemMacOS.hpp>
 #include <PPlatform.hpp>
+#include <PFileSystemInterface.hpp>
 
 #include <string> // string, strlen
 
 #include <mach-o/dyld.h> // PATH_MAX, uint32_t, _NSGetExecutablePath
 #include <stdlib.h> // realpath
 
-EIGHTGINE_REGISTRY_PLATFORM(FileSystem, PFileSystemMacOS)
+struct PFileSystemMacOS : public PFileSystemInterface
+{
+    std::filesystem::path ProjectExecutableDir() override;
+    std::filesystem::path ProjectPlugInsDir() override;
+    std::filesystem::path ProjectResourcesDir() override;
+};
+
+EIGHTGINE_REGISTER_PLATFORM(FileSystem, PFileSystemMacOS)
 
 
 std::filesystem::path PFileSystemMacOS::ProjectExecutableDir()
@@ -19,7 +26,7 @@ std::filesystem::path PFileSystemMacOS::ProjectExecutableDir()
         return {};
     }
 
-    sExecutablePathBuffer.resize((std::size_t)uExecutablePathLength);
+    sExecutablePathBuffer.resize((std::size_t)uExecutablePathLength); // shrink
 
     std::string sRealExecutablePathBuffer(PATH_MAX, '\0');
     if (realpath(/*path*/sExecutablePathBuffer.c_str(), /*resolved_path*/sRealExecutablePathBuffer.data()) == NULL)
@@ -28,7 +35,7 @@ std::filesystem::path PFileSystemMacOS::ProjectExecutableDir()
     }
 
     std::size_t uRealExecutablePathLength = std::strlen(sRealExecutablePathBuffer.c_str());
-    sRealExecutablePathBuffer.resize(uRealExecutablePathLength);
+    sRealExecutablePathBuffer.resize(uRealExecutablePathLength); // shrink
     return std::filesystem::path(sRealExecutablePathBuffer).parent_path();
 }
 

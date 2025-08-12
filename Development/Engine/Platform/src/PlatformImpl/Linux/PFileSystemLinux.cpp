@@ -1,12 +1,19 @@
-#include <PFileSystemLinux.hpp>
 #include <PPlatform.hpp>
+#include <PFileSystemInterface.hpp>
 
 #include <string> // string, strlen
 
 #include <unistd.h> // PATH_MAX, ssize_t, readlink
 #include <stdlib.h> // realpath
 
-EIGHTGINE_REGISTRY_PLATFORM(FileSystem, PFileSystemLinux)
+struct PFileSystemLinux : public PFileSystemInterface
+{
+    std::filesystem::path ProjectExecutableDir() override;
+    std::filesystem::path ProjectPlugInsDir() override;
+    std::filesystem::path ProjectResourcesDir() override;
+};
+
+EIGHTGINE_REGISTER_PLATFORM(FileSystem, PFileSystemLinux)
 
 
 std::filesystem::path PFileSystemLinux::ProjectExecutableDir()
@@ -19,7 +26,7 @@ std::filesystem::path PFileSystemLinux::ProjectExecutableDir()
         return {};
     }
 
-    sExecutablePathBuffer.resize((std::size_t)iExecutablePathLength);
+    sExecutablePathBuffer.resize((std::size_t)iExecutablePathLength); // shrink
 
     std::string sRealExecutablePathBuffer(PATH_MAX, '\0');
     if (realpath(/*path*/sExecutablePathBuffer.c_str(), /*resolved_path*/sRealExecutablePathBuffer.data()) == NULL)
@@ -28,7 +35,7 @@ std::filesystem::path PFileSystemLinux::ProjectExecutableDir()
     }
 
     std::size_t uRealExecutablePathLength = std::strlen(sRealExecutablePathBuffer.c_str());
-    sRealExecutablePathBuffer.resize(uRealExecutablePathLength);
+    sRealExecutablePathBuffer.resize(uRealExecutablePathLength); // shrink
     return std::filesystem::path(sRealExecutablePathBuffer).parent_path();
 }
 

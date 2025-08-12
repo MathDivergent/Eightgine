@@ -7,7 +7,6 @@ eightgine_add_module(MODULE_NAME "EightgineCore"
 
 # [[Dependencies]]
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineCore" DEPENDENCY_NAME "EightginePlatform")
-
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineCore" DEPENDENCY_NAME "cJSON")
 
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineCore" DEPENDENCY_NAME "SDL2")

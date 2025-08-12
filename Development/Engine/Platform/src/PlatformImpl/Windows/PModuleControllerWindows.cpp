@@ -1,9 +1,16 @@
-#include <PModuleControllerWindows.hpp>
 #include <PPlatform.hpp>
+#include <PModuleControllerInterface.hpp>
 
 #include <windows.h> // LoadLibraryA, HMODULE, GetProcAddress, FreeLibrary
 
-EIGHTGINE_REGISTRY_PLATFORM(ModuleController, PModuleControllerWindows)
+struct PModuleControllerWindows : public PModuleControllerInterface
+{
+    void* LoadModule(std::string const& sModuleName) override;
+    void* GetFunction(void* pModule, std::string const& sFunctionName) override;
+    bool UnloadModule(void* pModule) override;
+};
+
+EIGHTGINE_REGISTER_PLATFORM(ModuleController, PModuleControllerWindows)
 
 
 void* PModuleControllerWindows::LoadModule(std::string const& sModuleName)

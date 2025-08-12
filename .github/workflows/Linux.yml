@@ -30,7 +30,9 @@ jobs:
       run: |
         cd ${Eightgine}
         rm -rf Intermediate
-        cmake -S . -B Intermediate -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+        cmake -S . -B Intermediate -G Ninja \
+          -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ \
+          -DCMAKE_BUILD_TYPE=Release
         cmake --build Intermediate --parallel
 
     - name: "Prepare project to Package"

@@ -7,6 +7,8 @@ import shutil
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 SYSTEM = platform.system()
 
+IGNORE_DIRS = ["Intermediate", ".idea"]
+
 def list_dependencies(file_path):
     try:
         if SYSTEM == "Darwin":
@@ -44,9 +46,15 @@ def main():
         return
 
     for root, dirs, files in os.walk(SCRIPT_DIR):
-        for f in files:
-            if f.lower().endswith(ext):
-                full_path = os.path.join(root, f)
+        filtered_dirs = []
+        for dir in dirs:
+            if dir not in IGNORE_DIRS:
+                filtered_dirs.append(dir)
+        dirs[:] = filtered_dirs
+
+        for file in files:
+            if file.lower().endswith(ext):
+                full_path = os.path.join(root, file)
                 print(f">>> {full_path}")
                 list_dependencies(full_path)
 

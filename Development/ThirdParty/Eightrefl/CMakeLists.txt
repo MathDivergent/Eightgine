@@ -20,7 +20,7 @@ eightgine_add_module(MODULE_NAME "Eightrefl"
 # [[Dependencies]]
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Eightrefl" DEPENDENCY_NAME "Eightrefl")
 
-if(EIGHTGINE_WITH_EDITOR)
+if(EIGHTREFL_BUILD_TEST_LIBS)
     eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Eightrefl" DEPENDENCY_NAME "EightreflTests")
     eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "EightreflTests" MODULE_OR_EXECUTABLE_DESTINATION_DIR "${PROJECT_PLUGINS_DIR}")
 endif()

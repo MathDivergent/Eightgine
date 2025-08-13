@@ -4,6 +4,18 @@ import platform
 import subprocess
 import shutil
 
+LIB_EXTENTIONS = {
+    "Darwin": ".dylib",
+    "Linux": ".so",
+    "Windows": ".dll"
+}
+
+EXECUTABLE_FILES = {
+    "Darwin": ["EmptyProject", "EmptyProject-Debug"],
+    "Linux": ["EmptyProject", "EmptyProject-Debug"],
+    "Windows": ["EmptyProject.exe", "EmptyProject-Debug.exe"]
+}
+
 IGNORE_DIRS = [
     "Intermediate",
     ".idea"
@@ -48,13 +60,9 @@ def list_dependencies(file_path):
     print(output.strip())
 
 def main():
-    lib_extensions = {
-        "Darwin": ".dylib",
-        "Linux": ".so",
-        "Windows": ".dll"
-    }
+    ext = LIB_EXTENTIONS.get(SYSTEM)
+    executables = EXECUTABLE_FILES.get(SYSTEM)
 
-    ext = lib_extensions.get(SYSTEM)
     if not ext:
         print(f"Unsupported OS: {SYSTEM}")
         return
@@ -68,17 +76,13 @@ def main():
 
         for file in files:
             full_path = os.path.join(root, file)
-            if SYSTEM == "Windows":
-                if file.lower().endswith(".exe"):
-                    print(f">>> Executable: {full_path}")
-                    list_dependencies(full_path)
-            else:  # Linux / Mac
-                if os.access(full_path, os.X_OK) and not file.lower().endswith(ext):
-                    print(f">>> Executable: {full_path}")
-                    list_dependencies(full_path)
 
             if file.lower().endswith(ext):
                 print(f">>> Library: {full_path}")
+                list_dependencies(full_path)
+
+            if file in executables:
+                print(f">>> Executable: {full_path}")
                 list_dependencies(full_path)
 
 if __name__ == "__main__":

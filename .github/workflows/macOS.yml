@@ -48,16 +48,6 @@ jobs:
         path: |
           ${{ env.Eightgine }}/EmptyProject.app
 
-    - name: Debug
-      run: |
-        echo "=== Searching for dependencies on EightmoryTests.dylib ==="
-        find "${Eightgine}/EmptyProject.app" \( -name "*.dylib" -o -name "EmptyProject" \) | while read f; do
-            if otool -L "$f" | grep -q "EightmoryTests.dylib"; then
-                echo ">>> Found in: $f"
-                otool -L "$f" | grep EightmoryTests.dylib
-            fi
-        done
-
     - name: "Test project"
       run: |
         cd "${Eightgine}/EmptyProject.app/EmptyProject.app/Contents/MacOS"

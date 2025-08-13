@@ -6,7 +6,7 @@ option(EIGHTREFL_RTTI_ENABLE "" ON) # readonly
 
 
 # [[Subdirectories]]
-add_subdirectory("Eightrefl" EXCLUDE_FROM_ALL)
+add_subdirectory("Eightrefl")
 
 
 # [[Binaries]]
@@ -21,6 +21,5 @@ eightgine_add_module(MODULE_NAME "Eightrefl"
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Eightrefl" DEPENDENCY_NAME "Eightrefl")
 
 if(EIGHTREFL_BUILD_TEST_LIBS)
-    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Eightrefl" DEPENDENCY_NAME "EightreflTests")
     eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "EightreflTests" MODULE_OR_EXECUTABLE_DESTINATION_DIR "${PROJECT_PLUGINS_DIR}")
 endif()

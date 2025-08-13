@@ -35,6 +35,11 @@ jobs:
           -DCMAKE_BUILD_TYPE=Release
         cmake --build Intermediate --parallel
 
+    - name: "Dev project info"
+      run: |
+        cd ${Eightgine}
+        python .devinfo.py
+
     - name: "Prepare project to Package"
       run: |
         mv EmptyProject.app _EmptyProject.app

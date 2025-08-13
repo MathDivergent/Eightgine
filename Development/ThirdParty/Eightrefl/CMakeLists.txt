@@ -2,6 +2,8 @@
 option(EIGHTREFL_BUILD_SHARED_LIBS "" ON)
 option(EIGHTREFL_BUILD_TEST_LIBS "" ${EIGHTGINE_WITH_EDITOR})
 
+option(EIGHTREFL_RTTI_ENABLE "" ON) # readonly
+
 
 # [[Subdirectories]]
 add_subdirectory("Eightrefl" EXCLUDE_FROM_ALL)

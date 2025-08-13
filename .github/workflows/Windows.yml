@@ -34,8 +34,9 @@ jobs:
         cmake --build Intermediate --parallel
 
     - name: "Dev project info"
+      shell: cmd
       run: |
-        cd ${Eightgine}
+        cd "%Eightgine%
         python .devinfo.py
 
     - name: "Prepare project to Package"

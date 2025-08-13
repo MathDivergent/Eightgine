@@ -14,33 +14,33 @@ def list_dependencies(file_path):
     try:
         if SYSTEM == "Darwin":
             if shutil.which("otool") is None:
-                output = "  (otool not found, skipping)"
+                output = "(otool not found, skipping)"
             else:
                 output = subprocess.check_output(["otool", "-L", file_path], text=True)
         elif SYSTEM == "Linux":
             if shutil.which("ldd") is None:
-                output = "  (ldd not found, skipping)"
+                output = "(ldd not found, skipping)"
             else:
                 output = subprocess.check_output(["ldd", file_path], text=True)
         elif SYSTEM == "Windows":
             try:
                 import pefile
             except ImportError:
-                output = "  (pefile module not installed, skipping Windows DLL analysis)"
+                output = "(pefile module not installed, skipping Windows DLL analysis)"
             else:
                 pe = pefile.PE(file_path)
                 lines = []
                 if hasattr(pe, 'DIRECTORY_ENTRY_IMPORT'):
                     for entry in pe.DIRECTORY_ENTRY_IMPORT:
-                        lines.append(f"  {entry.dll.decode('utf-8')}")
+                        lines.append(entry.dll.decode('utf-8'))
                 else:
-                    lines.append("  (No imports found)")
-                lines.insert(0, f"  {os.path.basename(file_path)}")
+                    lines.append("(No imports found)")
+                lines.insert(0, os.path.basename(file_path))
                 output = "\n".join(lines)
         else:
             output = f"Unsupported OS: {SYSTEM}"
     except Exception as e:
-        output = f"  (Cannot analyze {file_path}: {e})"
+        output = f"(Cannot analyze {file_path}: {e})"
 
     print(output.strip())
 

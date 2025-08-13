@@ -18,7 +18,7 @@ eightgine_add_module(MODULE_NAME "Eightmory"
 # [[Dependencies]]
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Eightmory" DEPENDENCY_NAME "Eightmory")
 
-if(EIGHTGINE_WITH_EDITOR)
+if(EIGHTMORY_BUILD_TEST_LIBS)
     eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "Eightmory" DEPENDENCY_NAME "EightmoryTests")
     eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "EightmoryTests" MODULE_OR_EXECUTABLE_DESTINATION_DIR "${PROJECT_PLUGINS_DIR}")
 endif()

@@ -34,16 +34,16 @@ eightgine_add_module(MODULE_NAME "SDL2_mixer"
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "SDL2_mixer" DEPENDENCY_NAME "SDL2_mixer")
 
 if(SDL2MIXER_OPUS)
-    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "SDL2_mixer" DEPENDENCY_NAME "opusfile")
+    eightgine_add_dependency(DEPENDENCY_NAME "opusfile")
 endif()
 
 if(SDL2MIXER_WAVPACK)
-    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "SDL2_mixer" DEPENDENCY_NAME "wavpack")
+    eightgine_add_dependency(DEPENDENCY_NAME "wavpack")
 endif()
 
 if(SDL2MIXER_VORBIS STREQUAL "VORBISFILE")
-    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "SDL2_mixer" DEPENDENCY_NAME "ogg")
-    eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "SDL2_mixer" DEPENDENCY_NAME "vorbis")
+    eightgine_add_dependency(DEPENDENCY_NAME "ogg")
+    eightgine_add_dependency(DEPENDENCY_NAME "vorbis")
 endif()
 
 if(EIGHTGINE_PLATFORM_LINUX)

@@ -61,6 +61,8 @@ add_compile_definitions("EIGHTGINE_PLATFORM_WINDOWS=${EIGHTGINE_PLATFORM_WINDOWS
 add_compile_definitions("EIGHTGINE_PLATFORM_LINUX=${EIGHTGINE_PLATFORM_LINUX}")
 add_compile_definitions("EIGHTGINE_PLATFORM_MACOS=${EIGHTGINE_PLATFORM_MACOS}")
 
+add_custom_target("EIGHTGINE_MOCK_TARGET" ALL)
+
 
 # [[Macros]]
 macro(message)
@@ -364,22 +366,29 @@ function(eightgine_add_dependency)
     )
     cmake_parse_arguments("ARG" "" "${ONE_VALUE_ARGS}" "${MULTI_VALUE_ARGS}" ${ARGN})
 
-    eightgine_get_module_or_executable(ARG_MODULE_OR_EXECUTABLE_NAME)
-    eightgine_get_module_or_executable_access(ARG_MODULE_OR_EXECUTABLE_NAME)
     eightgine_get_module_or_executable(ARG_DEPENDENCY_NAME)
 
-    if(DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME STREQUAL DIRTY_ARG_DEPENDENCY_NAME)
-        set(DIRTY_ARG_DEPENDENCY_NAME "${ARG_DEPENDENCY_NAME}")
+    if(ARG_MODULE_OR_EXECUTABLE_NAME)
+        eightgine_get_module_or_executable(ARG_MODULE_OR_EXECUTABLE_NAME)
+        eightgine_get_module_or_executable_access(ARG_MODULE_OR_EXECUTABLE_NAME)
+
+        if(DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME STREQUAL DIRTY_ARG_DEPENDENCY_NAME)
+            set(DIRTY_ARG_DEPENDENCY_NAME "${ARG_DEPENDENCY_NAME}")
+        endif()
+
+        if(TARGET "${DIRTY_ARG_DEPENDENCY_NAME}")
+            add_dependencies("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" "${DIRTY_ARG_DEPENDENCY_NAME}")
+        endif()
+
+        target_link_libraries("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_NAME_EXTERNAL} "${DIRTY_ARG_DEPENDENCY_NAME}")
+
+        eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "${ARG_MODULE_OR_EXECUTABLE_NAME}"
+            MODULE_OR_EXECUTABLE_LIB_DIR "${ARG_DEPENDENCY_LIB_DIR}"
+            MODULE_OR_EXECUTABLE_INCLUDE_DIR ${ARG_DEPENDENCY_INCLUDE_DIR}
+        )
+    else()
+        if(TARGET "${DIRTY_ARG_DEPENDENCY_NAME}")
+            add_dependencies("EIGHTGINE_MOCK_TARGET" "${DIRTY_ARG_DEPENDENCY_NAME}")
+        endif()
     endif()
-
-    if(TARGET "${DIRTY_ARG_DEPENDENCY_NAME}")
-        add_dependencies("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" "${DIRTY_ARG_DEPENDENCY_NAME}")
-    endif()
-
-    target_link_libraries("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_NAME_EXTERNAL} "${DIRTY_ARG_DEPENDENCY_NAME}")
-
-    eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "${ARG_MODULE_OR_EXECUTABLE_NAME}"
-        MODULE_OR_EXECUTABLE_LIB_DIR "${ARG_DEPENDENCY_LIB_DIR}"
-        MODULE_OR_EXECUTABLE_INCLUDE_DIR ${ARG_DEPENDENCY_INCLUDE_DIR}
-    )
 endfunction()

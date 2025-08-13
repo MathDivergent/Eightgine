@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import os
 import shutil
+import platform
 
-# Список файлов и папок
 FILES = ["CMakeLists.txt.user"]
 FOLDERS = ["Intermediate", ".idea"]
 
@@ -35,3 +35,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+    if platform.system() == "Windows":
+        try:
+            input("Press Enter to exit...")
+        except EOFError:
+            pass

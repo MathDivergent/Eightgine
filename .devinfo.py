@@ -52,3 +52,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+    if SYSTEM == "Windows":
+        try:
+            input("Press Enter to exit...")
+        except EOFError:
+            pass

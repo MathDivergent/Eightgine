@@ -27,7 +27,7 @@ jobs:
         rm -rf Intermediate
         cmake -S . -B Intermediate -G Ninja \
           -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \
-          -DCMAKE_BUILD_TYPE=Release -DEIGHTMORY_BUILD_TEST_LIBS=OFF -DEIGHTREFL_BUILD_TEST_LIBS=OFF -DEIGHTSER_BUILD_TEST_LIBS=OFF
+          -DCMAKE_BUILD_TYPE=Release
         cmake --build Intermediate --parallel
 
     - name: "Dev project info"

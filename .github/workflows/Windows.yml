@@ -19,6 +19,7 @@ jobs:
     - name: "Setup Windows (Dev)"
       run: |
         choco install mingw -y
+        pip install pefile
         cmake --version
         gcc --version
         g++ --version

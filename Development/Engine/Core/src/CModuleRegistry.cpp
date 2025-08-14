@@ -1,4 +1,5 @@
 #include <CModuleRegistry.hpp>
+#include <CModuleInterface.hpp>
 
 CModuleRegistry* CModuleRegistry::Global()
 {

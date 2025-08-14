@@ -6,6 +6,7 @@
 
 EIGHTGINE_REGISTER_MODULE(GameModule)
 
+
 void GameModule::OnLoad()
 {
     printf("%s\n", "Hello, GameModule!");

@@ -2,7 +2,7 @@
 option(EIGHTREFL_BUILD_SHARED_LIBS "" ON)
 option(EIGHTREFL_BUILD_TEST_LIBS "" ${EIGHTGINE_WITH_EDITOR})
 
-option(EIGHTREFL_RTTI_ENABLE "" ON) # readonly
+option(EIGHTREFL_RTTI_ENABLE "" ON) # readonly TODO: switch to OFF
 
 
 # [[Subdirectories]]

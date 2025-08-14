@@ -16,7 +16,6 @@ add_subdirectory("opus" EXCLUDE_FROM_ALL)
 add_subdirectory("opusfile" EXCLUDE_FROM_ALL)
 add_subdirectory("wavpack" EXCLUDE_FROM_ALL)
 add_subdirectory("freetype" EXCLUDE_FROM_ALL)
-#add_subdirectory("BoringSSL" EXCLUDE_FROM_ALL)
 
 add_subdirectory("SDL2" EXCLUDE_FROM_ALL)
 add_subdirectory("SDL2_image" EXCLUDE_FROM_ALL)
@@ -25,6 +24,8 @@ add_subdirectory("SDL2_ttf" EXCLUDE_FROM_ALL)
 add_subdirectory("SDL2_net" EXCLUDE_FROM_ALL)
 
 add_subdirectory("box2d" EXCLUDE_FROM_ALL)
+
+add_subdirectory("mbedtls" EXCLUDE_FROM_ALL)
 
 add_subdirectory("Eightest" EXCLUDE_FROM_ALL)
 add_subdirectory("Eightmory" EXCLUDE_FROM_ALL)

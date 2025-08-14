@@ -1,5 +1,5 @@
 # [[Defaults]]
-option(SDL2MIXER_DEPS_SHARED "" ON)
+option(SDL2MIXER_DEPS_SHARED "" ${BUILD_SHARED_LIBS})
 option(SDL2MIXER_VENDORED "" OFF)
 
 option(SDL2MIXER_FLAC "" OFF)

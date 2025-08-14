@@ -1,8 +1,8 @@
 # [[Defaults]]
-option(EIGHTSER_BUILD_SHARED_LIBS "" ${BUILD_SHARED_LIBS})
+option(EIGHTSER_BUILD_SHARED_LIBS "" ON)
 option(EIGHTSER_BUILD_TEST_LIBS "" ${EIGHTGINE_WITH_EDITOR})
 
-option(EIGHTSER_RTTI_ENABLE "" ON) # readonly
+option(EIGHTSER_RTTI_ENABLE "" ON) # readonly TODO: switch to OFF
 
 
 # [[Subdirectories]]

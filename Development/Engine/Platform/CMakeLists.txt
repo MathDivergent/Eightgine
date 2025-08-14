@@ -12,6 +12,7 @@ endif()
 
 # [[Binaries]]
 eightgine_add_module(MODULE_NAME "EightginePlatform"
+    MODULE_TYPE SHARED
     MODULE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include/Platform"
     MODULE_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/Platform" "${CMAKE_CURRENT_SOURCE_DIR}/include/Platform"
 )

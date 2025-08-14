@@ -61,7 +61,7 @@ add_compile_definitions("EIGHTGINE_PLATFORM_WINDOWS=${EIGHTGINE_PLATFORM_WINDOWS
 add_compile_definitions("EIGHTGINE_PLATFORM_LINUX=${EIGHTGINE_PLATFORM_LINUX}")
 add_compile_definitions("EIGHTGINE_PLATFORM_MACOS=${EIGHTGINE_PLATFORM_MACOS}")
 
-add_custom_target("EIGHTGINE_MOCK_TARGET" ALL)
+add_custom_target("EIGHTGINE_MOCK_MODULE_OR_EXECUTABLE" ALL)
 
 
 # [[Macros]]
@@ -231,7 +231,7 @@ function(eightgine_configure_module_or_executable)
                     "${ARG_MODULE_OR_EXECUTABLE_DESTINATION_DIR}/${MODULE_OR_EXECUTABLE_BIN_FILE}"
             )
 
-            add_dependencies("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" "${MODULE_OR_EXECUTABLE_COMMAND_NAME}")
+            add_dependencies("EIGHTGINE_MOCK_MODULE_OR_EXECUTABLE" "${MODULE_OR_EXECUTABLE_COMMAND_NAME}")
         endif()
     endif()
 
@@ -388,7 +388,7 @@ function(eightgine_add_dependency)
         )
     else()
         if(TARGET "${DIRTY_ARG_DEPENDENCY_NAME}")
-            add_dependencies("EIGHTGINE_MOCK_TARGET" "${DIRTY_ARG_DEPENDENCY_NAME}")
+            add_dependencies("EIGHTGINE_MOCK_MODULE_OR_EXECUTABLE" "${DIRTY_ARG_DEPENDENCY_NAME}")
         endif()
     endif()
 endfunction()

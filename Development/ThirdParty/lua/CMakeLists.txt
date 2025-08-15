@@ -11,4 +11,4 @@ eightgine_add_module(MODULE_NAME "lua"
 
 
 # [[Dependencies]]
-eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "lua" DEPENDENCY_NAME "lua")
+eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "lua" DEPENDENCY_NAME "lua" DEPENDENCY_INTERNAL ON)

@@ -103,7 +103,7 @@ macro(eightgine_get_module_or_executable MODULE_OR_EXECUTABLE_NAME)
     endif()
 endmacro()
 
-macro(eightgine_get_module_or_executable_access MODULE_OR_EXECUTABLE_NAME)
+macro(eightgine_get_module_or_executable_scope MODULE_OR_EXECUTABLE_NAME)
     eightgine_get_module_or_executable(${MODULE_OR_EXECUTABLE_NAME})
 
     get_target_property(MODULE_OR_EXECUTABLE_TYPE "${DIRTY_${MODULE_OR_EXECUTABLE_NAME}}" TYPE)
@@ -127,26 +127,26 @@ endfunction()
 
 function(eightgine_add_symlink)
     set(ONE_VALUE_ARGS
-        ORIGINAL
-        LINKNAME
+        ORIGINAL_NAME
+        LINK_NAME
     )
     cmake_parse_arguments("ARG" "" "${ONE_VALUE_ARGS}" "" ${ARGN})
 
-    file(TO_NATIVE_PATH "${ARG_ORIGINAL}" ORIGINAL_NATIVE)
-    file(TO_NATIVE_PATH "${ARG_LINKNAME}" LINKNAME_NATIVE)
+    file(TO_NATIVE_PATH "${ARG_ORIGINAL_NAME}" ORIGINAL_NAME_NATIVE)
+    file(TO_NATIVE_PATH "${ARG_LINK_NAME}" LINK_NAME_NATIVE)
 
-    get_filename_component(ORIGINAL_ABS "${ORIGINAL_NATIVE}" ABSOLUTE)
-    get_filename_component(ORIGINAL_REAL "${ORIGINAL_ABS}" REALPATH)
+    get_filename_component(ORIGINAL_NAME_ABS "${ORIGINAL_NAME_NATIVE}" ABSOLUTE)
+    get_filename_component(ORIGINAL_NAME_REAL "${ORIGINAL_NAME_ABS}" REALPATH)
 
-    get_filename_component(LINKNAME_ABS "${LINKNAME_NATIVE}" ABSOLUTE)
-    get_filename_component(LINKNAME_REAL "${LINKNAME_ABS}" REALPATH)
+    get_filename_component(LINK_NAME_ABS "${LINK_NAME_NATIVE}" ABSOLUTE)
+    get_filename_component(LINK_NAME_REAL "${LINK_NAME_ABS}" REALPATH)
 
-    if(ORIGINAL_REAL STREQUAL LINKNAME_REAL)
+    if(ORIGINAL_NAME_REAL STREQUAL LINK_NAME_REAL)
         return()
     endif()
 
-    if(NOT EXISTS "${LINKNAME_NATIVE}")
-        execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${ORIGINAL_NATIVE}" "${LINKNAME_NATIVE}")
+    if(NOT EXISTS "${LINK_NAME_NATIVE}")
+        execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${ORIGINAL_NAME_NATIVE}" "${LINK_NAME_NATIVE}")
     endif()
 endfunction()
 
@@ -181,6 +181,7 @@ endfunction()
 function(eightgine_configure_module_or_executable)
     set(ONE_VALUE_ARGS
         MODULE_OR_EXECUTABLE_NAME
+        MODULE_OR_EXECUTABLE_SCOPE
         MODULE_OR_EXECUTABLE_LIB_DIR
         MODULE_OR_EXECUTABLE_BIN_DIR
         MODULE_OR_EXECUTABLE_DESTINATION_DIR
@@ -194,7 +195,15 @@ function(eightgine_configure_module_or_executable)
     cmake_parse_arguments("ARG" "" "${ONE_VALUE_ARGS}" "${MULTI_VALUE_ARGS}" ${ARGN})
 
     eightgine_get_module_or_executable(ARG_MODULE_OR_EXECUTABLE_NAME)
-    eightgine_get_module_or_executable_access(ARG_MODULE_OR_EXECUTABLE_NAME)
+    eightgine_get_module_or_executable_scope(ARG_MODULE_OR_EXECUTABLE_NAME)
+
+    if(ARG_MODULE_OR_EXECUTABLE_SCOPE)
+        if(ARG_MODULE_OR_EXECUTABLE_NAME_EXTERNAL STREQUAL "INTERFACE")
+            message(WARNING "IGNORE MODULE_OR_EXECUTABLE_SCOPE FOR: ${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}")
+        else()
+            set(ARG_MODULE_OR_EXECUTABLE_NAME_EXTERNAL "${ARG_MODULE_OR_EXECUTABLE_SCOPE}")
+        endif()
+    endif()
 
     if(ARG_MODULE_OR_EXECUTABLE_INCLUDE_DIR)
         target_include_directories("${DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME}" ${ARG_MODULE_OR_EXECUTABLE_NAME_EXTERNAL} ${ARG_MODULE_OR_EXECUTABLE_INCLUDE_DIR})
@@ -268,6 +277,7 @@ function(eightgine_add_module)
         MODULE_NAME
         MODULE_ALIAS
         MODULE_TYPE
+        MODULE_SCOPE
         MODULE_API_DEFINITION
         MODULE_LIB_DIR
         MODULE_BIN_DIR
@@ -311,6 +321,7 @@ function(eightgine_add_module)
     endif()
 
     eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "${ARG_MODULE_NAME}"
+        MODULE_OR_EXECUTABLE_SCOPE "${ARG_MODULE_SCOPE}"
         MODULE_OR_EXECUTABLE_LIB_DIR "${ARG_MODULE_LIB_DIR}"
         MODULE_OR_EXECUTABLE_BIN_DIR "${ARG_MODULE_BIN_DIR}"
         MODULE_OR_EXECUTABLE_DESTINATION_DIR ${ARG_MODULE_DESTINATION_DIR}
@@ -369,6 +380,7 @@ function(eightgine_add_dependency)
     set(ONE_VALUE_ARGS
         MODULE_OR_EXECUTABLE_NAME
         DEPENDENCY_NAME
+        DEPENDENCY_SCOPE
         DEPENDENCY_LIB_DIR
     )
     set(MULTI_VALUE_ARGS
@@ -380,7 +392,15 @@ function(eightgine_add_dependency)
 
     if(ARG_MODULE_OR_EXECUTABLE_NAME)
         eightgine_get_module_or_executable(ARG_MODULE_OR_EXECUTABLE_NAME)
-        eightgine_get_module_or_executable_access(ARG_MODULE_OR_EXECUTABLE_NAME)
+        eightgine_get_module_or_executable_scope(ARG_MODULE_OR_EXECUTABLE_NAME)
+
+        if(ARG_DEPENDENCY_SCOPE)
+            if(ARG_MODULE_OR_EXECUTABLE_NAME_EXTERNAL STREQUAL "INTERFACE")
+                message(WARNING "IGNORE DEPENDENCY_SCOPE FOR: ${ARG_DEPENDENCY_NAME}")
+            else()
+                set(ARG_MODULE_OR_EXECUTABLE_NAME_EXTERNAL "${ARG_DEPENDENCY_SCOPE}")
+            endif()
+        endif()
 
         if(DIRTY_ARG_MODULE_OR_EXECUTABLE_NAME STREQUAL DIRTY_ARG_DEPENDENCY_NAME)
             set(DIRTY_ARG_DEPENDENCY_NAME "${ARG_DEPENDENCY_NAME}")
@@ -395,6 +415,7 @@ function(eightgine_add_dependency)
         eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "${ARG_MODULE_OR_EXECUTABLE_NAME}"
             MODULE_OR_EXECUTABLE_LIB_DIR "${ARG_DEPENDENCY_LIB_DIR}"
             MODULE_OR_EXECUTABLE_INCLUDE_DIR ${ARG_DEPENDENCY_INCLUDE_DIR}
+            MODULE_OR_EXECUTABLE_SCOPE "${ARG_MODULE_OR_EXECUTABLE_NAME_EXTERNAL}"
         )
     else()
         if(TARGET "${DIRTY_ARG_DEPENDENCY_NAME}")

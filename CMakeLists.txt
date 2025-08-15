@@ -100,7 +100,7 @@ add_compile_definitions("EIGHTGINE_BIULD_POSTFIX=\"${EIGHTGINE_BIULD_POSTFIX}\""
 
 
 # [[Subdirectories]]
-eightgine_add_symlink(ORIGINAL "${EIGHTGINE_ENGINE_DIR}" LINKNAME "${PROJECT_ENGINE_DIR}")
+eightgine_add_symlink(ORIGINAL_NAME "${EIGHTGINE_ENGINE_DIR}" LINK_NAME "${PROJECT_ENGINE_DIR}")
 add_subdirectory("${EIGHTGINE_THIRDPARTY_DIR}" "${CMAKE_BINARY_DIR}/${THIRDPARTY_DIR_NAME}")
 add_subdirectory("${PROJECT_ENGINE_DIR}" "${CMAKE_BINARY_DIR}/${ENGINE_DIR_NAME}")
 add_subdirectory("${PROJECT_GAME_DIR}")

@@ -1,6 +1,6 @@
 #include <GameModule.hpp>
 
-#include <CModuleRegistry.hpp>
+#include <CModuleManager.hpp>
 
 EIGHTGINE_REGISTER_MODULE(GameModule)
 

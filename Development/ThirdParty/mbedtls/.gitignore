@@ -15,7 +15,14 @@ mbedtls/framework/dco.txt
 mbedtls/framework/exported.make
 mbedtls/framework/LICENSE
 mbedtls/programs/
-mbedtls/scripts/
+mbedtls/scripts/data_files/
+mbedtls/scripts/*.txt
+mbedtls/scripts/*.sh
+mbedtls/scripts/*.make
+mbedtls/scripts/*.pl
+mbedtls/scripts/*.bat
+mbedtls/scripts/*.py
+!mbedtls/scripts/config.py
 mbedtls/tests/
 mbedtls/visualc/
 mbedtls/.gitattributes

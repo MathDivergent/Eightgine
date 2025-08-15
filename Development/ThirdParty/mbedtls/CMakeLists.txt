@@ -1,5 +1,6 @@
 # [[Defaults]]
 option(ENABLE_TESTING "" OFF) # readonly
+option(ENABLE_PROGRAMS "" OFF) # readonly
 
 if(BUILD_SHARED_LIBS)
     option(USE_STATIC_MBEDTLS_LIBRARY "" OFF)

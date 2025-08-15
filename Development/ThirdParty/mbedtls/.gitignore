@@ -22,7 +22,6 @@ mbedtls/scripts/*.make
 mbedtls/scripts/*.pl
 mbedtls/scripts/*.bat
 mbedtls/scripts/*.py
-!mbedtls/scripts/config.py
 mbedtls/tests/
 mbedtls/visualc/
 mbedtls/.gitattributes

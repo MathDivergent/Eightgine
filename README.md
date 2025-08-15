@@ -308,13 +308,11 @@ sudo mkdir -p /mnt/Shared && sudo mount -t cifs //192.168.0.102/Shared /mnt/Shar
 
 ; Download from Shared foler
 sudo mkdir -p /mnt/Shared && sudo mount -t cifs //192.168.0.102/Shared /mnt/Shared -o username=user,password=0000 && rm -rf /home/user/Documents/Eightgine && 7z x /mnt/Shared/Eightgine.7z -o/home/user/Documents/ && sudo umount /mnt/Shared
-
+```
+```
 ===
 <Переписать>
 [  ] Добавить логирование информации (зависимости, характеристики, дамб, колстек/трейс) в ранерах для отладки сборки
-[  ] Добавить конфигурацию артефактов сборки в add_module, add_executable (RUNTIME/LIBRARY output directory), удалить BIN_DESTINATION_DIR
-[  ] Добавить EIGHTGINE_BIULD_POSTFIX и добавлять его в коде Platform
-[  ] Добавить в описание редми заголовочный блок в виде плиток, обновить (завернуть) в коде модули тестирования в библиотечные, обновить редми
 [  ] Hash for property, function, meta name
 [  ] Добавить в доку описание поддерживаемых компиляторов и платформ
 [  ] Добавить EnTT, OpenSSL (или другую либу для криптографии) library

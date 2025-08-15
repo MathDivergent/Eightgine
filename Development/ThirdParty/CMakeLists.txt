@@ -24,6 +24,7 @@ add_subdirectory("SDL2_ttf" EXCLUDE_FROM_ALL)
 add_subdirectory("SDL2_net" EXCLUDE_FROM_ALL)
 
 add_subdirectory("box2d" EXCLUDE_FROM_ALL)
+add_subdirectory("entt" EXCLUDE_FROM_ALL)
 
 add_subdirectory("mbedtls" EXCLUDE_FROM_ALL)
 

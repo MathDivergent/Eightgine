@@ -1,12 +1,12 @@
-[submodule "Development/ThirdParty/Eightest/Eightest"]
-	path = Development/ThirdParty/Eightest/Eightest
+[submodule "Development/Engine/ThirdParty/Eightest/Eightest"]
+	path = Development/Engine/ThirdParty/Eightest/Eightest
 	url = https://github.com/MathDivergent/Eightest
-[submodule "Development/ThirdParty/Eightmory/Eightmory"]
-	path = Development/ThirdParty/Eightmory/Eightmory
+[submodule "Development/Engine/ThirdParty/Eightmory/Eightmory"]
+	path = Development/Engine/ThirdParty/Eightmory/Eightmory
 	url = https://github.com/MathDivergent/Eightmory
-[submodule "Development/ThirdParty/Eightrefl/Eightrefl"]
-	path = Development/ThirdParty/Eightrefl/Eightrefl
+[submodule "Development/Engine/ThirdParty/Eightrefl/Eightrefl"]
+	path = Development/Engine/ThirdParty/Eightrefl/Eightrefl
 	url = https://github.com/MathDivergent/Eightrefl
-[submodule "Development/ThirdParty/Eightser/Eightser"]
-	path = Development/ThirdParty/Eightser/Eightser
+[submodule "Development/Engine/ThirdParty/Eightser/Eightser"]
+	path = Development/Engine/ThirdParty/Eightser/Eightser
 	url = https://github.com/MathDivergent/Eightser

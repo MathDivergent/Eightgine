@@ -34,7 +34,6 @@ set(RESOURCES_DIR_NAME "Resources")
 set(PLUGINS_DIR_NAME "PlugIns")
 
 set(DEVELOPMENT_DIR_NAME "Development") # readonly
-set(THIRDPARTY_DIR_NAME "ThirdParty") # readonly
 
 if(DEFINED ENV{Eightgine})
     set(EIGHTGINE_DIR "$ENV{Eightgine}") # readonly
@@ -93,8 +92,6 @@ add_compile_definitions("EIGHTGINE_BUILD_POSTFIX=\"${EIGHTGINE_BIULD_POSTFIX}\""
 
 
 # [[Subdirectories]]
-add_subdirectory("${EIGHTGINE_DIR}/${DEVELOPMENT_DIR_NAME}/${THIRDPARTY_DIR_NAME}" "${CMAKE_BINARY_DIR}/${THIRDPARTY_DIR_NAME}")
-
 eightgine_add_symlink(ORIGINAL_NAME "${EIGHTGINE_DIR}/${DEVELOPMENT_DIR_NAME}/${ENGINE_DIR_NAME}" LINK_NAME "${PROJECT_DEVELOPMENT_ENGINE_DIR}")
 add_subdirectory("${PROJECT_DEVELOPMENT_ENGINE_DIR}" "${CMAKE_BINARY_DIR}/${ENGINE_DIR_NAME}")
 

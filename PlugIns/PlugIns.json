@@ -1,0 +1,8 @@
+{
+	"plugins": [
+		"EightmoryTests",
+		"EightreflTests",
+		"EightserTests",
+		"Game"
+	]
+}

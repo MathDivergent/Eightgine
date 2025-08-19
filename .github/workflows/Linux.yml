@@ -1,0 +1,62 @@
+name: EightgineWithEditor-Linux
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    env:
+      Eightgine: ${{ github.workspace }}
+
+    steps:
+    - name: "Download project"
+      uses: actions/checkout@v3
+      with:
+        submodules: true
+
+    - name: "Setup Ubuntu (Dev)"
+      run: |
+        sudo apt install -y libwayland-dev libegl1-mesa-dev
+        sudo apt install -y libx11-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev libxfixes-dev libxi-dev
+        sudo apt install -y libasound2-dev libpulse-dev
+        cmake --version
+        gcc --version
+        g++ --version
+        ldd --version
+
+    - name: "Regenerate and Rebuild project"
+      run: |
+        cd "${Eightgine}"
+        rm -rf Intermediate
+        cmake -S . -B Intermediate -G Ninja \
+          -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ \
+          -DCMAKE_BUILD_TYPE=Release
+        cmake --build Intermediate --parallel
+
+    - name: "Dev project info"
+      run: |
+        cd "${Eightgine}"
+        python .devinfo.py
+
+    - name: "Prepare project to Package"
+      run: |
+        mkdir EmptyProject
+        mv Linux EmptyProject/Linux
+        mv PlugIns EmptyProject/PlugIns
+        mv Resources EmptyProject/Resources
+        mkdir Build
+        mv EmptyProject Build/EmptyProject
+
+    - name: "Package and Upload project"
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ github.workflow }}
+        path: |
+          ${{ env.Eightgine }}/Build
+
+    - name: "Test project"
+      run: |
+        cd "${Eightgine}/Build/EmptyProject/Linux"
+        ./EmptyProject

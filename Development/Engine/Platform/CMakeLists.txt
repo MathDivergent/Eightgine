@@ -1,0 +1,26 @@
+# [[Defaults]]
+if(NOT EIGHTGINE_OVERRIDE_PLATFORM)
+    if(EIGHTGINE_PLATFORM_WINDOWS)
+        set(EIGHTGINE_PLATFORM_IMPLEMENTATION_DIR "Windows")
+    elseif(EIGHTGINE_PLATFORM_LINUX)
+        set(EIGHTGINE_PLATFORM_IMPLEMENTATION_DIR "Linux")
+    elseif(EIGHTGINE_PLATFORM_MACOS)
+        set(EIGHTGINE_PLATFORM_IMPLEMENTATION_DIR "macOS")
+    endif()
+endif()
+
+
+# [[Binaries]]
+eightgine_add_module(MODULE_NAME "EightginePlatform"
+    MODULE_TYPE SHARED
+    MODULE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include/Platform"
+    MODULE_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/Platform" "${CMAKE_CURRENT_SOURCE_DIR}/include/Platform"
+)
+
+
+# [[Dependencies]]
+if(NOT EIGHTGINE_OVERRIDE_PLATFORM)
+    eightgine_configure_module_or_executable(MODULE_OR_EXECUTABLE_NAME "EightginePlatform"
+        MODULE_OR_EXECUTABLE_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/PlatformImpl/${EIGHTGINE_PLATFORM_IMPLEMENTATION_DIR}"
+    )
+endif()

@@ -1,0 +1,3 @@
+# [[Subdirectories]]
+add_subdirectory("Platform")
+add_subdirectory("Core")

@@ -1,0 +1,8 @@
+cJSON/fuzzing/*
+!cJSON/fuzzing/CMakeLists.txt
+cJSON/tests/*
+!cJSON/tests/CMakeLists.txt
+cJSON/*.yml
+cJSON/LICENSE
+cJSON/Makefile
+cJSON/*.supp

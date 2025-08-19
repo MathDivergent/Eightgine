@@ -21,6 +21,10 @@ CMakeLists.txt text eol=lf linguist-language=CMake
 
 *.png binary
 *.ttf binary
+*.otf binary
+*.mp3 binary
+*.ogg binary
+*.wav binary
 *.exe binary
 *.dll binary
 *.so binary

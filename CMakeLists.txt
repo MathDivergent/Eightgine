@@ -34,6 +34,7 @@ set(RESOURCES_DIR_NAME "Resources")
 set(PLUGINS_DIR_NAME "PlugIns")
 
 set(DEVELOPMENT_DIR_NAME "Development") # readonly
+set(THIRDPARTY_DIR_NAME "ThirdParty") # readonly
 
 if(DEFINED ENV{Eightgine})
     set(EIGHTGINE_DIR "$ENV{Eightgine}") # readonly

@@ -9,6 +9,7 @@ endif()
 
 add_subdirectory("cJSON" EXCLUDE_FROM_ALL)
 add_subdirectory("lua" EXCLUDE_FROM_ALL)
+add_subdirectory("iniparser" EXCLUDE_FROM_ALL)
 
 add_subdirectory("ogg" EXCLUDE_FROM_ALL)
 add_subdirectory("vorbis" EXCLUDE_FROM_ALL)

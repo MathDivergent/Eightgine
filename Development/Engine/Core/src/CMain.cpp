@@ -6,6 +6,7 @@
 #include <fstream> // ifstream
 
 #include <cJSON.h>
+#include <iniparser.h>
 
 #include <CMain.hpp>
 

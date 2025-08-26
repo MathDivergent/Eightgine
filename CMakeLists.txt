@@ -34,6 +34,7 @@ set(RESOURCES_DIR_NAME "Resources")
 set(PLUGINS_DIR_NAME "PlugIns")
 
 set(DEVELOPMENT_DIR_NAME "Development") # readonly
+set(THIRDPARTY_DIR_NAME "ThirdParty") # readonly
 
 if(DEFINED ENV{Eightgine})
     set(EIGHTGINE_DIR "$ENV{Eightgine}") # readonly
@@ -102,9 +103,7 @@ add_subdirectory("${PROJECT_DEVELOPMENT_GAME_DIR}")
 set(PROJECT_JAUNCHER_CPP "${CMAKE_BINARY_DIR}/Launcher.cpp")
 file(WRITE "${PROJECT_JAUNCHER_CPP}" "#include <CLauncherImpl.hpp>")
 
-eightgine_add_executable(EXECUTABLE_NAME "${PROJECT_NAME}"
-    EXECUTABLE_SOURCES_FILES "${PROJECT_JAUNCHER_CPP}" "${PROJECT_RESOURCES_DIR}/icon.rc"
-)
+eightgine_add_executable(EXECUTABLE_NAME "${PROJECT_NAME}" EXECUTABLE_SOURCES_FILES "${PROJECT_JAUNCHER_CPP}")
 
 
 # [[Dependencies]]

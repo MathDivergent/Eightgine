@@ -1,0 +1,10 @@
+iniparser/.github/
+iniparser/example/
+iniparser/test/
+iniparser/.cmake-format.py
+iniparser/*.yml
+iniparser/.gitmessage
+iniparser/AUTHORS
+iniparser/compile_commands.json
+iniparser/INSTALL
+iniparser/LICENSE

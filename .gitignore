@@ -1,0 +1,9 @@
+/CMakeLists.txt.user
+/Intermediate/
+/Windows/
+/Linux/
+/macOS/
+/Frameworks/
+/PlugIns/*.dll
+/PlugIns/*.so
+/PlugIns/*.dylib

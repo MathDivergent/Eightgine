@@ -1,0 +1,12 @@
+box2d/.github/
+box2d/benchmark/
+box2d/docs/
+box2d/extern/
+box2d/samples/
+box2d/shared/
+box2d/src/**/*.natvis
+box2d/test/
+box2d/.clang-format
+box2d/*.sh
+box2d/*.bat
+box2d/LICENSE

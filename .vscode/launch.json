@@ -1,0 +1,64 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "preLaunchTask": "CMake: build",
+            "name": "Linux",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Linux/EmptyProject",
+            "args": [
+            ],
+            "cwd": "${workspaceFolder}/Linux",
+            "MIMode": "gdb"
+        },
+        {
+            "preLaunchTask": "CMake: build",
+            "name": "Linux-Debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Linux/EmptyProject-Debug",
+            "args": [
+            ],
+            "cwd": "${workspaceFolder}/Linux",
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "text": "-enable-pretty-printing"
+                }
+            ]
+        },
+        {
+            "preLaunchTask": "CMake: build",
+            "name": "Linux-RelWithDebInfo",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Linux/EmptyProject-RelWithDebInfo",
+            "args": [
+            ],
+            "cwd": "${workspaceFolder}/Linux",
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "text": "-enable-pretty-printing"
+                }
+            ]
+        },
+        {
+            "preLaunchTask": "CMake: build",
+            "name": "Linux-MinSizeRel",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Linux/EmptyProject-MinSizeRel",
+            "args": [
+            ],
+            "cwd": "${workspaceFolder}/Linux",
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "text": "-enable-pretty-printing"
+                }
+            ]
+        }
+    ]
+}

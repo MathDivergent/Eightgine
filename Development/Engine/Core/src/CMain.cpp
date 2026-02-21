@@ -23,7 +23,7 @@
 #include <CModuleManager.hpp>
 #include <CModuleInterface.hpp>
 
-#define EIGHTGINE_FLAG 0
+#define EIGHTGINE_FLAG 1
 
 #if EIGHTGINE_FLAG
 #include <SDL.h>
@@ -104,11 +104,10 @@ int CMain::Execute(int iArgumentCount, char** pArgumentValues)
         module->OnLoad();
     }
 
-    #if EIGHTGINE_WITH_EDITOR
-    eightest::global()->try_catch([] { eightest::global()->execute_all(); });
-    auto code = !eightest::global()->stat();
-    #else
     auto code = 0;
+    #if EIGHTGINE_WITH_EDITOR
+    eightest::global()->execute_all();
+    if (!eightest::global()->stat()) code = 2;
     #endif
 
     ExecuteImpl();

@@ -1,0 +1,196 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "Platform",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/Intermediate",
+            "cacheVariables": {
+            }
+        },
+
+        {
+            "name": "Platform-Linux",
+            "hidden": true,
+            "inherits": "Platform",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++"
+            }
+        },
+        {
+            "name": "Linux",
+            "inherits": "Platform-Linux",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "Linux-Debug",
+            "inherits": "Platform-Linux",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "Linux-RelWithDebInfo",
+            "inherits": "Platform-Linux",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+            }
+        },
+        {
+            "name": "Linux-MinSizeRel",
+            "inherits": "Platform-Linux",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "MinSizeRel"
+            }
+        },
+
+        {
+            "name": "Platform-Windows",
+            "hidden": true,
+            "inherits": "Platform",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++"
+            }
+        },
+        {
+            "name": "Windows",
+            "inherits": "Platform-Windows",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "Windows-Debug",
+            "inherits": "Platform-Windows",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "Windows-RelWithDebInfo",
+            "inherits": "Platform-Windows",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+            }
+        },
+        {
+            "name": "Windows-MinSizeRel",
+            "inherits": "Platform-Windows",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "MinSizeRel"
+            }
+        },
+
+        {
+            "name": "Platform-macOS",
+            "hidden": true,
+            "inherits": "Platform",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang++"
+            }
+        },
+        {
+            "name": "macOS",
+            "inherits": "Platform-macOS",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "macOS-Debug",
+            "inherits": "Platform-macOS",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "macOS-RelWithDebInfo",
+            "inherits": "Platform-macOS",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+            }
+        },
+        {
+            "name": "macOS-MinSizeRel",
+            "inherits": "Platform-macOS",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "MinSizeRel"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "Platform",
+            "hidden": true
+        },
+
+        {
+            "name": "Linux",
+            "inherits": "Platform",
+            "configurePreset": "Linux"
+        },
+        {
+            "name": "Linux-Debug",
+            "inherits": "Platform",
+            "configurePreset": "Linux-Debug"
+        },
+        {
+            "name": "Linux-RelWithDebInfo",
+            "inherits": "Platform",
+            "configurePreset": "Linux-RelWithDebInfo"
+        },
+        {
+            "name": "Linux-MinSizeRel",
+            "inherits": "Platform",
+            "configurePreset": "Linux-MinSizeRel"
+        },
+
+        {
+            "name": "Windows",
+            "inherits": "Platform",
+            "configurePreset": "Windows"
+        },
+        {
+            "name": "Windows-Debug",
+            "inherits": "Platform",
+            "configurePreset": "Windows-Debug"
+        },
+        {
+            "name": "Windows-RelWithDebInfo",
+            "inherits": "Platform",
+            "configurePreset": "Windows-RelWithDebInfo"
+        },
+        {
+            "name": "Windows-MinSizeRel",
+            "inherits": "Platform",
+            "configurePreset": "Windows-MinSizeRel"
+        },
+
+        {
+            "name": "macOS",
+            "inherits": "Platform",
+            "configurePreset": "macOS"
+        },
+        {
+            "name": "macOS-Debug",
+            "inherits": "Platform",
+            "configurePreset": "macOS-Debug"
+        },
+        {
+            "name": "macOS-RelWithDebInfo",
+            "inherits": "Platform",
+            "configurePreset": "macOS-RelWithDebInfo"
+        },
+        {
+            "name": "macOS-MinSizeRel",
+            "inherits": "Platform",
+            "configurePreset": "macOS-MinSizeRel"
+        }
+    ]
+}

@@ -7,7 +7,7 @@
 ![Compilers](https://img.shields.io/badge/compilers-clang%20%7C%20gcc-orange)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/license/mit)
 
-See last stable engine version 0.1.0 [here](https://github.com/MathDivergent/Eightgine/releases).
+See last stable engine version 0.2.0 [here](https://github.com/MathDivergent/Eightgine/releases).
 
 Engine folder structure:
 - Eightgine - Contains 3 key folders.

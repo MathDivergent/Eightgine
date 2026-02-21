@@ -31,10 +31,8 @@ jobs:
       run: |
         cd "%Eightgine%"
         rmdir /s /q Intermediate
-        cmake -S . -B Intermediate -G Ninja ^
-          -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ ^
-          -DCMAKE_BUILD_TYPE=Release
-        cmake --build Intermediate --parallel
+        cmake --preset Windows
+        cmake --build --preset Windows --parallel
 
     - name: "Dev project info"
       shell: cmd

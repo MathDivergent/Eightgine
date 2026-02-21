@@ -23,7 +23,7 @@
 #include <CModuleManager.hpp>
 #include <CModuleInterface.hpp>
 
-#define EIGHTGINE_FLAG 1
+#define EIGHTGINE_FLAG 0
 
 #if EIGHTGINE_FLAG
 #include <SDL.h>

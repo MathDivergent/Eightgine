@@ -16,6 +16,8 @@ option(INSTALL_DEMOS "" OFF)
 # [[Subdirectories]]
 add_subdirectory("Chipmunk2D" EXCLUDE_FROM_ALL)
 
+target_compile_options(cjson PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:-w>) # disable warnings
+
 
 # [[Binaries]]
 eightgine_add_module(MODULE_NAME "chipmunk"

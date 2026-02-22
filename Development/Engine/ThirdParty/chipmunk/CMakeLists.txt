@@ -16,7 +16,11 @@ option(INSTALL_DEMOS "" OFF)
 # [[Subdirectories]]
 add_subdirectory("Chipmunk2D" EXCLUDE_FROM_ALL)
 
-target_compile_options(cjson PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:-w>) # disable warnings
+if(BUILD_SHARED_LIBS)
+    target_compile_options(chipmunk PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:-w>) # disable warnings
+else()
+    target_compile_options(chipmunk_static PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:-w>) # disable warnings
+endif()
 
 
 # [[Binaries]]

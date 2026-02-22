@@ -1,7 +1,7 @@
 # [[Defaults]]
 option(EIGHTMORY_BUILD_SHARED_LIBS "" ON)
 option(EIGHTMORY_BUILD_TEST_LIBS "" ${EIGHTGINE_WITH_EDITOR})
-
+option(EIGHTMORY_WARING_FLAGS "" OFF) # temporary
 
 # [[Subdirectories]]
 add_subdirectory("Eightmory" EXCLUDE_FROM_ALL)

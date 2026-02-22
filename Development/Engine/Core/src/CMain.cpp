@@ -33,6 +33,10 @@
 // #include <entt/entt.hpp>
 #endif // if
 
+struct alignas(8) EIGHTGINECORE_API CMainTestAlignAndApi
+{
+};
+
 CMain* CMain::Global()
 {
     static CMain self; return &self;
@@ -43,7 +47,6 @@ static int ExecuteImpl();
 int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** pArgumentValues)
 {
     char memory[1024]; eightmory::segment_manager_t manager(memory, sizeof(memory)); (void)manager;
-
     (void)crc32(0, NULL, 0);
     (void)eightser::instantiable_registry();
     (void)eightser::any_registry();

@@ -40,7 +40,7 @@ CMain* CMain::Global()
 
 static int ExecuteImpl();
 
-int CMain::Execute(int iArgumentCount, char** pArgumentValues)
+int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** pArgumentValues)
 {
     char memory[1024]; eightmory::segment_manager_t manager(memory, sizeof(memory)); (void)manager;
 

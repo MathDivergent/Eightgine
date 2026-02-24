@@ -33,10 +33,6 @@
 // #include <entt/entt.hpp>
 #endif // if
 
-struct alignas(8) EIGHTGINECORE_API CMainTestAlignAndApi
-{
-};
-
 CMain* CMain::Global()
 {
     static CMain self; return &self;

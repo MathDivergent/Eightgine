@@ -53,7 +53,7 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
         return -1;
     }
 
-    auto plugInsPath = PPlatform::Global()->FileSystem->ProjectPlugInsDir() / "PlugIns.json";
+    auto plugInsPath = PPlatform::Global()->FileSystem->ProjectPlugInsDir() / "plugins.json";
     std::cout << "plugInsPath: " << plugInsPath << '\n';
     std::ifstream aPlugInsFile(plugInsPath.c_str(), std::ios::ate | std::ios::binary);
     if (!aPlugInsFile)

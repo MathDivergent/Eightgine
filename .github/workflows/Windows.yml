@@ -7,7 +7,11 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2022
+    strategy:
+      matrix:
+        image: [ windows-2022 ]
+
+    runs-on:  ${{ matrix.image }}
 
     env:
       Eightgine: ${{ github.workspace }}
@@ -53,7 +57,7 @@ jobs:
     - name: "Package and Upload project"
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ github.workflow }}
+        name: EightgineWithEditor-${{ matrix.image }}
         path: |
           ${{ env.Eightgine }}/Build
 

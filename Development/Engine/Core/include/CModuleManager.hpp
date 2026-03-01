@@ -3,25 +3,25 @@
 
 #include <vector> // vector
 
-#define EIGHTGINE_REGISTER_MODULE(name) \
-    static struct name##Register \
+#define EIGHTGINE_REGISTER_MODULE(tModuleType) \
+    struct tModuleType##Register \
     { \
-        name##Register() \
+        tModuleType##Register() \
         { \
-            CModuleManager::Global()->RegisterModule(new name()); \
+            CModuleManager::Global()->RegisterModule(new tModuleType()); \
         } \
-    } xx##name##Register;
+    } xx##tModuleType##Register;
 
 
 struct CModuleInterface;
 
 struct EIGHTGINECORE_API CModuleManager
 {
-    std::vector<CModuleInterface*> Modules;
+    std::vector<CModuleInterface*> RegisteredModules;
 
     static CModuleManager* Global();
 
-    void RegisterModule(CModuleInterface* module);
+    void RegisterModule(CModuleInterface* pModuleImplementation);
 };
 
 #endif // EIGHTGINECORE_CMODULE_MANAGER_HPP

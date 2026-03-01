@@ -6,12 +6,12 @@ CModuleManager* CModuleManager::Global()
     static CModuleManager self; return &self;
 }
 
-void CModuleManager::RegisterModule(CModuleInterface* module)
+void CModuleManager::RegisterModule(CModuleInterface* pModuleImplementation)
 {
-    if (module == nullptr)
+    if (pModuleImplementation == nullptr)
     {
         return;
     }
 
-    Modules.push_back(module);
+    RegisteredModules.push_back(pModuleImplementation);
 }

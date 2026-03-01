@@ -65,7 +65,7 @@ elseif(EIGHTGINE_PLATFORM_MACOS)
     set(PROJECT_RUNTIME_DIR "${PROJECT_DIR}/macOS") # readonly
 endif()
 
-set(PROJECT_LIBRARY_DIR "${PROJECT_DIR}/${PMODULES_DIR_NAME}") # readonly
+set(PROJECT_LIBRARY_DIR "${PROJECT_DIR}/${MODULES_DIR_NAME}") # readonly
 
 
 # [[CMakeDefaults]]

@@ -112,5 +112,3 @@ eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_NAME}" DEPENDENCY_
 if(EIGHTGINE_PLATFORM_WINDOWS)
     eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "${PROJECT_NAME}" DEPENDENCY_NAME "PlatformsWindowsExecutable")
 endif()
-
-target_compile_options(8EightgineCore PRIVATE ${EIGHTGINE_WARNING_FLAGS})

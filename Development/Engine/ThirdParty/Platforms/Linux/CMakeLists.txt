@@ -1,5 +1,5 @@
 # [[Binaries]]
-eightgine_add_module(MODULE_NAME "PlatformsLinuxMinimal" MODULE_TYPE INTERFACE MODULE_API_DEFINITION OFF)
+eightgine_add_module(MODULE_NAME "PlatformsLinuxMinimal" MODULE_TYPE INTERFACE MODULE_DEFAULT_DEFINITIONS OFF MODULE_DEFAULT_OPTIONS OFF)
 
 
 # [[Dependencies]]
@@ -10,7 +10,7 @@ eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "PlatformsLinuxMinimal" DEPEN
 
 
 # [[Binaries]]
-eightgine_add_module(MODULE_NAME "PlatformsLinuxGraphics" MODULE_TYPE INTERFACE MODULE_API_DEFINITION OFF)
+eightgine_add_module(MODULE_NAME "PlatformsLinuxGraphics" MODULE_TYPE INTERFACE MODULE_DEFAULT_DEFINITIONS OFF MODULE_DEFAULT_OPTIONS OFF)
 
 
 # [[Dependencies]]
@@ -24,7 +24,7 @@ eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "PlatformsLinuxGraphics" DEPE
 
 
 # [[Binaries]]
-eightgine_add_module(MODULE_NAME "PlatformsLinuxAudio" MODULE_TYPE INTERFACE MODULE_API_DEFINITION OFF)
+eightgine_add_module(MODULE_NAME "PlatformsLinuxAudio" MODULE_TYPE INTERFACE MODULE_DEFAULT_DEFINITIONS OFF MODULE_DEFAULT_OPTIONS OFF)
 
 
 # [[Dependencies]]

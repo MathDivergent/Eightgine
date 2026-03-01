@@ -25,7 +25,8 @@ target_compile_definitions(SDL2_mixer PRIVATE "OPUSFILE_HEADER=\"opusfile.h\"")
 # [[Binaries]]
 eightgine_add_module(MODULE_NAME "SDL2_mixer"
     MODULE_TYPE INTERFACE
-    MODULE_API_DEFINITION OFF
+    MODULE_DEFAULT_DEFINITIONS OFF
+    MODULE_DEFAULT_OPTIONS OFF
     MODULE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/SDL2_mixer/include"
 )
 

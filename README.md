@@ -122,7 +122,7 @@ Engine architecture:
 	- OKinematicObject - Describes a controlled object in space.
 	- ODynamicObject - Describes a dynamic object in space.
 
-- Lighting - Contains classes for programming and developing lighting-
+- Lighting - Contains classes for programming and developing lighting.
 	- LStaticLight - Describes a static light source.
 	- LDynamicLight - Describes a dynamic light source.
 	- LShadow - Describes a shadow in space.
@@ -135,7 +135,7 @@ Engine architecture:
 	- ASkeletalAnimation - Describes skeletal animation.
 	- AAnimationEditor - Provides functionality for creating animations.
 
-- Particles - Contains classes for programming and developing particles-
+- Particles - Contains classes for programming and developing particles.
 	- PParticlesBase - Provides basic functionality for defining particles.
 	- PParticlesEditor - Provides functionality for creating particles.
 

@@ -11,12 +11,14 @@ add_subdirectory("iniparser" EXCLUDE_FROM_ALL)
 if(BUILD_SHARED_LIBS)
     eightgine_add_module(MODULE_NAME "iniparser"
         MODULE_TYPE INTERFACE
-        MODULE_API_DEFINITION OFF
+        MODULE_DEFAULT_DEFINITIONS OFF
+        MODULE_DEFAULT_OPTIONS OFF
     )
 else()
     eightgine_add_module(MODULE_NAME "iniparser"
         MODULE_TYPE INTERFACE
-        MODULE_API_DEFINITION OFF
+        MODULE_DEFAULT_DEFINITIONS OFF
+        MODULE_DEFAULT_OPTIONS OFF
     )
 endif()
 

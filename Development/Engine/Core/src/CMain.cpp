@@ -23,7 +23,7 @@
 #include <CModuleManager.hpp>
 #include <CModuleInterface.hpp>
 
-#define EIGHTGINE_FLAG 0
+#define EIGHTGINE_FLAG 1
 
 #if EIGHTGINE_FLAG
 #include <SDL.h>
@@ -58,7 +58,7 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
     std::ifstream aPlugInsFile(plugInsPath.c_str(), std::ios::ate | std::ios::binary);
     if (!aPlugInsFile)
     {
-        std::cerr << "Failed to open PlugIns.json file\n";
+        std::cerr << "Failed to open plugins.json file\n";
         return 1;
     }
 
@@ -175,10 +175,11 @@ static int ExecuteImpl()
     }
 
     auto const iFPS = 60;
-    auto const iFrameDelay = 1000 / iFPS;
+    [[maybe_unused]] auto const iFrameDelay = 1000 / iFPS;
 
-    auto bRunning = true;
-    SDL_Event aEvent;
+    [[maybe_unused]] auto bRunning = true;
+    // [[maybe_unused]]
+    [[maybe_unused]] SDL_Event aEvent;
 
     TTF_Font* font = TTF_OpenFont((PPlatform::Global()->FileSystem->ProjectResourcesDir() / "Fonts/hand.otf").string().c_str(), 64);
     if (!font) {
@@ -216,7 +217,7 @@ static int ExecuteImpl()
     }
 
     char const* text = "Hello, Eightgine!";
-    SDL_Color color = {255, 255, 255};
+    SDL_Color color = {255, 255, 255, 0};
     SDL_Surface* textSurface = TTF_RenderUTF8_Blended(font, text, color);
     SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
     err = SDL_GetError();

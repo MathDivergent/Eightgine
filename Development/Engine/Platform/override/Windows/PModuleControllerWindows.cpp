@@ -18,7 +18,7 @@ void* PModuleControllerWindows::LoadModule(std::filesystem::path const& sModuleF
 {
     std::filesystem::path sModuleFilePath = sModuleFilePathNoFileExtention;
     sModuleFilePath.replace_extension("dll");
-    return (void*)LoadLibraryA(/*lpLibFileName*/sModuleFilePath.c_str());
+    return (void*)LoadLibraryW(/*lpLibFileName*/sModuleFilePath.c_str());
 }
 
 void* PModuleControllerWindows::GetFunction(void* pModuleHandler, std::string const& sFunctionName)

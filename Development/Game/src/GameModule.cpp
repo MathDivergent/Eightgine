@@ -5,14 +5,10 @@
 EIGHTGINE_REGISTER_MODULE(GameModule)
 
 
-void GameModule::OnLoad()
+void GameModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)
 {
 }
 
-void GameModule::OnProcess()
-{
-}
-
-void GameModule::OnUnload()
+void GameModule::ShutdownModule()
 {
 }

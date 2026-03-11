@@ -5,9 +5,8 @@
 
 struct EIGHTGINERENDERER_API RRendererModule : public CModuleInterface
 {
-    void OnLoad() override;
-    void OnProcess() override;
-    void OnUnload() override;
+    void StartupModule(CEngine const* pEngineContext) override;
+    void ShutdownModule() override;
 };
 
 #endif // ENGINE_RRENDERER_MODULE_HPP

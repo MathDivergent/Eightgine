@@ -1,14 +1,17 @@
 #include <PPlatform.hpp>
 #include <PModuleControllerInterface.hpp>
 
-#include <dlfcn.h> // dlopen, RTLD_NOW, dlsym, dlclose
+#include <dlfcn.h> // dlopen, RTLD_NOW, dlclose, dlsym, Dl_info, dladdr, RTLD_NOLOAD, dlerror
 
 struct PModuleControllerLinux : public PModuleControllerInterface
 {
     void* LoadModule(std::filesystem::path const& sModuleFilePathNoFileExtention) override;
-    void* GetFunction(void* pModule, std::string const& sFunctionName) override;
-    bool UnloadModule(void* pModule) override;
-    std::optional<std::string> ExtractErrorMessage() override;
+    bool UnloadModule(void* pModuleHandle) override;
+
+    void* ModuleSymbol(void* pModuleHandle, std::string const& sSymbolName) override;
+    void* ModuleHandle(void* pModuleSymbol) override;
+
+    std::optional<std::string> ExtractError() override;
 };
 
 EIGHTGINE_REGISTER_PLATFORM(PModuleControllerLinux)
@@ -21,24 +24,37 @@ void* PModuleControllerLinux::LoadModule(std::filesystem::path const& sModuleFil
     return dlopen(/*filename*/sModuleFilePath.c_str(), /*flags*/RTLD_NOW);
 }
 
-void* PModuleControllerLinux::GetFunction(void* pModuleHandler, std::string const& sFunctionName)
+bool PModuleControllerLinux::UnloadModule(void* pModuleHandle)
 {
-    return dlsym(/*handle*/pModuleHandler, /*symbol*/sFunctionName.c_str());
-}
-
-bool PModuleControllerLinux::UnloadModule(void* pModuleHandler)
-{
-    if (pModuleHandler == NULL)
+    if (pModuleHandle == NULL)
     {
         return false;
     }
     else
     {
-        return dlclose(/*handle*/pModuleHandler) == 0;
+        return dlclose(/*handle*/pModuleHandle) == 0;
     }
 }
 
-std::optional<std::string> PModuleControllerLinux::ExtractErrorMessage()
+void* PModuleControllerLinux::ModuleSymbol(void* pModuleHandle, std::string const& sSymbolName)
+{
+    return dlsym(/*handle*/pModuleHandle, /*symbol*/sSymbolName.c_str());
+}
+
+void* PModuleControllerLinux::ModuleHandle(void* pModuleSymbol)
+{
+    Dl_info aInfo;
+    if (!dladdr(/*addr*/pModuleSymbol, /*info*/&aInfo))
+    {
+        return NULL;
+    }
+    else
+    {
+        return dlopen(/*filename*/aInfo.dli_fname, /*flags*/RTLD_NOW | RTLD_NOLOAD);
+    } 
+}
+
+std::optional<std::string> PModuleControllerLinux::ExtractError()
 {
     if (char const* pExtractedLastError = dlerror())
     {

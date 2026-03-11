@@ -5,14 +5,10 @@
 EIGHTGINE_REGISTER_MODULE(LLightingModule)
 
 
-void LLightingModule::OnLoad()
+void LLightingModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)
 {
 }
 
-void LLightingModule::OnProcess()
-{
-}
-
-void LLightingModule::OnUnload()
+void LLightingModule::ShutdownModule()
 {
 }

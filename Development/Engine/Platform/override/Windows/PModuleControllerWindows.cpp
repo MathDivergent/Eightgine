@@ -1,14 +1,19 @@
 #include <PPlatform.hpp>
 #include <PModuleControllerInterface.hpp>
 
-#include <windows.h> // LoadLibraryA, HMODULE, GetProcAddress, FreeLibrary
+// LoadLibraryW, FreeLibrary, HMODULE, GetProcAddress, DWORD, FormatMessageA,
+// FORMAT_MESSAGE_FROM_SYSTEM, FORMAT_MESSAGE_IGNORE_INSERTS, MAKELANGID, LANG_NEUTRAL, SUBLANG_DEFAULT, SetLastError
+#include <windows.h>
 
 struct PModuleControllerWindows : public PModuleControllerInterface
 {
     void* LoadModule(std::filesystem::path const& sModuleFilePathNoFileExtention) override;
-    void* GetFunction(void* pModule, std::string const& sFunctionName) override;
-    bool UnloadModule(void* pModule) override;
-    std::optional<std::string> ExtractErrorMessage() override;
+    bool UnloadModule(void* pModuleHandle) override;
+
+    void* ModuleSymbol(void* pModuleHandle, std::string const& sSymbolName) override;
+    void* ModuleHandle(void* pModuleSymbol) override;
+
+    std::optional<std::string> ExtractError() override;
 };
 
 EIGHTGINE_REGISTER_PLATFORM(PModuleControllerWindows)
@@ -21,24 +26,36 @@ void* PModuleControllerWindows::LoadModule(std::filesystem::path const& sModuleF
     return (void*)LoadLibraryW(/*lpLibFileName*/sModuleFilePath.c_str());
 }
 
-void* PModuleControllerWindows::GetFunction(void* pModuleHandler, std::string const& sFunctionName)
+bool PModuleControllerWindows::UnloadModule(void* pModuleHandle)
 {
-    return (void*)GetProcAddress(/*hModule*/(HMODULE)pModuleHandler, /*lpProcName*/sFunctionName.c_str());
-}
-
-bool PModuleControllerWindows::UnloadModule(void* pModuleHandler)
-{
-    if (pModuleHandler == NULL)
+    if (pModuleHandle == NULL)
     {
         return false;
     }
     else
     {
-        return (bool)FreeLibrary(/*hLibModule*/(HMODULE)pModuleHandler);
+        return (bool)FreeLibrary(/*hLibModule*/(HMODULE)pModuleHandle);
     }
 }
 
-std::optional<std::string> PModuleControllerWindows::ExtractErrorMessage()
+void* PModuleControllerWindows::ModuleSymbol(void* pModuleHandle, std::string const& sSymbolName)
+{
+    return (void*)GetProcAddress(/*hModule*/(HMODULE)pModuleHandle, /*lpProcName*/sSymbolName.c_str());
+}
+
+void* PModuleControllerWindows::ModuleHandle(void* pModuleSymbol)
+{
+    HMODULE pModuleHandle = NULL;
+    GetModuleHandleEx
+    (
+        /*dwFlags*/GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+        /*lpModuleName*/(LPCSTR)&pModuleSymbol,
+        /*phModule*/&pModuleHandle
+    )
+    return pModuleHandle;
+}
+
+std::optional<std::string> PModuleControllerWindows::ExtractError()
 {
     if (DWORD const uErrorCode = GetLastError())
     {

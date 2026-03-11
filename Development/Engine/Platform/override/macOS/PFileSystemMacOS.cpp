@@ -22,8 +22,8 @@ EIGHTGINE_REGISTER_PLATFORM(PFileSystemMacOS)
 std::filesystem::path PFileSystemMacOS::ProjectExecutableDir()
 {
     std::string sExecutablePathBuffer(PATH_MAX, '\0');
-    uint32_t uExecutablePathLength = (uint32_t)sExecutablePathBuffer.size();
 
+    uint32_t uExecutablePathLength = (uint32_t)sExecutablePathBuffer.size();
     if (_NSGetExecutablePath(/*buf*/sExecutablePathBuffer.data(), /*bufsize*/&uExecutablePathLength) == -1)
     {
         return {};

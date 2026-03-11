@@ -5,14 +5,10 @@
 EIGHTGINE_REGISTER_MODULE(PParticlesModule)
 
 
-void PParticlesModule::OnLoad()
+void PParticlesModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)
 {
 }
 
-void PParticlesModule::OnProcess()
-{
-}
-
-void PParticlesModule::OnUnload()
+void PParticlesModule::ShutdownModule()
 {
 }

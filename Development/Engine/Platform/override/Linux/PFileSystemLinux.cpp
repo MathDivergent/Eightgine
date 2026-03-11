@@ -23,7 +23,7 @@ std::filesystem::path PFileSystemLinux::ProjectExecutableDir()
 {
     std::string sExecutablePathBuffer(PATH_MAX, '\0');
 
-    ssize_t iExecutablePathLength = readlink(/*pathname*/"/proc/self/exe", /*buf*/sExecutablePathBuffer.data(), /*bufsiz*/sExecutablePathBuffer.size());
+    ssize_t const iExecutablePathLength = readlink(/*pathname*/"/proc/self/exe", /*buf*/sExecutablePathBuffer.data(), /*bufsiz*/sExecutablePathBuffer.size());
     if (iExecutablePathLength == -1)
     {
         return {};
@@ -37,7 +37,7 @@ std::filesystem::path PFileSystemLinux::ProjectExecutableDir()
         return {};
     }
 
-    std::size_t uRealExecutablePathLength = std::strlen(sRealExecutablePathBuffer.c_str());
+    std::size_t const uRealExecutablePathLength = std::strlen(sRealExecutablePathBuffer.c_str());
     sRealExecutablePathBuffer.resize(uRealExecutablePathLength); // shrink
     return std::filesystem::path(sRealExecutablePathBuffer).parent_path();
 }

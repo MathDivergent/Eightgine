@@ -5,14 +5,10 @@
 EIGHTGINE_REGISTER_MODULE(RRendererModule)
 
 
-void RRendererModule::OnLoad()
+void RRendererModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)
 {
 }
 
-void RRendererModule::OnProcess()
-{
-}
-
-void RRendererModule::OnUnload()
+void RRendererModule::ShutdownModule()
 {
 }

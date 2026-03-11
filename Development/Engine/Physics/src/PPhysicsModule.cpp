@@ -5,14 +5,10 @@
 EIGHTGINE_REGISTER_MODULE(PPhysicsModule)
 
 
-void PPhysicsModule::OnLoad()
+void PPhysicsModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)
 {
 }
 
-void PPhysicsModule::OnProcess()
-{
-}
-
-void PPhysicsModule::OnUnload()
+void PPhysicsModule::ShutdownModule()
 {
 }

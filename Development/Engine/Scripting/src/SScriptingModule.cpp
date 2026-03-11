@@ -5,14 +5,10 @@
 EIGHTGINE_REGISTER_MODULE(SScriptingModule)
 
 
-void SScriptingModule::OnLoad()
+void SScriptingModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)
 {
 }
 
-void SScriptingModule::OnProcess()
-{
-}
-
-void SScriptingModule::OnUnload()
+void SScriptingModule::ShutdownModule()
 {
 }

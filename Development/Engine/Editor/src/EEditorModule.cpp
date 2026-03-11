@@ -5,14 +5,10 @@
 EIGHTGINE_REGISTER_MODULE(EEditorModule)
 
 
-void EEditorModule::OnLoad()
+void EEditorModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)
 {
 }
 
-void EEditorModule::OnProcess()
-{
-}
-
-void EEditorModule::OnUnload()
+void EEditorModule::ShutdownModule()
 {
 }

@@ -5,14 +5,10 @@
 EIGHTGINE_REGISTER_MODULE(NNetworkModule)
 
 
-void NNetworkModule::OnLoad()
+void NNetworkModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)
 {
 }
 
-void NNetworkModule::OnProcess()
-{
-}
-
-void NNetworkModule::OnUnload()
+void NNetworkModule::ShutdownModule()
 {
 }

@@ -1,5 +1,6 @@
 #include <CMain.hpp>
 
+#include <CEngine.hpp>
 #include <CModuleManager.hpp>
 #include <CModuleInterface.hpp>
 
@@ -12,18 +13,16 @@
 #include <ranges> // views::reverse
 #include <iostream> // cout
 
-CMain* CMain::Global()
-{
-    static CMain self; return &self;
-}
-
 int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** pArgumentValues)
 {
+    CEngine Eightgine;
+
     // TODO: provide logger
     // TODO: provide exit code enum
     int iExitCode = 0;
     {
         // TODO: should be from ini or json
+        // TODO: native  Eight libs does not free by dlclose
         std::vector<std::string> const vModuleNames =
         {
             "Eightest",
@@ -48,17 +47,17 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
 
         for (std::string const& sModuleName : vModuleNames)
         {
-            std::filesystem::path const sModuleFilePathNoFileExtention = PPlatform::Global()->FileSystem->ProjectModulesDir() / (sModuleName + EIGHTGINE_BUILD_POSTFIX);
-            void* pModule = PPlatform::Global()->ModuleController->LoadModule(sModuleFilePathNoFileExtention);
+            std::filesystem::path const sModuleFilePathNoFileExtention = PPlatform::FileSystem->ProjectModulesDir() / (sModuleName + EIGHTGINE_BUILD_POSTFIX);
+            void* pModuleHandle = PPlatform::ModuleController->LoadModule(sModuleFilePathNoFileExtention);
 
             std::cout << "sModuleFilePathNoFileExtention: " << sModuleFilePathNoFileExtention;
-            if (pModule)
+            if (pModuleHandle)
             {
-                std::cout << " pModule: " << pModule << '\n';
+                std::cout << " pModuleHandle: " << pModuleHandle << '\n';
             }
             else
             {
-                if (std::optional<std::string> sErrorMessage = PPlatform::Global()->ModuleController->ExtractErrorMessage())
+                if (std::optional<std::string> sErrorMessage = PPlatform::ModuleController->ExtractError())
                 {
                     std::cout << " sErrorMessage: " << sErrorMessage.value() << '\n';
                     iExitCode = 1;
@@ -79,17 +78,17 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
 
         for (std::string const& sPlugInModuleName : vPlugInModuleNames)
         {
-            std::filesystem::path const sPlugInModuleFilePathNoFileExtention = PPlatform::Global()->FileSystem->ProjectPlugInModulesDir() / (sPlugInModuleName + EIGHTGINE_BUILD_POSTFIX);
-            void* pPlugInModule = PPlatform::Global()->ModuleController->LoadModule(sPlugInModuleFilePathNoFileExtention);
+            std::filesystem::path const sPlugInModuleFilePathNoFileExtention = PPlatform::FileSystem->ProjectPlugInModulesDir() / (sPlugInModuleName + EIGHTGINE_BUILD_POSTFIX);
+            void* pPlugInModuleHandle = PPlatform::ModuleController->LoadModule(sPlugInModuleFilePathNoFileExtention);
 
             std::cout << "sPlugInModuleFilePathNoFileExtention: " << sPlugInModuleFilePathNoFileExtention;
-            if (pPlugInModule)
+            if (pPlugInModuleHandle)
             {
-                std::cout << " pPlugInModule: " << pPlugInModule << '\n';
+                std::cout << " pPlugInModuleHandle: " << pPlugInModuleHandle << '\n';
             }
             else
             {
-                if (std::optional<std::string> sErrorMessage = PPlatform::Global()->ModuleController->ExtractErrorMessage())
+                if (std::optional<std::string> sErrorMessage = PPlatform::ModuleController->ExtractError())
                 {
                     std::cout << " sErrorMessage: " << sErrorMessage.value() << '\n';
                     iExitCode = 1;
@@ -98,9 +97,9 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
         }
     }
 
-    for (CModuleInterface* pRegisteredModule : CModuleManager::Global()->RegisteredModules)
+    for (std::unique_ptr<CModuleInterface> const& pRegisteredModule : CModuleManager::RegisteredModules)
     {
-        pRegisteredModule->OnLoad();
+        pRegisteredModule->StartupModule(&Eightgine);
     }
 
     eightest::global()->execute_all();
@@ -114,9 +113,23 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
         iExitCode = 3;
     }
 
-    for (CModuleInterface* pRegisteredModule : CModuleManager::Global()->RegisteredModules | std::views::reverse)
+    for (std::unique_ptr<CModuleInterface> const& pRegisteredModule : CModuleManager::RegisteredModules | std::views::reverse)
     {
-        pRegisteredModule->OnUnload();
+        pRegisteredModule->ShutdownModule();
+    }
+
+    for (std::unique_ptr<CModuleInterface> const& pRegisteredModule : CModuleManager::RegisteredModules | std::views::reverse)
+    {
+        if (!PPlatform::ModuleController->UnloadModule(pRegisteredModule->ModuleHandle))
+        {
+            std::cout << "UnloadModule: failed: ";
+            iExitCode = 4;
+        }
+        else
+        {
+            std::cout << "UnloadModule: success: ";
+        }
+        std::cout << pRegisteredModule->ModuleHandle << '\n';
     }
 
     std::cout << "iExitCode: " << iExitCode << '\n';
@@ -225,7 +238,7 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
 
 //     for (auto const module : CModuleManager::Global()->Modules)
 //     {
-//         module->OnLoad();
+//         module->StartupModule([[maybe_unused]] CEngine const* pEngineContext);
 //     }
 
 //     auto code = 0;

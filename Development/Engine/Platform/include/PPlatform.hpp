@@ -1,12 +1,14 @@
 #ifndef EIGHTGINEPLATFORM_PPLATFORM_HPP
 #define EIGHTGINEPLATFORM_PPLATFORM_HPP
 
+#include <memory> // unique_ptr
+
 #define EIGHTGINE_REGISTER_PLATFORM(tPlatformImplementationType) \
     struct tPlatformImplementationType##Register \
     { \
         tPlatformImplementationType##Register() \
         { \
-            PPlatform::Global()->RegisterPlatform(new tPlatformImplementationType()); \
+            PPlatform::RegisterPlatform(new tPlatformImplementationType()); \
         } \
     } xx##tPlatformImplementationType##Register;
 
@@ -16,13 +18,11 @@ struct PFileSystemInterface;
 
 struct EIGHTGINEPLATFORM_API PPlatform
 {
-    PModuleControllerInterface* ModuleController = nullptr;
-    PFileSystemInterface* FileSystem = nullptr;
+    static std::unique_ptr<PModuleControllerInterface> ModuleController;
+    static std::unique_ptr<PFileSystemInterface> FileSystem;
 
-    static PPlatform* Global();
-
-    void RegisterPlatform(PModuleControllerInterface* implementation);
-    void RegisterPlatform(PFileSystemInterface* implementation);
+    static void RegisterPlatform(PModuleControllerInterface* implementation);
+    static void RegisterPlatform(PFileSystemInterface* implementation);
 };
 
 #endif // EIGHTGINEPLATFORM_PLATFORM_HPP

@@ -5,9 +5,8 @@
 
 struct GAME_API GameModule : public CModuleInterface
 {
-    void OnLoad() override;
-    void OnProcess() override;
-    void OnUnload() override;
+    void StartupModule(CEngine const* pEngineContext) override;
+    void ShutdownModule() override;
 };
 
 #endif // GAME_GAME_MODULE_HPP

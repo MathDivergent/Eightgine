@@ -5,14 +5,10 @@
 EIGHTGINE_REGISTER_MODULE(AAnimationsModule)
 
 
-void AAnimationsModule::OnLoad()
+void AAnimationsModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)
 {
 }
 
-void AAnimationsModule::OnProcess()
-{
-}
-
-void AAnimationsModule::OnUnload()
+void AAnimationsModule::ShutdownModule()
 {
 }

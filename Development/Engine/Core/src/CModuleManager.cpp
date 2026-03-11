@@ -1,17 +1,20 @@
 #include <CModuleManager.hpp>
 #include <CModuleInterface.hpp>
 
-CModuleManager* CModuleManager::Global()
-{
-    static CModuleManager self; return &self;
-}
+#include <PPlatform.hpp>
+#include <PModuleControllerInterface.hpp>
 
-void CModuleManager::RegisterModule(CModuleInterface* pModuleImplementation)
+std::vector<std::unique_ptr<CModuleInterface>> CModuleManager::RegisteredModules;
+
+void CModuleManager::RegisterModule(CModuleInterface* (*hModuleImplementationFactory)(void))
 {
-    if (pModuleImplementation == nullptr)
+    if (hModuleImplementationFactory == nullptr)
     {
         return;
     }
 
-    RegisteredModules.push_back(pModuleImplementation);
+    CModuleInterface* pModuleImplementation = hModuleImplementationFactory();
+    pModuleImplementation->ModuleHandle = PPlatform::ModuleController->ModuleHandle((void*)hModuleImplementationFactory);
+
+    RegisteredModules.emplace_back(pModuleImplementation);
 }

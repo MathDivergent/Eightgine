@@ -5,14 +5,10 @@
 EIGHTGINE_REGISTER_MODULE(AAudioModule)
 
 
-void AAudioModule::OnLoad()
+void AAudioModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)
 {
 }
 
-void AAudioModule::OnProcess()
-{
-}
-
-void AAudioModule::OnUnload()
+void AAudioModule::ShutdownModule()
 {
 }

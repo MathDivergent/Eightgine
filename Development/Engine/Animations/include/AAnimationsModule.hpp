@@ -5,9 +5,8 @@
 
 struct EIGHTGINEANIMATIONS_API AAnimationsModule : public CModuleInterface
 {
-    void OnLoad() override;
-    void OnProcess() override;
-    void OnUnload() override;
+    void StartupModule(CEngine const* pEngineContext) override;
+    void ShutdownModule() override;
 };
 
 #endif // ENGINE_AANIMATIONS_MODULE_HPP

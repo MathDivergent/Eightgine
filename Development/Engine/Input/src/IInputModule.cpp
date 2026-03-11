@@ -5,14 +5,10 @@
 EIGHTGINE_REGISTER_MODULE(IInputModule)
 
 
-void IInputModule::OnLoad()
+void IInputModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)
 {
 }
 
-void IInputModule::OnProcess()
-{
-}
-
-void IInputModule::OnUnload()
+void IInputModule::ShutdownModule()
 {
 }

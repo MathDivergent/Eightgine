@@ -5,14 +5,10 @@
 EIGHTGINE_REGISTER_MODULE(OObjectsModule)
 
 
-void OObjectsModule::OnLoad()
+void OObjectsModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)
 {
 }
 
-void OObjectsModule::OnProcess()
-{
-}
-
-void OObjectsModule::OnUnload()
+void OObjectsModule::ShutdownModule()
 {
 }

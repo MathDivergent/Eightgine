@@ -50,8 +50,10 @@ void* PModuleControllerMacOS::ModuleHandle(void* pModuleSymbol)
     }
     else
     {
-        return dlopen(/*filename*/aInfo.dli_fname, /*flags*/RTLD_NOLOAD);
-    } 
+        void* const pModuleHandle = dlopen(/*filename*/aInfo.dli_fname, /*flags*/RTLD_NOW | RTLD_NOLOAD);
+        UnloadModule(pModuleHandle);
+        return pModuleHandle;
+    }
 }
 
 std::optional<std::string> PModuleControllerMacOS::ExtractError()

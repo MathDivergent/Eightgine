@@ -113,14 +113,20 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
         iExitCode = 3;
     }
 
+    // TODO: suggestion to rework shutdown & upload sequance,
+    //       and posibility to built in load & startup and shutdown & upload,
+    //       needed for hot reload, plugins.
     for (std::unique_ptr<CModuleInterface> const& pRegisteredModule : CModuleManager::RegisteredModules | std::views::reverse)
     {
         pRegisteredModule->ShutdownModule();
     }
 
-    for (std::unique_ptr<CModuleInterface> const& pRegisteredModule : CModuleManager::RegisteredModules | std::views::reverse)
+    for (std::unique_ptr<CModuleInterface>& pRegisteredModule : CModuleManager::RegisteredModules | std::views::reverse)
     {
-        if (!PPlatform::ModuleController->UnloadModule(pRegisteredModule->ModuleHandle))
+        void* const pModuleHandle = pRegisteredModule->ModuleHandle;
+        pRegisteredModule.reset();
+
+        if (!PPlatform::ModuleController->UnloadModule(pModuleHandle))
         {
             std::cout << "UnloadModule: failed: ";
             iExitCode = 4;
@@ -129,7 +135,7 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
         {
             std::cout << "UnloadModule: success: ";
         }
-        std::cout << pRegisteredModule->ModuleHandle << '\n';
+        std::cout << pModuleHandle << '\n';
     }
 
     std::cout << "iExitCode: " << iExitCode << '\n';

@@ -50,7 +50,7 @@ void* PModuleControllerMacOS::ModuleHandle(void* pModuleSymbol)
     }
     else
     {
-        return dlopen(/*filename*/aInfo.dli_fname, /*flags*/RTLD_NOW | RTLD_NOLOAD);
+        return dlopen(/*filename*/aInfo.dli_fname, /*flags*/RTLD_NOLOAD);
     } 
 }
 

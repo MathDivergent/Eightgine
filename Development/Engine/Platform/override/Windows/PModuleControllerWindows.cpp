@@ -53,7 +53,14 @@ void* PModuleControllerWindows::ModuleHandle(void* pModuleSymbol)
         /*phModule*/&pModuleHandle
     );
 
-    return bSuccess ? pModuleHandle : NULL;
+    if (bSuccess)
+    {
+        return pModuleHandle;
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 std::optional<std::string> PModuleControllerWindows::ExtractError()

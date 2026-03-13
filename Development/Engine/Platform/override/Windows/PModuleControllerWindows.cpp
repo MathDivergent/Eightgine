@@ -49,7 +49,7 @@ void* PModuleControllerWindows::ModuleHandle(void* pModuleSymbol)
     BOOL const bSucceeded = GetModuleHandleEx
     (
         /*dwFlags*/GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-        /*lpModuleName*/(LPCSTR)&pModuleSymbol,
+        /*lpModuleName*/(LPCSTR)pModuleSymbol,
         /*phModule*/&pModuleHandle
     );
 

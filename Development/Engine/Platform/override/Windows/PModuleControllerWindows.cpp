@@ -46,13 +46,14 @@ void* PModuleControllerWindows::ModuleSymbol(void* pModuleHandle, std::string co
 void* PModuleControllerWindows::ModuleHandle(void* pModuleSymbol)
 {
     HMODULE pModuleHandle = NULL;
-    GetModuleHandleEx
+    BOOL const bSuccess = GetModuleHandleEx
     (
         /*dwFlags*/GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
         /*lpModuleName*/(LPCSTR)&pModuleSymbol,
         /*phModule*/&pModuleHandle
     );
-    return pModuleHandle;
+
+    return bSuccess ? pModuleHandle : NULL;
 }
 
 std::optional<std::string> PModuleControllerWindows::ExtractError()

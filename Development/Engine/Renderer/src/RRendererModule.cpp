@@ -2,7 +2,7 @@
 
 #include <CModuleManager.hpp>
 
-EIGHTGINE_REGISTER_MODULE(RRendererModule)
+EIGHTGINE_MODULE_FACTORY(RRendererModule)
 
 
 void RRendererModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)

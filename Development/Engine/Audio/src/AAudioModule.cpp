@@ -2,7 +2,7 @@
 
 #include <CModuleManager.hpp>
 
-EIGHTGINE_REGISTER_MODULE(AAudioModule)
+EIGHTGINE_MODULE_FACTORY(AAudioModule)
 
 
 void AAudioModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)

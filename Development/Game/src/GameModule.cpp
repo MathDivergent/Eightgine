@@ -2,7 +2,7 @@
 
 #include <CModuleManager.hpp>
 
-EIGHTGINE_REGISTER_MODULE(GameModule)
+EIGHTGINE_MODULE_FACTORY(GameModule)
 
 
 void GameModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)

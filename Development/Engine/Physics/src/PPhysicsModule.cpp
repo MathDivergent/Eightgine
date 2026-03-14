@@ -2,7 +2,7 @@
 
 #include <CModuleManager.hpp>
 
-EIGHTGINE_REGISTER_MODULE(PPhysicsModule)
+EIGHTGINE_MODULE_FACTORY(PPhysicsModule)
 
 
 void PPhysicsModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)

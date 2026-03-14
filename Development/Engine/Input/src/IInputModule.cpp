@@ -2,7 +2,7 @@
 
 #include <CModuleManager.hpp>
 
-EIGHTGINE_REGISTER_MODULE(IInputModule)
+EIGHTGINE_MODULE_FACTORY(IInputModule)
 
 
 void IInputModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)

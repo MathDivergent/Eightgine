@@ -2,7 +2,7 @@
 
 #include <CModuleManager.hpp>
 
-EIGHTGINE_REGISTER_MODULE(LLightingModule)
+EIGHTGINE_MODULE_FACTORY(LLightingModule)
 
 
 void LLightingModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)

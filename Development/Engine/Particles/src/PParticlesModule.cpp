@@ -2,7 +2,7 @@
 
 #include <CModuleManager.hpp>
 
-EIGHTGINE_REGISTER_MODULE(PParticlesModule)
+EIGHTGINE_MODULE_FACTORY(PParticlesModule)
 
 
 void PParticlesModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)

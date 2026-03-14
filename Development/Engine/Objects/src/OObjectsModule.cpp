@@ -2,7 +2,7 @@
 
 #include <CModuleManager.hpp>
 
-EIGHTGINE_REGISTER_MODULE(OObjectsModule)
+EIGHTGINE_MODULE_FACTORY(OObjectsModule)
 
 
 void OObjectsModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)

@@ -3,15 +3,15 @@
 #include <PModuleControllerInterface.hpp>
 #include <PFileSystemInterface.hpp>
 
-std::unique_ptr<PModuleControllerInterface> PPlatform::ModuleController;
-std::unique_ptr<PFileSystemInterface> PPlatform::FileSystem;
+std::unique_ptr<PModuleControllerInterface> PPlatform::pModuleController;
+std::unique_ptr<PFileSystemInterface> PPlatform::pFileSystem;
 
 void PPlatform::RegisterPlatform(PModuleControllerInterface* implementation)
 {
-    ModuleController.reset(implementation);
+    pModuleController.reset(implementation);
 }
 
 void PPlatform::RegisterPlatform(PFileSystemInterface* implementation)
 {
-    FileSystem.reset(implementation);
+    pFileSystem.reset(implementation);
 }

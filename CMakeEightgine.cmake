@@ -318,6 +318,8 @@ function(eightgine_add_module)
         elseif(ARG_MODULE_TYPE STREQUAL "STATIC")
             set(MODULE_DEFAULT_DEFINITIONS PUBLIC "${MODULE_API_DEFINITION}=")
         endif()
+
+        list(APPEND MODULE_DEFAULT_DEFINITIONS PRIVATE "EIGHTGINE_API=${MODULE_API_DEFINITION}")
     endif()
 
     if(EIGHTGINE_PLATFORM_LINUX)

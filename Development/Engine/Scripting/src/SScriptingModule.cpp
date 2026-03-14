@@ -2,7 +2,7 @@
 
 #include <CModuleManager.hpp>
 
-EIGHTGINE_REGISTER_MODULE(SScriptingModule)
+EIGHTGINE_MODULE_FACTORY(SScriptingModule)
 
 
 void SScriptingModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)

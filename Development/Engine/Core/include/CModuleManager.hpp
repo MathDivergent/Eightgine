@@ -1,30 +1,24 @@
 #ifndef EIGHTGINECORE_CMODULE_MANAGER_HPP
 #define EIGHTGINECORE_CMODULE_MANAGER_HPP
 
-#include <vector> // vector
+#include <string_view> // string_view
+#include <list> // list
 #include <memory> // unique_ptr
 
-#define EIGHTGINE_REGISTER_MODULE(tModuleType) \
-    struct tModuleType##Register \
+#define EIGHTGINE_MODULE_FACTORY(tModuleType) \
+    extern "C" EIGHTGINE_API CModuleInterface* ModuleFactory() \
     { \
-        static CModuleInterface* tModuleType##ImplementationFactory() \
-        { \
-            return new tModuleType(); \
-        } \
-        tModuleType##Register() \
-        { \
-            CModuleManager::RegisterModule(&tModuleType##ImplementationFactory); \
-        } \
-    } xx##tModuleType##Register;
-
+        return new tModuleType; \
+    }
 
 struct CModuleInterface;
 
 struct EIGHTGINECORE_API CModuleManager
 {
-    static std::vector<std::unique_ptr<CModuleInterface>> RegisteredModules;
+    using ModuleFactoryH = CModuleInterface* (*)(void);
 
-    static void RegisterModule(CModuleInterface* (*hModuleImplementationFactory)(void));
+    static constexpr std::string_view sModuleFactoryFunctionName = "ModuleFactory";
+    static std::list<std::unique_ptr<CModuleInterface>> cModules;
 };
 
 #endif // EIGHTGINECORE_CMODULE_MANAGER_HPP

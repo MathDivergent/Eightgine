@@ -18,8 +18,8 @@ struct PFileSystemInterface;
 
 struct EIGHTGINEPLATFORM_API PPlatform
 {
-    static std::unique_ptr<PModuleControllerInterface> ModuleController;
-    static std::unique_ptr<PFileSystemInterface> FileSystem;
+    static std::unique_ptr<PModuleControllerInterface> pModuleController;
+    static std::unique_ptr<PFileSystemInterface> pFileSystem;
 
     static void RegisterPlatform(PModuleControllerInterface* implementation);
     static void RegisterPlatform(PFileSystemInterface* implementation);

@@ -9,26 +9,98 @@
 #include <PFileSystemInterface.hpp>
 
 #include <Eightest/Core.hpp>
+#include <Eightmory/Core.hpp>
+#include <Eightrefl/Core.hpp>
+#include <Eightser/Core.hpp>
 
 #include <ranges> // views::reverse
 #include <iostream> // cout
 
+// TODO: provide exit code enum
+int iExitCode = 0;
+
+// TODO: temporary impl
+static void CModuleManager_HotLoadModule(std::filesystem::path const& sModuleDir, std::string const& sModuleName, bool const bHasModuleFactory = true)
+{
+    std::filesystem::path const sModuleFilePathNoFileExtention = sModuleDir / (sModuleName + EIGHTGINE_BUILD_POSTFIX);
+    void* const pModuleHandle = PPlatform::pModuleController->LoadModule(sModuleFilePathNoFileExtention);
+
+    std::cout << "[CModuleManager_HotLoadModule][INFO]: sModuleName: " << sModuleName << " pModuleHandle: " << pModuleHandle << '\n';
+
+    if (pModuleHandle == nullptr)
+    {
+        std::cout << "[CModuleManager_HotLoadModule][ERROR]: " << PPlatform::pModuleController->ExtractError().value_or("pModuleHandle == nullptr") << '\n';
+        iExitCode = 1; return;
+    }
+
+    if (!bHasModuleFactory)
+    {
+        return;
+    }
+
+    auto const hModuleFactory = (CModuleManager::ModuleFactoryH)PPlatform::pModuleController->ModuleSymbol(pModuleHandle, CModuleManager::sModuleFactoryFunctionName.data());
+    if (hModuleFactory == nullptr)
+    {
+        std::cout << "[CModuleManager_HotLoadModule][ERROR]: " << PPlatform::pModuleController->ExtractError().value_or("hModuleFactory == nullptr") << '\n';
+        iExitCode = 1; return;
+    }
+
+    CModuleInterface* const pModule = hModuleFactory();
+    if (pModule == nullptr)
+    {
+        std::cout << "[CModuleManager_HotLoadModule][ERROR]: pModule == nullptr" << '\n';
+        iExitCode = 1; return;
+    }
+
+    pModule->sModuleName = sModuleName;
+    pModule->pModuleHandle = pModuleHandle;
+
+    CModuleManager::cModules.emplace_back(pModule);
+}
+
+static void CModuleManager_HotUnloadModule(std::unique_ptr<CModuleInterface>& pModule)
+{
+    std::cout << "[CModuleManager_HotUnloadModule][INFO]: sModuleName: " << pModule->sModuleName << " pModuleHandle: " << pModule->pModuleHandle <<  '\n';
+    
+    void* const pCachedModuleHandle = pModule->pModuleHandle;
+    pModule.reset();
+
+    if (PPlatform::pModuleController->UnloadModule(pCachedModuleHandle) == false)
+    {
+        std::cout << "[CModuleManager_HotUnloadModule][ERROR]: " << PPlatform::pModuleController->ExtractError().value_or("UnloadModule(...) == false") << '\n';
+        iExitCode = 4; return;
+    }
+}
+
+[[maybe_unused]] static void CEightest_ExecuteAutomation()
+{
+    eightest::global()->execute_all();
+
+    if (!eightest::global()->stat())
+    {
+        iExitCode = 2;
+    }
+    if (eightest::global()->passed == 0)
+    {
+        iExitCode = 3;
+    }
+}
+
 int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** pArgumentValues)
 {
-    CEngine Eightgine;
+    CEngine aEightgine;
 
     // TODO: provide logger
-    // TODO: provide exit code enum
-    int iExitCode = 0;
     {
+        // TODO: temp trigger linking
+        char cMemory[1024]; [[maybe_unused]] eightmory::segment_manager_t aManager(cMemory, sizeof(cMemory));
+        (void)eightser::instantiable_registry();
+        (void)eightrefl::global();
+
         // TODO: should be from ini or json
         // TODO: native  Eight libs does not free by dlclose
-        std::vector<std::string> const vModuleNames =
+        std::vector<std::string> const cModuleNames =
         {
-            "Eightest",
-            "Eightmory",
-            "Eightser",
-            "Eightrefl",
             "EightgineRenderer",
             "EightgineAudio",
             "EightgineInput",
@@ -45,30 +117,15 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
             #endif // EIGHTGINE_WITH_EDITOR
         };
 
-        for (std::string const& sModuleName : vModuleNames)
+        for (std::string const& sModuleName : cModuleNames)
         {
-            std::filesystem::path const sModuleFilePathNoFileExtention = PPlatform::FileSystem->ProjectModulesDir() / (sModuleName + EIGHTGINE_BUILD_POSTFIX);
-            void* pModuleHandle = PPlatform::ModuleController->LoadModule(sModuleFilePathNoFileExtention);
-
-            std::cout << "sModuleFilePathNoFileExtention: " << sModuleFilePathNoFileExtention;
-            if (pModuleHandle)
-            {
-                std::cout << " pModuleHandle: " << pModuleHandle << '\n';
-            }
-            else
-            {
-                if (std::optional<std::string> sErrorMessage = PPlatform::ModuleController->ExtractError())
-                {
-                    std::cout << " sErrorMessage: " << sErrorMessage.value() << '\n';
-                    iExitCode = 1;
-                }
-            }
+            CModuleManager_HotLoadModule(PPlatform::pFileSystem->ProjectModulesDir(), sModuleName);
         }
     }
 
     {
         // TODO: should be from ini or json
-        std::vector<std::string> const vPlugInModuleNames =
+        std::vector<std::string> const cPlugInModuleNames =
         {
             "EightmoryTests",
             "EightserTests",
@@ -76,114 +133,34 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
             "Game"
         };
 
-        for (std::string const& sPlugInModuleName : vPlugInModuleNames)
+        for (std::string const& sPlugInModuleName : cPlugInModuleNames)
         {
-            std::filesystem::path const sPlugInModuleFilePathNoFileExtention = PPlatform::FileSystem->ProjectPlugInModulesDir() / (sPlugInModuleName + EIGHTGINE_BUILD_POSTFIX);
-            void* pPlugInModuleHandle = PPlatform::ModuleController->LoadModule(sPlugInModuleFilePathNoFileExtention);
-
-            std::cout << "sPlugInModuleFilePathNoFileExtention: " << sPlugInModuleFilePathNoFileExtention;
-            if (pPlugInModuleHandle)
-            {
-                std::cout << " pPlugInModuleHandle: " << pPlugInModuleHandle << '\n';
-            }
-            else
-            {
-                if (std::optional<std::string> sErrorMessage = PPlatform::ModuleController->ExtractError())
-                {
-                    std::cout << " sErrorMessage: " << sErrorMessage.value() << '\n';
-                    iExitCode = 1;
-                }
-            }
+            CModuleManager_HotLoadModule(PPlatform::pFileSystem->ProjectPlugInModulesDir(), sPlugInModuleName, /*bHasModuleFactory*/false);
         }
     }
 
-    for (std::unique_ptr<CModuleInterface> const& pRegisteredModule : CModuleManager::RegisteredModules)
+    for (std::unique_ptr<CModuleInterface> const& pModule : CModuleManager::cModules)
     {
-        pRegisteredModule->StartupModule(&Eightgine);
+        pModule->StartupModule(&aEightgine);
     }
 
-    eightest::global()->execute_all();
-
-    if (!eightest::global()->stat())
-    {
-        iExitCode = 2;
-    }
-    if (eightest::global()->passed == 0)
-    {
-        iExitCode = 3;
-    }
+    CEightest_ExecuteAutomation();
 
     // TODO: suggestion to rework shutdown & upload sequance,
     //       and posibility to built in load & startup and shutdown & upload,
     //       needed for hot reload, plugins.
-    for (std::unique_ptr<CModuleInterface> const& pRegisteredModule : CModuleManager::RegisteredModules | std::views::reverse)
+    for (std::unique_ptr<CModuleInterface> const& pModule : CModuleManager::cModules | std::views::reverse)
     {
-        pRegisteredModule->ShutdownModule();
+        pModule->ShutdownModule();
     }
 
-    for (std::unique_ptr<CModuleInterface>& pRegisteredModule : CModuleManager::RegisteredModules | std::views::reverse)
+    for (std::unique_ptr<CModuleInterface>& pModule : CModuleManager::cModules | std::views::reverse)
     {
-        void* const pModuleHandle = pRegisteredModule->ModuleHandle;
-        pRegisteredModule.reset();
-
-        if (!PPlatform::ModuleController->UnloadModule(pModuleHandle))
-        {
-            std::cout << "UnloadModule: failed: ";
-            iExitCode = 4;
-        }
-        else
-        {
-            std::cout << "UnloadModule: success: ";
-        }
-        std::cout << pModuleHandle << '\n';
+        CModuleManager_HotUnloadModule(pModule);
     }
 
-    std::cout << "iExitCode: " << iExitCode << '\n';
-    return iExitCode;
+    std::cout << "iExitCode: " << iExitCode << '\n'; return iExitCode;
 }
-
-// #ifdef EIGHTGINE_WITH_EDITOR
-// #include <Eightest/Core.hpp>
-// #endif
-
-// #include <iostream> // cout, cerr
-// #include <fstream> // ifstream
-
-// #include <cJSON.h>
-// #include <iniparser.h>
-
-// #include <CMain.hpp>
-// #include <zlib.h>
-
-// #include <Eightmory/Core.hpp>
-// #include <Eightser/Core.hpp>
-// #include <Eightser/Standard/AnyRegistry.hpp>
-// #include <Eightrefl/Core.hpp>
-
-// #include <PPlatform.hpp>
-// #include <PFileSystemInterface.hpp>
-// #include <PModuleControllerInterface.hpp>
-
-// #include <CModuleManager.hpp>
-// #include <CModuleInterface.hpp>
-
-// #define EIGHTGINE_FLAG 1
-
-// #if EIGHTGINE_FLAG
-// #include <SDL.h>
-// #include <SDL_ttf.h>
-// #include <SDL_image.h>
-// #include <SDL_mixer.h>
-// // #include <entt/entt.hpp>
-// #endif // if
-
-// CMain* CMain::Global()
-// {
-//     static CMain self; return &self;
-// }
-
-// static int ExecuteImpl();
-
 // int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** pArgumentValues)
 // {
 //     char memory[1024]; eightmory::segment_manager_t manager(memory, sizeof(memory)); (void)manager;
@@ -192,12 +169,12 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
 //     (void)eightser::any_registry();
 //     (void)eightrefl::global();
 
-//     if (PPlatform::Global()->ModuleController == nullptr)
+//     if (PPlatform::Global()->pModuleController == nullptr)
 //     {
 //         return -1;
 //     }
 
-//     auto plugInsPath = PPlatform::Global()->FileSystem->ProjectPlugInsDir() / "plugins.json";
+//     auto plugInsPath = PPlatform::Global()->pFileSystem->ProjectPlugInsDir() / "plugins.json";
 //     std::cout << "plugInsPath: " << plugInsPath << '\n';
 //     std::ifstream aPlugInsFile(plugInsPath.c_str(), std::ios::ate | std::ios::binary);
 //     if (!aPlugInsFile)
@@ -236,9 +213,9 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
 
 //     for (auto const& plugIn : plugIns)
 //     {
-//         auto name = PPlatform::Global()->FileSystem->ProjectPlugInsDir() / plugIn;
+//         auto name = PPlatform::Global()->pFileSystem->ProjectPlugInsDir() / plugIn;
 //         std::cout << "name: " << name;
-//         auto module = PPlatform::Global()->ModuleController->LoadModule(name.string());
+//         auto module = PPlatform::Global()->pModuleController->LoadModule(name.string());
 //         std::cout << " module: " << module << '\n';
 //     }
 
@@ -325,7 +302,7 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
 //     // [[maybe_unused]]
 //     [[maybe_unused]] SDL_Event aEvent;
 
-//     TTF_Font* font = TTF_OpenFont((PPlatform::Global()->FileSystem->ProjectResourcesDir() / "Fonts/hand.otf").string().c_str(), 64);
+//     TTF_Font* font = TTF_OpenFont((PPlatform::Global()->pFileSystem->ProjectResourcesDir() / "Fonts/hand.otf").string().c_str(), 64);
 //     if (!font) {
 //         std::cout << "TTF_OpenFont Error: " << TTF_GetError() << '\n';
 //         SDL_DestroyWindow(window);
@@ -346,7 +323,7 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
 //             return 1;
 //         }
 
-//         Mix_Music* music = Mix_LoadMUS((PPlatform::Global()->FileSystem->ProjectResourcesDir() / "Music/theme.ogg").string().c_str());
+//         Mix_Music* music = Mix_LoadMUS((PPlatform::Global()->pFileSystem->ProjectResourcesDir() / "Music/theme.ogg").string().c_str());
 //         if (!music) {
 //             std::cout << "Mix_LoadMUS Error: " << Mix_GetError() << '\n';
 //             SDL_DestroyWindow(window);

@@ -2,7 +2,7 @@
 
 #include <CModuleManager.hpp>
 
-EIGHTGINE_REGISTER_MODULE(EEditorModule)
+EIGHTGINE_MODULE_FACTORY(EEditorModule)
 
 
 void EEditorModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)

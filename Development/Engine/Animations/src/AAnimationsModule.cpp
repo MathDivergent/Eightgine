@@ -2,7 +2,7 @@
 
 #include <CModuleManager.hpp>
 
-EIGHTGINE_REGISTER_MODULE(AAnimationsModule)
+EIGHTGINE_MODULE_FACTORY(AAnimationsModule)
 
 
 void AAnimationsModule::StartupModule([[maybe_unused]] CEngine const* pEngineContext)

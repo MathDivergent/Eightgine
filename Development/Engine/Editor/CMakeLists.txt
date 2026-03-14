@@ -8,7 +8,8 @@ eightgine_add_module(MODULE_NAME "EightgineEditor"
 
 # [[Dependencies]]
 eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineEditor" DEPENDENCY_NAME "EightgineCore")
-eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineEditor" DEPENDENCY_NAME "EightgineInteractive")
+
+# [weak] eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineEditor" DEPENDENCY_NAME "EightgineInteractive")
 
 if(EIGHTGINE_WITH_EDITOR)
     eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "EightgineEditor" DEPENDENCY_NAME "Eightest")

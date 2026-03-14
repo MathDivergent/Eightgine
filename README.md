@@ -130,7 +130,7 @@ Engine architecture:
 	- LShadowingEditor - Provides functionality for creating shadows.
 
 - Animations - Contains classes for programming and developing animations.
-	- ABaseAnimation - Provides basic functionality for animation.
+	- AAnimationBase - Provides basic functionality for animation.
 	- ASpriteAnimation - Describes sprite animation.
 	- ASkeletalAnimation - Describes skeletal animation.
 	- AAnimationEditor - Provides functionality for creating animations.
@@ -146,17 +146,17 @@ Engine architecture:
 	- NRemoteProcedureCall - Provides functionality for remote calling.
 	- NNetworkManager - Manages network communication.
 
-- GUI
-	- GBase - Describes a graphical interface object.
-	- GButton - Describes a clickable object.
-	- GSliderBlock - Describes a scrollable block.
-	- GSliderBar - Describes a scrollable slider.
-	- GCheckButton - Describes a check button.
-	- GRadioButton - Describes a radio button.
-	- GTextBox - Describes a text object.
-	- GTextField - Describes a text input object.
-	- GPanel - Describes a moveable interface object.
-	- GImage - Describes a rendered object.
+- Interractive
+	- IInterractiveBase - Describes a graphical interface object.
+	- IButton - Describes a clickable object.
+	- ISliderBlock - Describes a scrollable block.
+	- ISliderBar - Describes a scrollable slider.
+	- ICheckButton - Describes a check button.
+	- IRadioButton - Describes a radio button.
+	- ITextBox - Describes a text object.
+	- ITextField - Describes a text input object.
+	- IPanel - Describes a moveable interface object.
+	- IImage - Describes a rendered object.
 
 - Editor
 	- EDrawUtility - Provides functionality for rendering editor elements.

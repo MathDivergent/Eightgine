@@ -86,6 +86,8 @@ static void CModuleManager_HotUnloadModule(std::unique_ptr<CModuleInterface>& pM
     }
 }
 
+// TODO: add cli parser
+// TODO: add quick load window, audio, fonts, configs
 int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** pArgumentValues)
 {
     CEngine aEightgine;
@@ -130,7 +132,7 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
             "EightmoryTests",
             "EightserTests",
             "EightreflTests",
-            "Game"
+            "Game" // TODO: should be unloaded
         };
 
         for (std::string const& sPlugInModuleName : cPlugInModuleNames)

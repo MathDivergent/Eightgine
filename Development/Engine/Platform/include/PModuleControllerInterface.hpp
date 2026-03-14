@@ -1,8 +1,8 @@
 #ifndef EIGHTGINEPLATFORM_PMODULE_CONTROLLER_INTERFACE_HPP
 #define EIGHTGINEPLATFORM_PMODULE_CONTROLLER_INTERFACE_HPP
 
-#include <string> // string
 #include <filesystem> // filesystem::path
+#include <string> // string
 #include <optional> // optional
 
 struct EIGHTGINEPLATFORM_API PModuleControllerInterface

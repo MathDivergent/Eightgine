@@ -11,6 +11,8 @@
 #include <Eightest/Core.hpp>
 #include <Eightmory/Core.hpp>
 #include <Eightrefl/Core.hpp>
+#include <Eightrefl/Standard/Standard.hpp>
+
 #include <Eightser/Core.hpp>
 
 #include <ranges> // views::reverse
@@ -90,15 +92,15 @@ static void CModuleManager_HotUnloadModule(std::unique_ptr<CModuleInterface>& pM
 // TODO: add quick load window, audio, fonts, configs
 int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** pArgumentValues)
 {
+    // TODO: temp trigger linking
+    char cMemory[1024]; [[maybe_unused]] eightmory::segment_manager_t aManager(cMemory, sizeof(cMemory));
+    [[maybe_unused]] eightser::instantiable_registry_t* pInstantiableRegistry = eightser::instantiable_registry();
+    [[maybe_unused]] eightrefl::registry_t* pGlobalRegistry = eightrefl::global();
+    [[maybe_unused]] eightrefl::registry_t* pBuiltinRegistry = eightrefl::builtin();
     CEngine aEightgine;
 
     // TODO: provide logger
     {
-        // TODO: temp trigger linking
-        char cMemory[1024]; [[maybe_unused]] eightmory::segment_manager_t aManager(cMemory, sizeof(cMemory));
-        (void)eightser::instantiable_registry();
-        (void)eightrefl::global();
-
         // TODO: should be from ini or json
         // TODO: native  Eight libs does not free by dlclose
         std::vector<std::string> const cModuleNames =

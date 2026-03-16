@@ -1,17 +1,4 @@
 #include <CModuleManager.hpp>
 #include <CModuleInterface.hpp>
 
-CModuleManager* CModuleManager::Global()
-{
-    static CModuleManager self; return &self;
-}
-
-void CModuleManager::RegisterModule(CModuleInterface* module)
-{
-    if (module == nullptr)
-    {
-        return;
-    }
-
-    Modules.push_back(module);
-}
+std::list<std::unique_ptr<CModuleInterface>> CModuleManager::cModules;

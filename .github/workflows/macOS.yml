@@ -7,7 +7,11 @@ on:
 
 jobs:
   build:
-    runs-on: macos-13
+    strategy:
+      matrix:
+        image: [ macos-15 ]
+
+    runs-on:  ${{ matrix.image }}
 
     env:
       Eightgine: ${{ github.workspace }}
@@ -27,10 +31,8 @@ jobs:
       run: |
         cd "${Eightgine}"
         rm -rf Intermediate
-        cmake -S . -B Intermediate -G Ninja \
-          -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \
-          -DCMAKE_BUILD_TYPE=Release
-        cmake --build Intermediate --parallel
+        cmake --preset macOS
+        cmake --build --preset macOS --parallel
 
     - name: "Dev project info"
       run: |
@@ -50,7 +52,7 @@ jobs:
     - name: "Package and Upload project"
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ github.workflow }}
+        name: EightgineWithEditor-${{ matrix.image }}
         path: |
           ${{ env.Eightgine }}/Build
 

@@ -3,9 +3,7 @@
 
 struct EIGHTGINECORE_API CMain
 {
-    static CMain* Global();
-
-    int Execute(int iArgumentCount, char** pArgumentValues);
+    static int Execute(int iArgumentCount, char** pArgumentValues);
 };
 
 #endif // EIGHTGINECORE_CMAIN_HPP

@@ -16,11 +16,18 @@ option(INSTALL_DEMOS "" OFF)
 # [[Subdirectories]]
 add_subdirectory("Chipmunk2D" EXCLUDE_FROM_ALL)
 
+if(BUILD_SHARED_LIBS)
+    target_compile_options(chipmunk PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:-w>) # disable warnings
+else()
+    target_compile_options(chipmunk_static PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:-w>) # disable warnings
+endif()
+
 
 # [[Binaries]]
 eightgine_add_module(MODULE_NAME "chipmunk"
     MODULE_TYPE INTERFACE
-    MODULE_API_DEFINITION OFF
+    MODULE_DEFAULT_DEFINITIONS OFF
+    MODULE_DEFAULT_OPTIONS OFF
     MODULE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Chipmunk2D/include"
 )
 

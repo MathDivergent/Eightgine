@@ -4,7 +4,7 @@ project(EmptyProject)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -18,11 +18,11 @@ set(CMAKE_MINSIZEREL_POSTFIX "-MinSizeRel")
 option(EIGHTGINE_WITH_EDITOR "Build with the Eightgine Editor" ON)
 option(EIGHTGINE_WITH_CONSOLE "Build with the Eightgine Console" OFF)
 option(EIGHTGINE_OVERRIDE_PLATFORM "Build with the Eightgine custom Platform" OFF)
-option(BUILD_SHARED_LIBS "Build shared libraies by Default" ON)
+option(BUILD_SHARED_LIBS "Build shared libraies by Default" OFF)
 
 
 # [[Includes]]
-include("${CMAKE_SOURCE_DIR}/CMakeBase.cmake")
+include("${CMAKE_SOURCE_DIR}/CMakeEightgine.cmake")
 
 
 # [[Defaults]]
@@ -32,6 +32,14 @@ set(GAME_DIR_NAME "Game")
 set(PROJECT_DIR_NAME "${PROJECT_NAME}")
 set(RESOURCES_DIR_NAME "Resources")
 set(PLUGINS_DIR_NAME "PlugIns")
+
+if(EIGHTGINE_PLATFORM_WINDOWS)
+    set(MODULES_DIR_NAME "Windows") # readonly
+elseif(EIGHTGINE_PLATFORM_LINUX)
+    set(MODULES_DIR_NAME "Linux") # readonly
+elseif(EIGHTGINE_PLATFORM_MACOS)
+    set(MODULES_DIR_NAME "Frameworks") # readonly
+endif()
 
 set(DEVELOPMENT_DIR_NAME "Development") # readonly
 set(THIRDPARTY_DIR_NAME "ThirdParty") # readonly
@@ -51,14 +59,13 @@ set(PROJECT_RESOURCES_DIR "${PROJECT_DIR}/${RESOURCES_DIR_NAME}") # readonly
 
 if(EIGHTGINE_PLATFORM_WINDOWS)
     set(PROJECT_RUNTIME_DIR "${PROJECT_DIR}/Windows") # readonly
-    set(PROJECT_LIBRARY_DIR "${PROJECT_DIR}/Windows") # readonly
 elseif(EIGHTGINE_PLATFORM_LINUX)
     set(PROJECT_RUNTIME_DIR "${PROJECT_DIR}/Linux") # readonly
-    set(PROJECT_LIBRARY_DIR "${PROJECT_DIR}/Linux") # readonly
 elseif(EIGHTGINE_PLATFORM_MACOS)
     set(PROJECT_RUNTIME_DIR "${PROJECT_DIR}/macOS") # readonly
-    set(PROJECT_LIBRARY_DIR "${PROJECT_DIR}/Frameworks") # readonly
 endif()
+
+set(PROJECT_LIBRARY_DIR "${PROJECT_DIR}/${MODULES_DIR_NAME}") # readonly
 
 
 # [[CMakeDefaults]]
@@ -88,6 +95,7 @@ else()
 endif()
 
 add_compile_definitions("EIGHTGINE_RESOURCES_DIR_NAME=\"${RESOURCES_DIR_NAME}\"")
+add_compile_definitions("EIGHTGINE_MODULES_DIR_NAME=\"${MODULES_DIR_NAME}\"")
 add_compile_definitions("EIGHTGINE_PLUGINS_DIR_NAME=\"${PLUGINS_DIR_NAME}\"")
 add_compile_definitions("EIGHTGINE_BUILD_POSTFIX=\"${EIGHTGINE_BIULD_POSTFIX}\"")
 
@@ -101,7 +109,7 @@ add_subdirectory("${PROJECT_DEVELOPMENT_GAME_DIR}")
 
 # [[Binaries]]
 set(PROJECT_JAUNCHER_CPP "${CMAKE_BINARY_DIR}/Launcher.cpp")
-file(WRITE "${PROJECT_JAUNCHER_CPP}" "#include <CLauncherImpl.hpp>")
+file(WRITE "${PROJECT_JAUNCHER_CPP}" "#include <CLauncher.hpp>")
 
 eightgine_add_executable(EXECUTABLE_NAME "${PROJECT_NAME}" EXECUTABLE_SOURCES_FILES "${PROJECT_JAUNCHER_CPP}")
 

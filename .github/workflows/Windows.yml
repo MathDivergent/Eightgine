@@ -7,7 +7,11 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2022
+    strategy:
+      matrix:
+        image: [ windows-2022 ]
+
+    runs-on:  ${{ matrix.image }}
 
     env:
       Eightgine: ${{ github.workspace }}
@@ -31,10 +35,8 @@ jobs:
       run: |
         cd "%Eightgine%"
         rmdir /s /q Intermediate
-        cmake -S . -B Intermediate -G Ninja ^
-          -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ ^
-          -DCMAKE_BUILD_TYPE=Release
-        cmake --build Intermediate --parallel
+        cmake --preset Windows
+        cmake --build --preset Windows --parallel
 
     - name: "Dev project info"
       shell: cmd
@@ -55,7 +57,7 @@ jobs:
     - name: "Package and Upload project"
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ github.workflow }}
+        name: EightgineWithEditor-${{ matrix.image }}
         path: |
           ${{ env.Eightgine }}/Build
 

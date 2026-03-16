@@ -1,5 +1,5 @@
 # [[Binaries]]
-eightgine_add_module(MODULE_NAME "PlatformsMacOSMinimal" MODULE_TYPE INTERFACE MODULE_API_DEFINITION OFF)
+eightgine_add_module(MODULE_NAME "PlatformsMacOSMinimal" MODULE_TYPE INTERFACE MODULE_DEFAULT_DEFINITIONS OFF MODULE_DEFAULT_OPTIONS OFF)
 
 
 # [[Dependencies]]
@@ -8,7 +8,7 @@ eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "PlatformsMacOSMinimal" DEPEN
 
 
 # [[Binaries]]
-eightgine_add_module(MODULE_NAME "PlatformsMacOSGraphics" MODULE_TYPE INTERFACE MODULE_API_DEFINITION OFF)
+eightgine_add_module(MODULE_NAME "PlatformsMacOSGraphics" MODULE_TYPE INTERFACE MODULE_DEFAULT_DEFINITIONS OFF MODULE_DEFAULT_OPTIONS OFF)
 
 
 # [[Dependencies]]
@@ -19,7 +19,7 @@ eightgine_add_dependency(MODULE_OR_EXECUTABLE_NAME "PlatformsMacOSGraphics" DEPE
 
 
 # [[Binaries]]
-eightgine_add_module(MODULE_NAME "PlatformsMacOSAudio" MODULE_TYPE INTERFACE MODULE_API_DEFINITION OFF)
+eightgine_add_module(MODULE_NAME "PlatformsMacOSAudio" MODULE_TYPE INTERFACE MODULE_DEFAULT_DEFINITIONS OFF MODULE_DEFAULT_OPTIONS OFF)
 
 
 # [[Dependencies]]

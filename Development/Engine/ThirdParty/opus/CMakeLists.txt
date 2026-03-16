@@ -7,7 +7,8 @@ target_compile_options(opus PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang>:-w>) # disabl
 # [[Binaries]]
 eightgine_add_module(MODULE_NAME "opus"
     MODULE_TYPE INTERFACE
-    MODULE_API_DEFINITION OFF
+    MODULE_DEFAULT_DEFINITIONS OFF
+    MODULE_DEFAULT_OPTIONS OFF
     MODULE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/opus/include"
 )
 

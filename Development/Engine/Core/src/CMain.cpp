@@ -24,8 +24,8 @@ int iExitCode = 0;
 // TODO: temporary impl
 static void CModuleManager_HotLoadModule(std::filesystem::path const& sModuleDir, std::string const& sModuleName, bool const bHasModuleFactory = true)
 {
-    std::filesystem::path const sModuleFilePathNoFileExtention = sModuleDir / (sModuleName + EIGHTGINE_BUILD_POSTFIX);
-    void* const pModuleHandle = PPlatform::pModuleController->LoadModule(sModuleFilePathNoFileExtention);
+    std::filesystem::path const sModuleFilePathNoFileExtension = sModuleDir / (sModuleName + EIGHTGINE_BUILD_POSTFIX);
+    void* const pModuleHandle = PPlatform::pModuleController->LoadModule(sModuleFilePathNoFileExtension);
 
     std::cout << "[CModuleManager_HotLoadModule][INFO]: sModuleName: " << sModuleName << " pModuleHandle: " << pModuleHandle << '\n';
 

@@ -5,7 +5,7 @@
 
 struct PModuleControllerMacOS : public PModuleControllerInterface
 {
-    void* LoadModule(std::filesystem::path const& sModuleFilePathNoFileExtention) override;
+    void* LoadModule(std::filesystem::path const& sModuleFilePathNoFileExtension) override;
     bool UnloadModule(void* pModuleHandle) override;
 
     void* ModuleSymbol(void* pModuleHandle, std::string const& sSymbolName) override;
@@ -17,9 +17,9 @@ struct PModuleControllerMacOS : public PModuleControllerInterface
 EIGHTGINE_REGISTER_PLATFORM(PModuleControllerMacOS)
 
 
-void* PModuleControllerMacOS::LoadModule(std::filesystem::path const& sModuleFilePathNoFileExtention)
+void* PModuleControllerMacOS::LoadModule(std::filesystem::path const& sModuleFilePathNoFileExtension)
 {
-    std::filesystem::path sModuleFilePath = sModuleFilePathNoFileExtention;
+    std::filesystem::path sModuleFilePath = sModuleFilePathNoFileExtension;
     sModuleFilePath.replace_extension("dylib");
     return dlopen(/*filename*/sModuleFilePath.c_str(), /*flags*/RTLD_NOW);
 }

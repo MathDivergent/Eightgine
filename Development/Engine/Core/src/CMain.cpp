@@ -18,14 +18,123 @@
 #include <ranges> // views::reverse
 #include <iostream> // cout
 
+// TODO: remove
+#define REFLECTABLE_EIGHTGINE() \
+    struct xxeightgine;
+
+
+template <typename, typename enable = void> struct CEightrefl_EightreflTraitsHasReflectableEightgine : std::false_type {};
+template <typename ReflectableType>
+struct CEightrefl_EightreflTraitsHasReflectableEightgine<ReflectableType, std::void_t<typename ::xxeightrefl_traits<ReflectableType>::xxeightgine>> : std::true_type {};
+
+
+struct CEightrefl_SerializableSaveLoad : eightrefl::injectable_t
+{
+    eightser::ioarchive_t* pArchive;
+    void* pContext = nullptr;
+
+    template <typename DirtyReflectableType>
+    void type(eightrefl::type_t&)
+    {
+        using reflectable_type = typename ::xxeightrefl_dirty_traits<DirtyReflectableType>::R;
+
+        eightser::instantiable_registry()->fixture<reflectable_type>();
+    }
+
+    template <typename ReflectableType, typename DirtyReflectableParentType>
+    void parent(eightrefl::parent_t&)
+    {
+        using reflectable_parent_type = typename ::xxeightrefl_dirty_traits<DirtyReflectableParentType>::R;
+    
+        (*pArchive) & eightser::hierarchy<reflectable_parent_type>(static_cast<ReflectableType*>(pContext));
+    }
+
+    template <typename ReflectableType, typename ITypePointer, typename OTypePointer>
+    void property(eightrefl::property_t& property)
+    {
+        if (pArchive->saveload)
+        {
+            (*pArchive) << static_cast<ReflectableType*>(pContext)->*std::any_cast<ITypePointer>(property.pointer.first);
+        }
+        else
+        {
+            (*pArchive) >> static_cast<ReflectableType*>(pContext)->*std::any_cast<OTypePointer>(property.pointer.second);
+        }
+    }
+};
+
+REFLECTABLE_DECLARATION(CEightrefl_SerializableSaveLoad)
+REFLECTABLE_DECLARATION_INIT()
+
+REFLECTABLE(CEightrefl_SerializableSaveLoad)
+REFLECTABLE_INIT()
+
+CONDITIONAL_SERIALIZABLE_DECLARATION(CEightrefl_EightreflTraitsHasReflectableEightgine<S>::value)
+SERIALIZABLE_DECLARATION_INIT()
+
+CONDITIONAL_SERIALIZABLE_SAVELOAD(aObject, CEightrefl_EightreflTraitsHasReflectableEightgine<S>::value)
+    BIN_SERIALIZABLE
+    (
+        eightrefl::injection_t* pInjection = eightrefl::type_of<S>()->injection.find
+        (
+            eightrefl::name_of<CEightrefl_SerializableSaveLoad>()
+        );
+
+        if (pInjection)
+        {
+            CEightrefl_SerializableSaveLoad aInjectable{};
+            aInjectable.pArchive = std::addressof(archive);
+            aInjectable.pContext = std::addressof(aObject);
+            pInjection->call(&aInjectable);
+        }
+    )
+SERIALIZABLE_INIT()
+
+struct SerializableTestStruct
+{
+    SerializableTestStruct() = default;
+
+    int a = 0;
+    float b = 0.f;
+};
+
+REFLECTABLE_DECLARATION(SerializableTestStruct)
+    REFLECTABLE_EIGHTGINE()
+REFLECTABLE_DECLARATION_INIT()
+
+REFLECTABLE(SerializableTestStruct)
+    INJECTION(CEightrefl_SerializableSaveLoad)
+    PROPERTY(a)
+    PROPERTY(b)
+REFLECTABLE_INIT()
+
+struct SerializableTest2Struct
+{
+    SerializableTest2Struct() = default;
+
+    SerializableTestStruct s{};
+    int* p = nullptr;
+};
+
+REFLECTABLE_DECLARATION(SerializableTest2Struct)
+    REFLECTABLE_EIGHTGINE()
+REFLECTABLE_DECLARATION_INIT()
+
+REFLECTABLE(SerializableTest2Struct)
+    INJECTION(CEightrefl_SerializableSaveLoad)
+    PROPERTY(s)
+    PROPERTY(p)
+REFLECTABLE_INIT()
+// ~TODO
+
 // TODO: provide exit code enum
 int iExitCode = 0;
 
 // TODO: temporary impl
 static void CModuleManager_HotLoadModule(std::filesystem::path const& sModuleDir, std::string const& sModuleName, bool const bHasModuleFactory = true)
 {
-    std::filesystem::path const sModuleFilePathNoFileExtention = sModuleDir / (sModuleName + EIGHTGINE_BUILD_POSTFIX);
-    void* const pModuleHandle = PPlatform::pModuleController->LoadModule(sModuleFilePathNoFileExtention);
+    std::filesystem::path const sModuleFilePathNoFileExtension = sModuleDir / (sModuleName + EIGHTGINE_BUILD_POSTFIX);
+    void* const pModuleHandle = PPlatform::pModuleController->LoadModule(sModuleFilePathNoFileExtension);
 
     std::cout << "[CModuleManager_HotLoadModule][INFO]: sModuleName: " << sModuleName << " pModuleHandle: " << pModuleHandle << '\n';
 
@@ -163,8 +272,27 @@ int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** 
         CModuleManager_HotUnloadModule(pModule);
     }
 
+    // TODO: remove
+    std::vector<unsigned char> CStorage{};
+    {
+        SerializableTest2Struct aObject{};
+        aObject.s.a = 123;
+        aObject.s.b = 456.789;
+
+        auto archive = eightser::oarchive(CStorage);
+        archive << aObject;
+    }
+    {
+        SerializableTest2Struct aObject{};
+
+        auto archive = eightser::iarchive(CStorage);
+        archive >> aObject;
+    }
+    // ~TODO
+
     std::cout << "iExitCode: " << iExitCode << '\n'; return iExitCode;
 }
+
 // int CMain::Execute([[maybe_unused]] int iArgumentCount, [[maybe_unused]] char** pArgumentValues)
 // {
 //     char memory[1024]; eightmory::segment_manager_t manager(memory, sizeof(memory)); (void)manager;

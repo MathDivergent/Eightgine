@@ -5,7 +5,7 @@
 
 struct PModuleControllerLinux : public PModuleControllerInterface
 {
-    void* LoadModule(std::filesystem::path const& sModuleFilePathNoFileExtention) override;
+    void* LoadModule(std::filesystem::path const& sModuleFilePathNoFileExtension) override;
     bool UnloadModule(void* pModuleHandle) override;
 
     void* ModuleSymbol(void* pModuleHandle, std::string const& sSymbolName) override;
@@ -17,9 +17,9 @@ struct PModuleControllerLinux : public PModuleControllerInterface
 EIGHTGINE_REGISTER_PLATFORM(PModuleControllerLinux)
 
 
-void* PModuleControllerLinux::LoadModule(std::filesystem::path const& sModuleFilePathNoFileExtention)
+void* PModuleControllerLinux::LoadModule(std::filesystem::path const& sModuleFilePathNoFileExtension)
 {
-    std::filesystem::path sModuleFilePath = sModuleFilePathNoFileExtention;
+    std::filesystem::path sModuleFilePath = sModuleFilePathNoFileExtension;
     sModuleFilePath.replace_extension("so");
     return dlopen(/*filename*/sModuleFilePath.c_str(), /*flags*/RTLD_NOW);
 }

@@ -58,7 +58,7 @@ jobs:
     - name: "Package and Upload project"
       uses: actions/upload-artifact@v4
       with:
-        name: EightgineWithEditor-${{ matrix.image }}
+        name: EightgineWithEditor${{ matrix.build_postfix }}-${{ matrix.image }}
         path: |
           ${{ env.Eightgine }}/Build
 

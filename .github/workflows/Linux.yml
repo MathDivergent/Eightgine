@@ -10,6 +10,7 @@ jobs:
     strategy:
       matrix:
         image: [ ubuntu-22.04 ]
+        build_postfix: [ "", "-Debug" ]
 
     runs-on: ${{ matrix.image }}
 
@@ -36,8 +37,8 @@ jobs:
       run: |
         cd "${Eightgine}"
         rm -rf Intermediate
-        cmake --preset Linux
-        cmake --build --preset Linux --parallel
+        cmake --preset Linux${{ matrix.build_postfix }}
+        cmake --build --preset Linux${{ matrix.build_postfix }} --parallel
 
     - name: "Dev project info"
       run: |
@@ -63,4 +64,4 @@ jobs:
     - name: "Test project"
       run: |
         cd "${Eightgine}/Build/EmptyProject/Linux"
-        ./EmptyProject
+        ./EmptyProject${{ matrix.build_postfix }}

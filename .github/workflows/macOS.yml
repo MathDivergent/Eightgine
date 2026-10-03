@@ -10,6 +10,7 @@ jobs:
     strategy:
       matrix:
         image: [ macos-15 ]
+        build_postfix: [ "", "-Debug" ]
 
     runs-on:  ${{ matrix.image }}
 
@@ -31,8 +32,8 @@ jobs:
       run: |
         cd "${Eightgine}"
         rm -rf Intermediate
-        cmake --preset macOS
-        cmake --build --preset macOS --parallel
+        cmake --preset macOS${{ matrix.build_postfix }}
+        cmake --build --preset macOS${{ matrix.build_postfix }} --parallel
 
     - name: "Dev project info"
       run: |
@@ -59,4 +60,4 @@ jobs:
     - name: "Test project"
       run: |
         cd "${Eightgine}/Build/EmptyProject/macOS"
-        ./EmptyProject
+        ./EmptyProject${{ matrix.build_postfix }}

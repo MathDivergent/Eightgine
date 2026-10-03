@@ -164,3 +164,42 @@ Engine architecture:
 	- EObjectHierarchy - Describes the hierarchy of objects in space.
 	- EResourcesBrowser - Provides functionality for structuring and displaying resources.
 	- ELocationEditor - Provides functionality for editing locations.
+
+### Windows dev instalation guide
+
+Run Command Prompt (cmd) as Administrator.
+
+Install [choco](https://docs.chocolatey.org/en-us/choco/setup/) via command:
+```bash
+@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+```
+
+Install dev tools via command:
+```
+choco install mingw cmake ninja -y
+```
+
+Optional (you can skip if already installed them):
+```
+choco install git vscode -y
+```
+
+VS Code PlugIn:
+```
+C/C++ Extension Pack
+```
+
+Exports for Eightser:
+
+```
+$dll = 'Windows\Eightrefl-Debug.dll'
+$objdump = 'C:\ProgramData\mingw64\mingw64\bin\objdump.exe'
+$cxxfilt = 'C:\ProgramData\mingw64\mingw64\bin\c++filt.exe'
+
+$exports = & $objdump -p $dll |
+    Select-String -Pattern '^\s*\[\s*\d+\]\s+\+base\['
+
+$exports |
+    ForEach-Object { $_.Line -replace '^\s*\[\s*\d+\]\s+\+base\[\s*\d+\]\s+\S+\s+', '' } |
+    & $cxxfilt
+```

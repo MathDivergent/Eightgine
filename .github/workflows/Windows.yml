@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         image: [ windows-2022 ]
         build_postfix: [ "", "-Debug" ]

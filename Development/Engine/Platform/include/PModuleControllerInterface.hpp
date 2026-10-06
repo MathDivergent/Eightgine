@@ -9,7 +9,7 @@ struct EIGHTGINEPLATFORM_API PModuleControllerInterface
 {
     virtual ~PModuleControllerInterface() = default;
 
-    virtual void* LoadModule(std::filesystem::path const& sModuleFilePathNoFileExtention) = 0;
+    virtual void* LoadModule(std::filesystem::path const& sModuleFilePathNoFileExtension) = 0;
     virtual bool UnloadModule(void* pModuleHandle) = 0;
 
     virtual void* ModuleSymbol(void* pModuleHandle, std::string const& sSymbolName) = 0;

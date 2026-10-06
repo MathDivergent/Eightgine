@@ -8,8 +8,10 @@ on:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         image: [ windows-2022 ]
+        build_postfix: [ "", "-Debug" ]
 
     runs-on:  ${{ matrix.image }}
 
@@ -35,8 +37,8 @@ jobs:
       run: |
         cd "%Eightgine%"
         rmdir /s /q Intermediate
-        cmake --preset Windows
-        cmake --build --preset Windows --parallel
+        cmake --preset Windows${{ matrix.build_postfix }}
+        cmake --build --preset Windows${{ matrix.build_postfix }} --parallel
 
     - name: "Dev project info"
       shell: cmd
@@ -57,7 +59,7 @@ jobs:
     - name: "Package and Upload project"
       uses: actions/upload-artifact@v4
       with:
-        name: EightgineWithEditor-${{ matrix.image }}
+        name: EightgineWithEditor${{ matrix.build_postfix }}-${{ matrix.image }}
         path: |
           ${{ env.Eightgine }}/Build
 
@@ -65,4 +67,4 @@ jobs:
       shell: cmd
       run: |
         cd "%Eightgine%/Build/EmptyProject/Windows"
-        EmptyProject.exe
+        EmptyProject${{ matrix.build_postfix }}.exe

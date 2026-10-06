@@ -1,5 +1,19 @@
+# [[General]]
 * text=auto eol=lf
 
+*.txt text eol=lf
+*.md text eol=lf diff=markdown
+
+
+# [[Special]]
+.gitignore text eol=lf
+.gitattributes text eol=lf
+.gitmodules text eol=lf
+
+.clang-format text eol=lf
+
+
+# [[Sources]]
 *.c text eol=lf diff=cpp
 *.cc text eol=lf diff=cpp
 *.cxx text eol=lf diff=cpp
@@ -10,21 +24,30 @@
 *.hxx text eol=lf diff=cpp
 *.inl text eol=lf diff=cpp
 
-CMakeLists.txt text eol=lf linguist-language=CMake
-*.cmake text eol=lf linguist-language=CMake
-*.cmake.in text eol=lf linguist-language=CMake
-
 *.py text eol=lf diff=python
 
-*.txt text eol=lf
-*.md text eol=lf
+CMakeLists.txt text eol=lf diff=cmake linguist-language=CMake
+*.cmake text eol=lf diff=cmake linguist-language=CMake
+*.cmake.in text eol=lf diff=cmake linguist-language=CMake
 
+
+# [[Configs]]
+*.json text eol=lf diff=json
+*.lua text eol=lf diff=lua
+*.ini text eol=lf diff=ini
+*.yml text eol=lf diff=yaml
+
+
+# [[Content]]
 *.png binary
+
 *.ttf binary
 *.otf binary
+
 *.mp3 binary
 *.ogg binary
 *.wav binary
+
 *.exe binary
 *.dll binary
 *.so binary

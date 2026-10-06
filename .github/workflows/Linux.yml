@@ -8,8 +8,10 @@ on:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         image: [ ubuntu-22.04 ]
+        build_postfix: [ "", "-Debug" ]
 
     runs-on: ${{ matrix.image }}
 
@@ -36,8 +38,8 @@ jobs:
       run: |
         cd "${Eightgine}"
         rm -rf Intermediate
-        cmake --preset Linux
-        cmake --build --preset Linux --parallel
+        cmake --preset Linux${{ matrix.build_postfix }}
+        cmake --build --preset Linux${{ matrix.build_postfix }} --parallel
 
     - name: "Dev project info"
       run: |
@@ -56,11 +58,11 @@ jobs:
     - name: "Package and Upload project"
       uses: actions/upload-artifact@v4
       with:
-        name: EightgineWithEditor-${{ matrix.image }}
+        name: EightgineWithEditor${{ matrix.build_postfix }}-${{ matrix.image }}
         path: |
           ${{ env.Eightgine }}/Build
 
     - name: "Test project"
       run: |
         cd "${Eightgine}/Build/EmptyProject/Linux"
-        ./EmptyProject
+        ./EmptyProject${{ matrix.build_postfix }}

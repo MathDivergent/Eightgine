@@ -5,7 +5,7 @@
             "name": "Platform",
             "hidden": true,
             "generator": "Ninja",
-            "binaryDir": "${sourceDir}/Intermediate",
+            "binaryDir": "${sourceDir}/Intermediate/${presetName}",
             "cacheVariables": {
             }
         },
